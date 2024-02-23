@@ -29,7 +29,8 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         line-height: 1;
-        font-family: 'Noto Sans KR', sans-serif;
+        font-family: 'pretendard';
+        font-weight: 400;
         height: 100%;
     }
     ol, ul {
