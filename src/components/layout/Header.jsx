@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -26,7 +26,7 @@ export const HeaderWrap = styled.header`
 `;
 export const Logo = styled.h1`
   width: 200px;
-  & > img {
+  & > a > img {
     width: 100%;
   }
 `;
