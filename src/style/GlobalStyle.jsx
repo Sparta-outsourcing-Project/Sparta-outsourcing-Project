@@ -56,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         line-height: 24px;
         font-size: 16px;
-        color: #333;
+        color: #212121;
     }
 
     textarea{
@@ -66,6 +66,10 @@ const GlobalStyle = createGlobalStyle`
 
     button{
         cursor: pointer;
+    }
+    a{
+        color:inherit;
+        text-decoration: none;
     }
 `;
 
