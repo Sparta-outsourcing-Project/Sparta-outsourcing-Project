@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <Wrap>
       <Header />
-      <main>main</main>
+      <Main />
       <Footer />
     </Wrap>
   );
