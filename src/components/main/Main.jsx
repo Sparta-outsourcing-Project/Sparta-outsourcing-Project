@@ -1,36 +1,10 @@
 import styled from 'styled-components';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import HeaderSlider from '../sliders/HeaderSlider';
 
 export default function Main() {
   return (
     <MainWrap>
-      <StSwiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={50}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 2000 }}
-        speed={2000}
-        loop={true}
-      >
-        <SwiperSlide>
-          <MainSlider>
-            <div>Main Slider</div>
-          </MainSlider>
-        </SwiperSlide>
-        <SwiperSlide>
-          <MainSlider>
-            <div>Main Slider</div>
-          </MainSlider>
-        </SwiperSlide>
-      </StSwiper>
+      <HeaderSlider />
       <MainSearch>
         <input type="search" placeholder="주제를 검색하세요." />
         <SearchKeyWord>
@@ -123,13 +97,6 @@ export const MainWrap = styled.main`
   & > section {
     margin-bottom: 3rem;
   }
-`;
-
-// swiper
-export const StSwiper = styled(Swiper)`
-  --swiper-theme-color: #fff;
-  height: 400px;
-  margin-bottom: 3rem;
 `;
 
 //main slider
