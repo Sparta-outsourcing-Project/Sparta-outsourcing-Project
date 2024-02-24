@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import HeaderSlider from '../sliders/HeaderSlider';
+import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
@@ -25,9 +27,7 @@ export default function Main() {
 
   return (
     <MainWrap>
-      <MainSlider>
-        <div>Main Slider</div>
-      </MainSlider>
+      <HeaderSlider />
       <MainSearch>
         <input type="search" placeholder="주제를 검색하세요." />
         <SearchKeyWord>
@@ -39,49 +39,7 @@ export default function Main() {
           <span>#패션</span>
         </SearchKeyWord>
       </MainSearch>
-      <MainYoutuberSlider>
-        <SliderWrap>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-        </SliderWrap>
-      </MainYoutuberSlider>
+      <BodySlider />
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
