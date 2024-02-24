@@ -29,7 +29,8 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         line-height: 1;
-        font-family: 'Noto Sans KR', sans-serif;
+        font-family: 'pretendard';
+        font-weight: 400;
         height: 100%;
     }
     ol, ul {
@@ -56,7 +57,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         line-height: 24px;
         font-size: 16px;
-        color: #333;
+        color: #212121;
     }
 
     textarea{
@@ -66,6 +67,10 @@ const GlobalStyle = createGlobalStyle`
 
     button{
         cursor: pointer;
+    }
+    a{
+        color:inherit;
+        text-decoration: none;
     }
 `;
 
