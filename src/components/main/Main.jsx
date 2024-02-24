@@ -18,49 +18,6 @@ export default function Main() {
         </SearchKeyWord>
       </MainSearch>
       <BodySlider />
-      {/* <MainYoutuberSlider>
-        <SliderWrap>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-        </SliderWrap>
-      </MainYoutuberSlider> */}
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
