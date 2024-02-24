@@ -18,7 +18,49 @@ export default function Main() {
           <span>#패션</span>
         </SearchKeyWord>
       </MainSearch>
-      <MainYoutuberSlider></MainYoutuberSlider>
+      <MainYoutuberSlider>
+        <SliderWrap>
+          <SliderItem>
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+          <SliderItem>
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+          <SliderItem>
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+        </SliderWrap>
+      </MainYoutuberSlider>
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
@@ -55,7 +97,7 @@ export default function Main() {
 export const MainWrap = styled.main`
   width: 100%;
   & > section {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 `;
 
@@ -120,14 +162,44 @@ export const SearchKeyWord = styled.div`
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
-  height: 400px;
+  height: 300px;
   margin: auto;
-  background-color: #212121;
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
 
   @media (max-width: 1300px) {
     max-width: calc(100% - 2rem);
     margin: 1rem;
   }
+`;
+export const SliderWrap = styled.div`
+  width: 100%;
+  display: flex;
+`;
+export const SliderItem = styled.article`
+  width: calc(100% / 3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid red; */
+`;
+export const SliderItemImgWrap = styled.div`
+  width: calc(100% - 3rem);
+  height: 180px;
+  background-color: #febe98;
+  border-radius: 1rem;
+`;
+export const SliderItemInfo = styled.div`
+  padding: 1rem 2rem;
+  width: 100%;
+`;
+export const SliderItemInfoTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 `;
 
 // best
@@ -146,8 +218,11 @@ export const MainBestTitle = styled.div`
   & > h3 {
     font-size: 2rem;
     font-weight: 800;
+    margin-bottom: 0.4rem;
   }
   & > p {
+    font-weight: 200;
+    color: #888;
   }
 `;
 export const MainBestContWrap = styled.ul`
@@ -160,7 +235,7 @@ export const MainBestContents = styled.li`
   margin: 0.8rem;
 
   & > div {
-    background-color: royalblue;
+    background-color: #febe98;
     width: 8rem;
     height: 8rem;
     border-radius: 50%;
