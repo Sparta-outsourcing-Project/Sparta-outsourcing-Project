@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
+import BodySlider from '../sliders/BodySlider';
 
 export default function Main() {
   return (
@@ -16,7 +17,8 @@ export default function Main() {
           <span>#패션</span>
         </SearchKeyWord>
       </MainSearch>
-      <MainYoutuberSlider>
+      <BodySlider />
+      {/* <MainYoutuberSlider>
         <SliderWrap>
           <SliderItem>
             <SliderItemImgWrap>
@@ -58,7 +60,7 @@ export default function Main() {
             </SliderItemInfo>
           </SliderItem>
         </SliderWrap>
-      </MainYoutuberSlider>
+      </MainYoutuberSlider> */}
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>

@@ -48,16 +48,16 @@ const BodySlider = () => {
   ];
 
   // 클릭 시 영상 링크로 이동
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const onVideoClickHandler = (id) => {
     const youtubeURL = `https://www.youtube.com/watch?v=${id}`;
-    navigate(youtubeURL);
+    window.open(youtubeURL, '_blank');
   };
 
   return (
     <>
       {/* map(card) => getimg(id) getSub()) */}
-      <MainYoutuberSlider>
+      {/* <MainYoutuberSlider>
         <SliderWrap>
           {videoIdCategoryArr.map((sliderItem) => {
             <>
@@ -80,6 +80,55 @@ const BodySlider = () => {
               </SliderItem>
             </>;
           })}
+        </SliderWrap>
+      </MainYoutuberSlider> */}
+
+      <MainYoutuberSlider>
+        <SliderWrap>
+          <SliderItem
+            onClick={() => {
+              onVideoClickHandler('1nVPaBoiq7I');
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+          <SliderItem>
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+          <SliderItem>
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
         </SliderWrap>
       </MainYoutuberSlider>
     </>
