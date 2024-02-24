@@ -1,0 +1,3 @@
+const requst = {
+  getSearchKeyWord: `/search`
+};
