@@ -15,13 +15,10 @@ export default function Main() {
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={50}
         slidesPerView={1}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-        navigation
-        autoHeight
         pagination={{ clickable: true }}
         autoplay={{ delay: 2000 }}
         speed={2000}
+        loop={true}
       >
         <SwiperSlide>
           <MainSlider>
