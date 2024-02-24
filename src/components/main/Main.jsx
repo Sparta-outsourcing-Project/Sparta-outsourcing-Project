@@ -4,11 +4,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 import 'swiper/css';
-// import 'swiper/css/autoplay';
+import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-// SwipeCore.use([Navigation, Pagination, Autoplay]);
 
 export default function Main() {
   return (
@@ -22,9 +20,10 @@ export default function Main() {
         navigation
         autoHeight
         pagination={{ clickable: true }}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 2000 }}
+        speed={2000}
       >
-        <SwiperSlide style={{ height: '400px' }}>
+        <SwiperSlide>
           <MainSlider>
             <div>Main Slider</div>
           </MainSlider>
@@ -132,6 +131,8 @@ export const MainWrap = styled.main`
 // swiper
 export const StSwiper = styled(Swiper)`
   --swiper-theme-color: #fff;
+  height: 400px;
+  margin-bottom: 3rem;
 `;
 
 //main slider
