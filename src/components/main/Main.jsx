@@ -1,8 +1,30 @@
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import BodySlider from '../sliders/BodySlider';
+import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
+import { getMostPopularThumbnails } from '../../api/dataApi';
+import Thumbnail from '../main/Thumbnail';
 
 export default function Main() {
+  const [thumbnails, setThumbmails] = useState([]);
+  const { data: videos, isLoading, isError } = useMostPopularVideos();
+
+  useEffect(() => {
+    const getThumbnails = async () => {
+      if (videos) {
+        const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
+        const getOneThumbnail = await Promise.all(getFiveThumbnails);
+        setThumbmails(getOneThumbnail);
+      }
+    };
+    getThumbnails();
+  }, [videos]);
+
+  if (isLoading) return <div>..Loading</div>;
+
+  if (isError) return <div>{isError.message}</div>;
+
   return (
     <MainWrap>
       <HeaderSlider />
@@ -24,26 +46,9 @@ export default function Main() {
           <p>이달의 인기 유튜버</p>
         </MainBestTitle>
         <MainBestContWrap>
-          <MainBestContents>
-            <div></div>
-            <span>1st</span>
-          </MainBestContents>
-          <MainBestContents>
-            <div></div>
-            <span>2st</span>
-          </MainBestContents>
-          <MainBestContents>
-            <div></div>
-            <span>3st</span>
-          </MainBestContents>
-          <MainBestContents>
-            <div></div>
-            <span>4st</span>
-          </MainBestContents>
-          <MainBestContents>
-            <div></div>
-            <span>5st</span>
-          </MainBestContents>
+          {thumbnails.map((thumbnail, index) => (
+            <Thumbnail key={index} src={thumbnail.high.url} alt={`Thumbnail ${index + 1}`} text={`${index + 1}st`} />
+          ))}
         </MainBestContWrap>
       </MainBest>
     </MainWrap>
@@ -186,17 +191,4 @@ export const MainBestContWrap = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-export const MainBestContents = styled.li`
-  text-align: center;
-  margin: 0.8rem;
-
-  & > div {
-    background-color: #febe98;
-    width: 8rem;
-    height: 8rem;
-    border-radius: 50%;
-  }
-  & > span {
-  }
 `;
