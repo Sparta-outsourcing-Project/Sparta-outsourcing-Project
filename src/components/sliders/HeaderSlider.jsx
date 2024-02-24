@@ -17,8 +17,8 @@ const HeaderSlider = () => {
         spaceBetween={50}
         slidesPerView={1}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 2000 }}
-        speed={2000}
+        autoplay={{ delay: 2500 }}
+        speed={3000}
         loop={true}
       >
         <SwiperSlide>
