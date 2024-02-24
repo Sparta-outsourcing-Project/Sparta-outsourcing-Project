@@ -14,6 +14,7 @@ export const getThumbnail = async (id) => {
   // getThumbnail('영상id')로 사용하기
   const { data } = await mainSliderDataClient.get(`?key=${import.meta.env.VITE_APP_API_KEY}&part=snippet&id=${id}`);
   const thumbnailUrl = data.items[0].snippet.thumbnails.standard.url;
+  const a = a;
   return thumbnailUrl;
 };
 
