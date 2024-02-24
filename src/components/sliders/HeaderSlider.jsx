@@ -39,7 +39,7 @@ const HeaderSlider = () => {
 export default HeaderSlider;
 
 // swiper
-export const StSwiper = styled(Swiper)`
+const StSwiper = styled(Swiper)`
   --swiper-theme-color: #fff;
   height: 400px;
   margin-bottom: 3rem;

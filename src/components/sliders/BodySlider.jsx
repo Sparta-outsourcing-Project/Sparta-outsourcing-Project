@@ -7,6 +7,7 @@ import {
   SliderItemInfoTop,
   SliderWrap
 } from '../main/Main';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
 const BodySlider = () => {
   // api로 받아올 정보 : 썸네일 이미지, 유튜버 이름, 구독자수, 평균 시청수
@@ -82,7 +83,16 @@ const BodySlider = () => {
         </SliderWrap>
       </MainYoutuberSlider> */}
 
-      <MainYoutuberSlider>
+      <MainYoutuberSlider
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={50}
+        slidesPerView={3}
+        // pagination={{ clickable: true }}
+        navigation
+        autoplay={{ delay: 2500 }}
+        speed={3000}
+        loop={true}
+      >
         <SliderWrap>
           <SliderItem
             onClick={() => {
@@ -90,6 +100,19 @@ const BodySlider = () => {
             }}
             style={{ cursor: 'pointer' }}
           >
+            <SliderItemImgWrap>
+              <img src="" alt="" />
+            </SliderItemImgWrap>
+            <SliderItemInfo>
+              <SliderItemInfoTop>
+                <h3>Youtuber</h3>
+                <span>20만</span>
+              </SliderItemInfoTop>
+              <p>분야</p>
+              <p>view</p>
+            </SliderItemInfo>
+          </SliderItem>
+          <SliderItem>
             <SliderItemImgWrap>
               <img src="" alt="" />
             </SliderItemImgWrap>
