@@ -1,50 +1,36 @@
 import axios from 'axios';
-// 메인 유튜버 영상 슬라이더에 사용될 youtube data api
+import request from './request';
+// 메인페이지 BodySlider - 유튜버 영상 슬라이더에 사용될 youtube data api
 
 export const mainSliderDataClient = axios.create({
-  baseURL: `https://youtube.googleapis.com/youtube/v3`,
-  // https://youtube.googleapis.com/youtube/v3/channels?
-  // videos 까지 쓰고  아래에다 ?부터써줘야만 part=snippet 해당되는 데이터가 뜸
+  baseURL: import.meta.env.VITE_APP_YOUTUBE_BASE_URL_GET,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  responseType: 'json'
 });
 
 // 영상 썸네일 이미지
-export const getThumbnail = async (videoId) => {
-  // 영상id받아서 채널id까지 받을 수 있으니 한번에 채널id로 연결시켜서
-  // 채널id통해 유튜버(채널)명, 구독자수 등 객체로 전달해주기
-  // getThumbnail('영상id')로 사용하기
-  const { data } = await mainSliderDataClient.get(
-    `/videos?part=snippet&id=${videoId}&key=${import.meta.env.VITE_APP_API_KEY}`
-  );
-  const snippet = data.items[0].snippet;
-  const channelId = snippet.channelId;
-  const channelTitle = snippet.channelTitle;
-  const thumbnailUrl = snippet.thumbnails.standard.url;
+export const getVideoChannelDatabyId = async (videoId) => {
+  // 영상id 한번만 받아서 채널id까지 찾을 수 있으니 한번에 채널id로 연결시켜서 채널id통해 유튜버(채널)명, 구독자수 등 객체로 전달해주기
+  const videoResponse = await mainSliderDataClient.get(`${request.getVideoSnippet}&id=${videoId}`);
+  const videoSnippet = videoResponse.data.items[0].snippet;
+  const channelId = videoSnippet.channelId; // 영상 id통해 채널 id 얻기
+  const channelTitle = videoSnippet.channelTitle; // 채널명 (유튜버명)
+  const thumbnailUrl = videoSnippet.thumbnails.standard.url; // 영상 썸네일이미지 url
 
-  console.log(channelId);
-  console.log(channelTitle);
-  console.log(snippet);
+  // 위의 받은 채널 id 사용
+  const channelResponse = await mainSliderDataClient.get(`${request.getChannelStatistics}&id=${channelId}`);
 
-  return thumbnailUrl;
-  {
-  }
+  const channelStatistics = channelResponse.data.items[0].statistics;
+  const originalSubscriberCount = channelStatistics.subscriberCount; // 채널 구독자수
+  const videoCount = channelStatistics.videoCount; // 채널 총 영상수
+  const viewCount = channelStatistics.viewCount; // 채널 총 조회수(모든 영상 조회수의 합)
+  const originalAverageViewCount = viewCount / videoCount; // (일반적인) 채널 평균 조회수 (총 조회수 / 총 영상 수)
+
+  const subscriberCount = Math.round(originalSubscriberCount / 10000) + '만'; // 구독자수 만 단위 반올림
+  const averageViewCount = Math.round(originalAverageViewCount / 10000) + '만'; // 평균조회수 만 단위 반올림 89만6천.. => 90만
+
+  return { channelTitle, thumbnailUrl, subscriberCount, averageViewCount };
+  // 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위)
 };
-
-// r_E_-FRiyKc
-//RLURZtX-fUo
-// get 유튜버명(채널명) - 위에서 같이 해도 될듯? (굳이 여러번 id안넣어도) // 아님 따로 쓰는게 편할까?
-export const getChannelTitle = async () => {};
-
-// get 구독자 수
-// 채널id UCE6e9tjKl3l3nGlAcxH7GQg
-// 근데 채널ID를 위에서 반환해주고 다시 넣기보다는.. 아예 같은 함수내에서 처리하는게 편할거 같은데.
-export const getChannels = async (channelId) => {
-  const { data } = await mainSliderDataClient.get(
-    `/channels?part=snippet&id=${channelId}&key=${import.meta.env.VITE_APP_API_KEY}`
-  );
-  console.log(data);
-};
-
-// get 평균 시청수 (기간? 기간정해서 )
