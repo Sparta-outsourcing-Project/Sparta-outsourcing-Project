@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMostPopularThumbnails, readMostPopularVideos } from '../api/dataApi';
+import { readMostPopularVideos } from '../api/dataApi';
 
 export const useMostPopularVideos = () => {
   return useQuery({
@@ -8,10 +8,10 @@ export const useMostPopularVideos = () => {
   });
 };
 
-export const useChannelThumbnails = (channelId) => {
-  return useQuery({
-    queryKey: ['channelThumbnails', channelId],
-    queryFn: () => getMostPopularThumbnails(channelId),
-    enabled: !!channelId
-  });
-};
+// export const useChannelThumbnails = (channelId) => {
+//   return useQuery({
+//     queryKey: ['channelThumbnails', channelId],
+//     queryFn: () => getMostPopularThumbnails(channelId),
+//     enabled: !!channelId
+//   });
+// };

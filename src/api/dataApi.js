@@ -10,8 +10,12 @@ const axiosInstance = axios.create({
 });
 
 export const readSearchKeyWord = async () => {
-  const { data } = await axiosInstance.get(`${request.getSearchKeyWord}&regionCode=KR`);
-  return data;
+  try {
+    const { data } = await axiosInstance.get(`${request.getSearchKeyWord}&regionCode=KR`);
+    return data;
+  } catch (error) {
+    console.error('fail get readSearchKeyWord', error.messege);
+  }
 };
 
 export const readMostPopularVideos = async () => {
