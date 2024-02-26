@@ -15,6 +15,7 @@ export default function Detail() {
 
   // channel 정보 불러오기
   useEffect(() => {
+    console.log('useEffect 도는 중');
     const fetchChannelInfo = async () => {
       try {
         const channelData = await readSearchKeyWord(`쯔양`);
@@ -28,8 +29,23 @@ export default function Detail() {
     fetchChannelInfo();
   }, []);
 
+  // channelId로 채널 정보 데이터 불러오기
+  // useEffect(() => {
+  //   const fetchChannelInfo = async (channelId) => {
+  //     try {
+  //       const channelData = await getChannelInfoById(`${channelId}`);
+
+  //       setChannelInfo(channelData);
+  //     } catch (error) {
+  //       console.error('Failed to fetch channel info:', error.message);
+  //     }
+  //   };
+  //   fetchChannelInfo();
+  // }, []);
+
   // 댓글수, 좋아요 수 불러오기
   useEffect(() => {
+    console.log('useEffect 도는 중');
     const fetchDetailInfo = async () => {
       try {
         const detailData = await getDetailDataApi('OzHPMTZXs8U');
@@ -44,10 +60,12 @@ export default function Detail() {
 
   // banner url 불러오기
   useEffect(() => {
+    console.log('useEffect 도는 중');
     const fetchBanner = async () => {
       try {
         if (channelInfo) {
           const bannerImage = await getBanner('UCfpaSruWW3S4dibonKXENjA');
+          // const bannerImage = await getBanner(`${channelId}`);
           setBannerUrl(bannerImage);
         }
       } catch (error) {
@@ -58,12 +76,10 @@ export default function Detail() {
   }, [channelInfo]);
 
   useEffect(() => {
+    console.log('useEffect 도는 중');
     const fetchChannelLink = async () => {
       const getChannelInfo = await readByChannelId();
       const getChannelLink = getChannelInfo.items[0].snippet.customUrl;
-
-      // console.log('getChannelInfo', getChannelInfo);
-      // console.log('getChannelLink', getChannelLink);
 
       setChannelLink(getChannelLink);
     };
