@@ -1,7 +1,7 @@
 import Header from '../components/layout/Header';
+import CardList from '../components/list/CardList';
 import Footer from '../components/layout/Footer';
 import styled from 'styled-components';
-import CardList from '../components/list/CardList';
 
 export default function List() {
   return (

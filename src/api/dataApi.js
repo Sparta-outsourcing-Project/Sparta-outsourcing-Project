@@ -10,8 +10,13 @@ const axiosInstance = axios.create({
 });
 
 export const readSearchKeyWord = async () => {
-  const { data } = await axiosInstance.get(`${request.getSearchKeyWord}&regionCode=KR`);
-  return data;
+  try {
+    const { data } = await axiosInstance.get(`${request.getSearchKeyWord}&regionCode=KR`);
+
+    return data;
+  } catch (error) {
+    console.error('fail get readSearchKeyWord', error.message);
+  }
 };
 
 export const readMostPopularVideos = async () => {
@@ -22,6 +27,13 @@ export const readMostPopularVideos = async () => {
 export const getMostPopularThumbnails = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
   return data.items[0].snippet.thumbnails;
+};
+
+//get banner from channelId
+export const getBanner = async (channelId) => {
+  const url = request.getChannelBannerURL(channelId);
+  const { data } = await axiosInstance.get(url);
+  return data.items[0].brandingSettings.image.bannerExternalUrl();
 };
 
 export const readByChannelId = async () => {
