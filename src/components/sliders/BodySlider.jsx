@@ -5,43 +5,35 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styled from 'styled-components';
 
 const BodySlider = () => {
-  // 카테고리 분야 6개 배열
-  // const categoryArr = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
-
-  // const videoIdCategoryArr = [
-  //   { videoId: '1nVPaBoiq7I', category: '먹방' },
-  //   { videoId: 'wphai3v-SXE', category: '여행' },
-  //   { videoId: 'oqxYf5udE80', category: '생활' },
-  //   { videoId: 'mKka_BPMQ9E', category: '운동' },
-  //   { videoId: 'CodQ9aHyXAY', category: '뷰티' },
-  //   { videoId: 'ESzcNpnPgW8', category: '패션' }
-  // ];
-
   // API로 받아올 videoID에 따른 return 객체의 배열 설정
   const [videoDatas, setVideoDatas] = useState([]);
 
   // video Id 6개 배열일때
   useEffect(() => {
     // 영상 id 6개 배열
-    const videoIds = ['1nVPaBoiq7I', 'wphai3v-SXE', 'r3C-iALopZo', 'meeMvpwnGy0', 'xKfCI4UciTo', 'ESzcNpnPgW8'];
+    const videoIds = ['1nVPaBoiq7I', 'I01pzEznbdU', 'r3C-iALopZo', 'meeMvpwnGy0', 'xKfCI4UciTo', 'ESzcNpnPgW8'];
 
     const fetchDataForVideoIds = async () => {
-      const fetchDataPromises = videoIds.map(async (id) => {
-        return await getVideoChannelDatabyId(id);
+      const fetchDataPromises = videoIds.map(async (id, index) => {
+        // 각 비디오의 카테고리를 설정
+        const categoryArr = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
+        const category = categoryArr[index];
+
+        // 각 비디오의 데이터를 가져오기
+        const videoData = await getVideoChannelDatabyId(id); // 가져온 데이터에 카테고리를 추가하여 반환
+        return { ...videoData, category };
       });
-      // results = {영상Id, 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위)}
+
+      // 모든 비디오 데이터를 한꺼번에 가져오기
+      // results = {영상Id, 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위), 카테고리}
       const results = await Promise.all(fetchDataPromises);
+
       setVideoDatas(results);
       console.log(results);
     };
 
     fetchDataForVideoIds();
   }, []);
-
-  // TODO
-  // 1. onClick 인자로 영상id 전달하려면, API의 return값에 videoId도 추가해야함
-  // 2. API return값(6개 객체의 배열)에 '카테고리 분야 6개'도 순서대로 하나씩 Push해주기
-  // -> videoDatas에 최종적으로 각 객체에 videoId, 카테고리 분야도 포함되도록 만들어놓기
 
   // 클릭 시 영상 링크로 이동
   const onVideoClickHandler = (id) => {
@@ -56,8 +48,8 @@ const BodySlider = () => {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={50}
           slidesPerView={3}
-          // navigation={{ clickable: true }}
-          autoplay={{ delay: 0, disableOnInteraction: false }}
+          navigation={{ clickable: true }}
+          autoplay={{ delay: 0, disableOnInteraction: true }}
           speed={7000}
           loop={true}
         >
@@ -83,72 +75,13 @@ const BodySlider = () => {
                       <h3>{videoData.channelTitle}</h3>
                       <span>{videoData.subscriberCount}</span>
                     </SliderItemInfoTop>
-                    <p>분야</p>
-                    <p>{videoData.averageViewCount}</p>
+                    <p>{videoData.category}</p>
+                    <p>평균 조회수 : {videoData.averageViewCount}</p>
                   </SliderItemInfo>
                 </SliderItem>
               );
             })}
           </SliderWrap>
-
-          {/* <SliderItem
-            onClick={() => {
-              onVideoClickHandler('1nVPaBoiq7I');
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem>
-          <SliderItem>
-            <SliderItemImgWrap>
-              <img src="" alt="" />
-            </SliderItemImgWrap>
-            <SliderItemInfo>
-              <SliderItemInfoTop>
-                <h3>Youtuber</h3>
-                <span>20만</span>
-              </SliderItemInfoTop>
-              <p>분야</p>
-              <p>view</p>
-            </SliderItemInfo>
-          </SliderItem> */}
-          {/* </SliderWrap> */}
         </StyledSwiper>
       </MainYoutuberSlider>
     </>
@@ -236,4 +169,5 @@ export const SliderItemInfoTop = styled.div`
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  /* padding-right: 20px; */
 `;
