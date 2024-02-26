@@ -6,6 +6,7 @@ import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
 import { useNavigate } from 'react-router-dom';
+import BodySliderCopy from '../sliders/BodySliderCopy';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -48,7 +49,8 @@ export default function Main() {
           })}
         </SearchKeyWord>
       </MainSearch>
-      <BodySlider />
+      {/* <BodySlider /> */}
+      <BodySliderCopy />
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
