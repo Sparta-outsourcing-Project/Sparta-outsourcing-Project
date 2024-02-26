@@ -28,6 +28,13 @@ export const getMostPopularThumbnails = async (channelId) => {
   return data.items[0].snippet.thumbnails;
 };
 
+//get banner from channelId
+export const getBanner = async (channelId) => {
+  const url = request.getChannelBannerURL(channelId);
+  const { data } = await axiosInstance.get(url);
+  return data.items[0].brandingSettings.image.bannerExternalUrl();
+};
+
 export const readByChannelId = async () => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&regionCode=KR`);
   return data;

@@ -7,11 +7,3 @@ export const useMostPopularVideos = () => {
     queryFn: readMostPopularVideos
   });
 };
-
-// export const useChannelThumbnails = (channelId) => {
-//   return useQuery({
-//     queryKey: ['channelThumbnails', channelId],
-//     queryFn: () => getMostPopularThumbnails(channelId),
-//     enabled: !!channelId
-//   });
-// };
