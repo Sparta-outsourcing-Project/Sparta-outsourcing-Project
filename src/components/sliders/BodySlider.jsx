@@ -29,7 +29,6 @@ const BodySlider = () => {
       const results = await Promise.all(fetchDataPromises);
 
       setVideoDatas(results);
-      console.log(results);
     };
 
     fetchDataForVideoIds();
@@ -99,7 +98,6 @@ export const MainYoutuberSlider = styled.section`
   width: 1280px;
   height: 330px;
   margin: 0 auto 3rem auto;
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
 
@@ -149,13 +147,11 @@ export const SliderWrap = styled.div`
 // 각 슬라이드에 적용될 스타일드 컴포넌트 정의
 // export const SliderItem = styled.article`
 export const SliderItem = styled(SwiperSlide)`
-  /* width: calc(100% / 3); */
   width: calc(100% / 6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: 1px solid red; */
-  /* padding-top: 10%; */
+  padding-top: 3rem;
 
   &:hover {
     cursor: pointer;

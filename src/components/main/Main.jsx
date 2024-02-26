@@ -39,8 +39,12 @@ export default function Main() {
       <MainSearch>
         <input type="search" placeholder="주제를 검색하세요." />
         <SearchKeyWord>
-          {keyWords.map((keyword) => {
-            return <span onClick={() => handleKeyWordClick(keyword)}>#{keyword}</span>;
+          {keyWords.map((keyword, idx) => {
+            return (
+              <span key={idx} onClick={() => handleKeyWordClick(keyword)}>
+                #{keyword}
+              </span>
+            );
           })}
         </SearchKeyWord>
       </MainSearch>
@@ -64,7 +68,7 @@ export default function Main() {
 export const MainWrap = styled.main`
   width: 100%;
   & > section {
-    margin-bottom: 3rem;
+    /* margin-bottom: 3rem; */
   }
 `;
 
