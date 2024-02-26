@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
-// import { SwiperSlide } from 'swiper/react';
 
 export default function Main() {
   const [thumbnails, setThumbmails] = useState([]);
@@ -64,22 +63,6 @@ export const MainWrap = styled.main`
   }
 `;
 
-//main slider
-export const MainSlider = styled.section`
-  width: 100%;
-  height: 400px;
-  background-color: #212121;
-
-  & > div {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-  }
-`;
-
 //search
 export const MainSearch = styled.section`
   width: 1280px;
@@ -120,66 +103,6 @@ export const SearchKeyWord = styled.div`
     padding: 2px 1.2rem;
     margin: 0 8px;
   }
-`;
-
-const slideAnimation = keyframes`
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-`;
-
-//youtuberslider
-export const MainYoutuberSlider = styled.section`
-  width: 1280px;
-  height: 300px;
-  margin: 0 auto 3rem auto;
-  /* border: 1px solid red; */
-  display: flex;
-  align-items: center;
-
-  animation: ${slideAnimation} 10s linear infinite;
-
-  @media (max-width: 1300px) {
-    max-width: calc(100% - 2rem);
-    margin: 1rem;
-  }
-`;
-
-export const SliderWrap = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
-/* export const SliderItem = styled(SwiperSlide)` */
-export const SliderItem = styled.article`
-  /* width: calc(100% / 3); */
-  width: calc(100% / 6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* border: 1px solid red; */
-`;
-export const SliderItemImgWrap = styled.div`
-  width: calc(100% - 3rem);
-  height: 180px;
-  /* background-color: #febe98; */
-  & > img {
-    border-radius: 1rem;
-  }
-`;
-export const SliderItemInfo = styled.div`
-  padding: 1rem 2rem;
-  width: 100%;
-`;
-export const SliderItemInfoTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
 `;
 
 // best
