@@ -22,24 +22,24 @@ function RadarChart() {
       ]
     };
 
-    const options = {
-      scale: {
-        ticks: {
-          beginAtZero: true,
-          min: 0,
-          max: 100,
-          stepSize: 20
-        },
-        pointLabels: {
-          fontSize: 16
-        }
-      }
-    };
+    //     const options = {
+    //       scale: {
+    //         ticks: {
+    //           beginAtZero: true,
+    //           min: 0,
+    //           max: 100,
+    //           stepSize: 20
+    //         },
+    //         pointLabels: {
+    //           fontSize: 16
+    //         }
+    //       }
+    //     };
     setChartData(data);
   }, []);
   return (
     <div>
-      <Radar data={chartData} options={options} />
+      <Radar data={chartData} />
     </div>
   );
 }
