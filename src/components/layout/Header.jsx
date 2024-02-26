@@ -1,7 +1,20 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/utrend_logo.png';
+import { useState } from 'react';
+import Login from '../AuthModal/Login';
+import SignUp from '../AuthModal/SignUp';
+
 export default function Header() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const onLoginClickHandler = () => {
+    setIsLoginOpen(!isLoginOpen);
+  };
+  const onSignUpClickHandler = () => {
+    setIsSignUpOpen(isSignUpOpen);
+  };
+
   return (
     <HeaderWrap>
       <Logo>
@@ -10,9 +23,12 @@ export default function Header() {
         </Link>
       </Logo>
       <Auth>
-        <p>로그인</p>
-        <p>회원가입</p>
+        <p onClick={onLoginClickHandler}>로그인</p>
+        <p onClick={onSignUpClickHandler}>회원가입</p>
       </Auth>
+      {/* 로그인, 회원가입 모달창 */}
+      <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} />
+      <SignUp isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} />
     </HeaderWrap>
   );
 }
