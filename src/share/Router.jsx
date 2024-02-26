@@ -11,11 +11,11 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path: '/list',
+    path: '/list/:keyword',
     element: <List />
   },
   {
-    path: '/detail',
+    path: '/list/:keyword/:id',
     element: <Detail />
   },
   {
