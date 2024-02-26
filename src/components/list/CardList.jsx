@@ -1,36 +1,73 @@
+import React from 'react';
 import styled from 'styled-components';
-import Footer from '../layout/Footer';
-import Header from '../layout/Header';
-
 export default function CardList() {
   return (
-    <ListContent>
-      <Header />
-      <ListHeaer>
-        <p>순위</p>
-        <p>채널 명</p>
-        <p>구독자 수</p>
-        <p>광고영상 평균 조회수</p>
-      </ListHeaer>
-
-      <Footer />
-    </ListContent>
+    <main>
+      <ListWrapper>
+        <select name="" id="">
+          <option value="">구독자</option>
+          <option value="">영상조회수</option>
+        </select>
+        <ListTable>
+          <thead>
+            <tr>
+              <th>순위</th>
+              <th colSpan={2}></th>
+              <th>구독자</th>
+              <th>영상 조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1위</td>
+              <td>
+                <span>
+                  <img src="" alt="" />
+                </span>
+              </td>
+              <td>유튜버</td>
+              <td>구독자수</td>
+              <td>영상 조회수</td>
+            </tr>
+          </tbody>
+        </ListTable>
+      </ListWrapper>
+    </main>
   );
 }
-
-const ListContent = styled.div`
-  height: 100%;
-  margin-left: 10%;
-  margin-right: 10%;
+export const ListWrap = styled.main``;
+export const ListWrapper = styled.div`
+  width: 1280px;
+  margin: 0 auto;
+  @media (max-width: 1300px) {
+    max-width: calc(100% - 2rem);
+    margin: 1rem;
+  }
 `;
+export const ListTable = styled.table`
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+  & th,
+  & td {
+    text-align: left;
+    border-bottom: 1px solid black;
+    padding: 1rem;
+    vertical-align: middle;
+  }
+  & th:nth-child(1) {
+    width: 100px;
+  }
 
-const ListHeaer = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 10%;
-  border-bottom: 1px solid black;
-  padding-bottom: 1%;
-  padding-left: 1%;
-  padding-right: 1%;
+  & td:nth-child(2) {
+    width: 160px;
+    & span {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: tomato;
+      margin-right: 1rem;
+    }
+  }
 `;
