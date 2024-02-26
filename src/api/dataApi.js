@@ -33,7 +33,6 @@ export const readSearchKeyWord = async (keyword) => {
 
       // NOTE 아래부분 mainSliderDataApi 에서도 쓰이는데, 따로 빼는게 좋을지..  => but snippet도 추가
       const channelResponse = await axiosInstance.get(`${request.getChannelSnippetStatistics}&id=${channelId}`);
-
       const snippet = channelResponse.data.items[0].snippet;
       const description = snippet.description; // 채널설명
       const thumbnailUrl = snippet.thumbnails.medium.url; // 채널 썸네일 url
@@ -47,7 +46,7 @@ export const readSearchKeyWord = async (keyword) => {
       const subscriberCount = Math.round(initSubscriberCount / 10000) + '만'; // 구독자수 만 단위 반올림
       const averageViewCount = Math.round(initAverageViewCount / 10000) + '만'; // 평균조회수 만 단위 반올림 89만6천.. => 90만
 
-      result.push({ channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount });
+      result.push({ channelId, channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount });
     }
     return result; // 객체담긴 배열 형태로 리턴 - {채널명, 채널썸네일이미지url, 구독자수(만), 평균조회수(만)}
   } catch (error) {
@@ -57,6 +56,7 @@ export const readSearchKeyWord = async (keyword) => {
 
 export const readMostPopularVideos = async () => {
   const { data } = await axiosInstance.get(`${request.getMostPopularVideos}&regionCode=KR`);
+  // console.log(data);
   return data.items;
 };
 
@@ -69,7 +69,8 @@ export const getMostPopularThumbnails = async (channelId) => {
 export const getBanner = async (channelId) => {
   const url = request.getChannelBannerURL(channelId);
   const { data } = await axiosInstance.get(url);
-  return data.items[0].brandingSettings.image.bannerExternalUrl();
+  // console.log(data.items[0].brandingSettings.image.bannerExternalUrl());
+  return data.items[0].brandingSettings.image.bannerExternalUrl;
 };
 
 export const readByChannelId = async () => {
