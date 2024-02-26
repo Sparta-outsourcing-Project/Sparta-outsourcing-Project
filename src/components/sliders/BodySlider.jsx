@@ -128,6 +128,7 @@ export const MainYoutuberSlider = styled.section`
 
   &::before {
     left: 0;
+    z-index: 10;
   }
 
   &::after {
