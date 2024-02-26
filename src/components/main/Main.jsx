@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
-import { SwiperSlide } from 'swiper/react';
+// import { SwiperSlide } from 'swiper/react';
 
 export default function Main() {
   const [thumbnails, setThumbmails] = useState([]);
@@ -122,6 +122,15 @@ export const SearchKeyWord = styled.div`
   }
 `;
 
+const slideAnimation = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+`;
+
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
@@ -130,6 +139,8 @@ export const MainYoutuberSlider = styled.section`
   /* border: 1px solid red; */
   display: flex;
   align-items: center;
+
+  animation: ${slideAnimation} 10s linear infinite;
 
   @media (max-width: 1300px) {
     max-width: calc(100% - 2rem);
@@ -141,9 +152,11 @@ export const SliderWrap = styled.div`
   width: 100%;
   display: flex;
 `;
-// export const SliderItem = styled.article`
-export const SliderItem = styled(SwiperSlide)`
-  width: calc(100% / 3);
+
+/* export const SliderItem = styled(SwiperSlide)` */
+export const SliderItem = styled.article`
+  /* width: calc(100% / 3); */
+  width: calc(100% / 6);
   display: flex;
   flex-direction: column;
   align-items: center;
