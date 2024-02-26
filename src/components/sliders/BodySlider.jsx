@@ -33,6 +33,7 @@ const BodySlider = () => {
   //   fetchData();
   // }, []);
 
+  // API로 받아올 videoID에 따른 return 객체의 배열 설정
   const [videoDatas, setVideoDatas] = useState([]);
 
   // video Id 6개 배열일때
@@ -78,31 +79,34 @@ const BodySlider = () => {
         loop={true}
       >
         <SliderWrap>
-          {/* {videoDatas.map((videoData) => {
+          {videoDatas.map((videoData, idx) => {
             return (
-              <>
-                <SliderItem
-                  onClick={() => {
-                    onVideoClickHandler('1nVPaBoiq7I');
-                  }}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <SliderItemImgWrap>
-                    <img src={videoData.thumbnailUrl} alt="" />
-                  </SliderItemImgWrap>
-                  <SliderItemInfo>
-                    <SliderItemInfoTop>
-                      <h3>{videoData.channelTitle}</h3>
-                      <span>{videoData.subscriberCount}</span>
-                    </SliderItemInfoTop>
-                    <p>분야</p>
-                    <p>{videoData.averageViewCount}</p>
-                  </SliderItemInfo>
-                </SliderItem>
-              </>
+              <SliderItem
+                key={idx}
+                onClick={() => {
+                  onVideoClickHandler('1nVPaBoiq7I');
+                }}
+                style={{ cursor: 'pointer' }}
+              >
+                <SliderItemImgWrap>
+                  <img
+                    src={videoData.thumbnailUrl}
+                    alt=""
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </SliderItemImgWrap>
+                <SliderItemInfo>
+                  <SliderItemInfoTop>
+                    <h3>{videoData.channelTitle}</h3>
+                    <span>{videoData.subscriberCount}</span>
+                  </SliderItemInfoTop>
+                  <p>분야</p>
+                  <p>{videoData.averageViewCount}</p>
+                </SliderItemInfo>
+              </SliderItem>
             );
-          })} */}
-          <SliderItem
+          })}
+          {/* <SliderItem
             onClick={() => {
               onVideoClickHandler('1nVPaBoiq7I');
             }}
@@ -158,7 +162,7 @@ const BodySlider = () => {
               <p>분야</p>
               <p>view</p>
             </SliderItemInfo>
-          </SliderItem>
+          </SliderItem> */}
         </SliderWrap>
       </MainYoutuberSlider>
     </>
