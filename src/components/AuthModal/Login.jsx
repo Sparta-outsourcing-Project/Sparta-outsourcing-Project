@@ -1,9 +1,13 @@
 import * as St from './styles/Login.style';
 import logo from '../../assets/utrend_logo.png';
 
-const Login = ({ isLoginOpen, setIsLoginOpen }) => {
+const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const onCloseButtonHandler = () => {
     setIsLoginOpen(!isLoginOpen);
+    !!isLoginOpen && isLoginOpen === false;
+  };
+  const onSignUpHandler = () => {
+    setIsSignUpOpen(!setIsSignUpOpen);
   };
 
   return (
@@ -22,7 +26,7 @@ const Login = ({ isLoginOpen, setIsLoginOpen }) => {
                 <St.InputContainer>
                   <input placeholder="비밀번호" />
                 </St.InputContainer>
-                <button>로그인</button>
+                <button onClick={onSignUpHandler}>로그인</button>
               </St.InputBtnWrapper>
 
               <St.CheckSignUp>
