@@ -11,7 +11,7 @@ export default function Main() {
   const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
-  const [searchTerm, setSearchTerm] = useState(''); // 추가
+  const [searchedKeyword, setSearchedKeyword] = useState('');
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
@@ -27,7 +27,15 @@ export default function Main() {
   }, [videos]);
 
   const handleSearchInputChange = (e) => {
-    setSearchTerm(e.target.value);
+    setSearchedKeyword(e.target.value);
+  };
+
+  // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      // Enter 키가 눌렸을 때
+      navigate(`/list/${searchedKeyword}`);
+    }
   };
 
   const handleKeyWordClick = async (keyword) => {
@@ -49,16 +57,18 @@ export default function Main() {
       <HeaderSlider />
       <MainSearch>
         <input
+          id="search-input"
           type="search"
           placeholder="주제를 검색하세요."
-          value={searchTerm}
+          value={searchedKeyword}
           onChange={handleSearchInputChange}
-          onKeyDown={handleSearchEnter}
+          onKeyDown={handleKeyDown}
         />
+        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" width={30} />
         <SearchKeyWord>
-          {keyWords.map((keyword, index) => {
+          {keyWords.map((keyword) => {
             return (
-              <span key={index} onClick={() => handleKeyWordClick(keyword)}>
+              <span key={keyword} onClick={() => handleKeyWordClick(keyword)}>
                 #{keyword}
               </span>
             );
