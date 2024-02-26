@@ -9,51 +9,41 @@ export const detailApiInstance = axios.create({
   responseType: 'json'
 });
 
-export const getDetailDataApi = async (channelId) => {
-  try {
-    // 채널 정보를 가져오기 위해 API 호출
-    const channelResponse = await detailApiInstance.get(`${request.getChannelDetails}&id=${channelId}`);
-    const channel = channelResponse.data.items[0];
+export const getDetailDataApi = async (videoId) => {
+  const response = await detailApiInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
+  const video = response.data.items[0];
 
-    if (!channel) {
-      throw new Error(`Channel not found for id: ${channelId}`);
+  // 특정 영상의 댓글 수와 좋아요 수
+  const commentCount = video.statistics.commentCount;
+  const likeCount = video.statistics.likeCount;
+
+  // 모든 영상의 댓글 수와 좋아요 수 가져오는 방법은 ?
+
+  const channelResponse = await detailApiInstance.get(`${request.getByChannelId}`);
+  const videos = channelResponse.data.items;
+
+  let totalCommentCount = 0;
+  let totalLikeCount = 0;
+
+  // 각 동영상의 댓글 수와 좋아요 수 합산
+  for (const video of videos) {
+    const videoId = video.id;
+    const videoResponse = await detailApiInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
+    const videoStats = videoResponse.data.items[0]?.statistics;
+    console.log('videoResponse', videoResponse);
+
+    if (!videoStats) {
+      console.log(`Statistics not found for video: ${videoId}`);
+      continue;
     }
 
-    // 채널의 모든 동영상 가져오기
-    const playlistId = channel.contentDetails.relatedPlaylists.uploads;
-    const playlistResponse = await detailApiInstance.get(`${request.getPlaylistItems}&playlistId=${playlistId}`);
-    const playlistItems = playlistResponse.data.items;
-
-    let totalCommentCount = 0;
-    let totalLikeCount = 0;
-    let validVideoCount = 0;
-
-    // 각 동영상의 통계 데이터 합산
-    for (const video of playlistItems) {
-      const videoId = video.snippet.resourceId.videoId;
-      const videoResponse = await detailApiInstance.get(`${request.getVideoStatistics}&id=${videoId}`);
-      const videoStats = videoResponse.data.items[0]?.statistics;
-
-      if (!videoStats) {
-        console.log(`Statistics not found for video: ${videoId}`);
-        continue;
-      }
-
-      totalCommentCount += parseInt(videoStats.commentCount);
-      totalLikeCount += parseInt(videoStats.likeCount);
-      validVideoCount++;
-    }
-
-    if (validVideoCount === 0) {
-      throw new Error('No valid videos found.');
-    }
-
-    // 채널의 모든 동영상의 평균 댓글 수와 좋아요 수 계산
-    const averageCommentCount = totalCommentCount / validVideoCount;
-    const averageLikeCount = totalLikeCount / validVideoCount;
-
-    return { totalCommentCount, totalLikeCount, averageCommentCount, averageLikeCount };
-  } catch (error) {
-    console.error('Error fetching channel details:', error.message);
+    totalCommentCount += parseInt(videoStats.commentCount);
+    totalLikeCount += parseInt(videoStats.likeCount);
   }
+
+  // 유튜버의 모든 동영상의 평균 댓글 수와 좋아요 수 계산
+  const averageCommentCount = totalCommentCount / videos.length;
+  const averageLikeCount = totalLikeCount / videos.length;
+
+  return { commentCount, likeCount, averageCommentCount, averageLikeCount };
 };
