@@ -33,6 +33,6 @@ export const getVideoChannelDatabyId = async (videoId) => {
   const subscriberCount = Math.round(initSubscriberCount / 10000) + '만'; // 구독자수 만 단위 반올림
   const averageViewCount = Math.round(initAverageViewCount / 10000) + '만'; // 평균조회수 만 단위 반올림 89만6천.. => 90만
 
-  return { channelTitle, thumbnailUrl, subscriberCount, averageViewCount };
-  // 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위)
+  return { videoId, channelTitle, thumbnailUrl, subscriberCount, averageViewCount };
+  // 영상Id, 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위)
 };
