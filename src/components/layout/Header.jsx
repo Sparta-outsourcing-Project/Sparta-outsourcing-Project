@@ -27,8 +27,18 @@ export default function Header() {
         <p onClick={onSignUpClickHandler}>회원가입</p>
       </Auth>
       {/* 로그인, 회원가입 모달창 */}
-      <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} setIsSignUpOpen={setIsSignUpOpen} />
-      <SignUp isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} />
+      <Login
+        isLoginOpen={isLoginOpen}
+        setIsLoginOpen={setIsLoginOpen}
+        isSignUpOpen={isSignUpOpen}
+        setIsSignUpOpen={setIsSignUpOpen}
+      />
+      <SignUp
+        isSignUpOpen={isSignUpOpen}
+        setIsSignUpOpen={setIsSignUpOpen}
+        isLoginOpen={isLoginOpen}
+        setIsLoginOpen={setIsLoginOpen}
+      />
     </HeaderWrap>
   );
 }

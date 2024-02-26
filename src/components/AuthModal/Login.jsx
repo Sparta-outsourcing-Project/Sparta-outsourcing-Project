@@ -1,18 +1,21 @@
 import * as St from './styles/Login.style';
 import logo from '../../assets/utrend_logo.png';
 
-const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
+const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) => {
+  // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
-    setIsLoginOpen(!isLoginOpen);
-    !!isLoginOpen && isLoginOpen === false;
+    !!isLoginOpen && setIsLoginOpen(isLoginOpen === false);
   };
+
+  // '회원가입' 클릭
   const onSignUpHandler = () => {
-    setIsSignUpOpen(!setIsSignUpOpen);
+    setIsSignUpOpen(!isSignUpOpen);
+    setIsLoginOpen(!isLoginOpen);
   };
 
   return (
     <>
-      {isLoginOpen ? (
+      {isLoginOpen && (
         <St.Background $isLoginOpen={isLoginOpen}>
           <St.Container>
             <St.LoginWrapper>
@@ -36,8 +39,6 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
             </St.LoginWrapper>
           </St.Container>
         </St.Background>
-      ) : (
-        <></>
       )}
     </>
   );

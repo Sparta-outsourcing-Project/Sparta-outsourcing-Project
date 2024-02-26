@@ -15,16 +15,16 @@ export default function Main() {
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
-  useEffect(() => {
-    const getThumbnails = async () => {
-      if (videos) {
-        const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
-        const getOneThumbnail = await Promise.all(getFiveThumbnails);
-        setThumbmails(getOneThumbnail);
-      }
-    };
-    getThumbnails();
-  }, [videos]);
+  // useEffect(() => {
+  //   const getThumbnails = async () => {
+  //     if (videos) {
+  //       const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
+  //       const getOneThumbnail = await Promise.all(getFiveThumbnails);
+  //       setThumbmails(getOneThumbnail);
+  //     }
+  //   };
+  //   getThumbnails();
+  // }, [videos]);
 
   const handleSearchInputChange = (e) => {
     setSearchedKeyword(e.target.value);
@@ -75,7 +75,7 @@ export default function Main() {
           })}
         </SearchKeyWord>
       </MainSearch>
-      <BodySlider />
+      {/* <BodySlider /> */}
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
