@@ -128,7 +128,7 @@ export const SliderWrap = styled.div`
 
   .slick-prev:before,
   .slick-next:before {
-    color: #f1c97f;
+    color: #febe98;
     font-size: 40px;
   }
 `;

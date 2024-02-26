@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +9,10 @@ export default function Header() {
           <img src="src\assets\utrend_logo.png" alt="" />
         </Link>
       </Logo>
+      <Auth>
+        <p>로그인</p>
+        <p>회원가입</p>
+      </Auth>
     </HeaderWrap>
   );
 }
@@ -28,5 +31,17 @@ export const Logo = styled.h1`
   width: 200px;
   & > a > img {
     width: 100%;
+  }
+`;
+
+export const Auth = styled.div`
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  right: 0;
+  margin-right: 30px;
+  & > p {
+    color: #febe98;
+    font-size: 20px;
   }
 `;
