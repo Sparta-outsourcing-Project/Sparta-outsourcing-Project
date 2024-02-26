@@ -43,5 +43,9 @@ export const Auth = styled.div`
   & > p {
     color: #febe98;
     font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 `;
