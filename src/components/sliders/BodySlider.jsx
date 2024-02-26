@@ -98,7 +98,7 @@ const StyledSwiper = styled(Swiper)`
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
-  height: 300px;
+  height: 330px;
   margin: 0 auto 3rem auto;
   /* border: 1px solid red; */
   display: flex;
