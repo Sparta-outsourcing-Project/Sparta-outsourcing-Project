@@ -9,10 +9,10 @@ export default function Header() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const onLoginClickHandler = () => {
-    setIsLoginOpen(!isLoginOpen);
+    setIsLoginOpen((prev) => !prev);
   };
   const onSignUpClickHandler = () => {
-    setIsSignUpOpen(isSignUpOpen);
+    setIsSignUpOpen((prev) => !prev);
   };
 
   return (
@@ -72,6 +72,7 @@ export const Auth = styled.div`
     cursor: pointer;
     &:hover {
       transform: scale(1.1);
+      font-weight: bold;
     }
   }
 `;

@@ -4,13 +4,18 @@ import logo from '../../assets/utrend_logo.png';
 const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) => {
   // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
-    !!isLoginOpen && setIsLoginOpen(isLoginOpen === false);
+    isLoginOpen((prev) => !prev);
   };
 
   // '회원가입' 클릭
   const onSignUpHandler = () => {
-    setIsSignUpOpen(!isSignUpOpen);
-    setIsLoginOpen(!isLoginOpen);
+    setIsLoginOpen((prev) => !prev);
+    setIsSignUpOpen((prev) => !prev);
+  };
+
+  // 로그인 클릭 - 로그인 로직 추가 예정
+  const onLoginHandler = () => {
+    setIsLoginOpen((prev) => !prev);
   };
 
   return (
@@ -29,12 +34,12 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
                 <St.InputContainer>
                   <input placeholder="비밀번호" />
                 </St.InputContainer>
-                <button onClick={onSignUpHandler}>로그인</button>
+                <button onClick={onLoginHandler}>로그인</button>
               </St.InputBtnWrapper>
 
               <St.CheckSignUp>
                 <span>아직 회원이 아니신가요? </span>
-                <p>회원가입</p>
+                <p onClick={onSignUpHandler}>회원가입</p>
               </St.CheckSignUp>
             </St.LoginWrapper>
           </St.Container>

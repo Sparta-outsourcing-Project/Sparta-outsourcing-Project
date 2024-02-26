@@ -1,22 +1,22 @@
 import * as St from './styles/Login.style';
-import { Background } from './styles/SignUp.style';
+import { Background, InputBtnWrapper } from './styles/SignUp.style';
 import logo from '../../assets/utrend_logo.png';
 
 const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) => {
   // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
-    !!isSignUpOpen && setIsSignUpOpen(isSignUpOpen === false);
+    setIsSignUpOpen((prev) => !prev);
   };
 
-  // 회원가입 클릭
+  // 회원가입 클릭 - 가입 로직 추가 예정
   const onSignUpHandler = () => {
-    setIsSignUpOpen(!isSignUpOpen);
+    setIsSignUpOpen((prev) => !prev);
   };
 
   // '로그인하기' 클릭
   const onLoginHandler = () => {
-    setIsSignUpOpen(!isSignUpOpen);
-    setIsLoginOpen(!isLoginOpen);
+    setIsSignUpOpen((prev) => !prev);
+    setIsLoginOpen((prev) => !prev);
   };
 
   return (
@@ -27,16 +27,19 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
             <St.LoginWrapper>
               <button onClick={onCloseButtonHandler}>X</button>
               <img src={logo} alt="" />
-              <St.InputBtnWrapper>
+              <InputBtnWrapper>
                 <p>회원가입</p>
                 <St.InputContainer>
                   <input placeholder="아이디" />
                 </St.InputContainer>
                 <St.InputContainer>
+                  <input placeholder="닉네임" />
+                </St.InputContainer>
+                <St.InputContainer>
                   <input placeholder="비밀번호" />
                 </St.InputContainer>
                 <button onClick={onSignUpHandler}>회원가입</button>
-              </St.InputBtnWrapper>
+              </InputBtnWrapper>
 
               <St.CheckSignUp>
                 <span>이미 회원이신가요? </span>

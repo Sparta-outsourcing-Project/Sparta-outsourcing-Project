@@ -10,3 +10,26 @@ export const Background = styled.div`
   top: 0;
   left: 0;
 `;
+
+export const InputBtnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 80%;
+  margin-top: 20px;
+
+  & > p {
+    font-size: 30px;
+    font-weight: 600;
+    color: #febe98;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  & > button {
+    background-color: #febe98;
+    height: 40px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+  }
+`;
