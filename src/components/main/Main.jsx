@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
-import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
 import { useNavigate } from 'react-router-dom';
+import BodySlider from '../sliders/BodySlider';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ export default function Main() {
 export const MainWrap = styled.main`
   width: 100%;
   & > section {
-    margin-bottom: 3rem;
+    /* margin-bottom: 3rem; */
   }
 `;
 
