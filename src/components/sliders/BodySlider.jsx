@@ -61,7 +61,6 @@ const BodySlider = () => {
                   onClick={() => {
                     onVideoClickHandler(videoData.videoId);
                   }}
-                  style={{ cursor: 'pointer' }}
                 >
                   <SliderItemImgWrap>
                     <img
@@ -121,7 +120,7 @@ export const MainYoutuberSlider = styled.section`
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 300px; /* 흐린 효과의 너비 조절 */
+    width: 200px; /* 흐린 효과의 너비 조절 */
     background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 2) 100%);
     z-index: 1;
   }
@@ -151,6 +150,13 @@ export const SliderItem = styled(SwiperSlide)`
   flex-direction: column;
   align-items: center;
   /* border: 1px solid red; */
+  /* padding-top: 10%; */
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
 `;
 export const SliderItemImgWrap = styled.div`
   width: calc(100% - 3rem);
@@ -170,5 +176,8 @@ export const SliderItemInfoTop = styled.div`
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  /* padding-right: 20px; */
+
+  & > h3 {
+    width: 80%;
+  }
 `;
