@@ -3,44 +3,76 @@ import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
-import { getMostPopularThumbnails } from '../../api/dataApi';
+import { getMostPopularThumbnails, readSearchKeyWord } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
 import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
   const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
-  const { data: videos, isLoading, isError } = useMostPopularVideos();
+  // const { data: videos, isLoading, isError } = useMostPopularVideos();
+  const [searchedKeyword, setSearchedKeyword] = useState('');
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
-  useEffect(() => {
-    const getThumbnails = async () => {
-      if (videos) {
-        const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
-        const getOneThumbnail = await Promise.all(getFiveThumbnails);
-        setThumbmails(getOneThumbnail);
-      }
-    };
-    getThumbnails();
-  }, [videos]);
+  // useEffect(() => {
+  //   const getThumbnails = async () => {
+  //     if (videos) {
+  //       const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
+  //       const getOneThumbnail = await Promise.all(getFiveThumbnails);
+  //       setThumbmails(getOneThumbnail);
+  //     }
+  //   };
+  //   getThumbnails();
+  // }, [videos]);
+
+  const testSliderApi = async () => {
+    const data = await readSearchKeyWord('뷰티');
+    console.log(data);
+    return data;
+  };
+  testSliderApi();
+
+  const handleSearchInputChange = (e) => {
+    setSearchedKeyword(e.target.value);
+  };
+
+  // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      // Enter 키가 눌렸을 때
+      navigate(`/list/${searchedKeyword}`);
+    }
+  };
 
   const handleKeyWordClick = async (keyword) => {
     navigate(`/list/${keyword}`);
   };
 
-  if (isLoading) return <div>..Loading</div>;
+  // if (isLoading) return <div>..Loading</div>;
 
-  if (isError) return <div>{isError.message}</div>;
+  // if (isError) return <div>{isError.message}</div>;
 
   return (
     <MainWrap>
       <HeaderSlider />
       <MainSearch>
-        <input type="search" placeholder="주제를 검색하세요." value="searchedKeyword" />
+        <input
+          id="search-input"
+          type="search"
+          placeholder="주제를 검색하세요."
+          value={searchedKeyword}
+          onChange={handleSearchInputChange}
+          onKeyDown={handleKeyDown}
+        />
+        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" />
         <SearchKeyWord>
           {keyWords.map((keyword) => {
-            return <span onClick={() => handleKeyWordClick(keyword)}>#{keyword}</span>;
+            return (
+              <span key={keyword} onClick={() => handleKeyWordClick(keyword)}>
+                #{keyword}
+              </span>
+            );
           })}
         </SearchKeyWord>
       </MainSearch>
@@ -109,6 +141,8 @@ export const SearchKeyWord = styled.div`
     margin: 0 8px;
   }
 `;
+
+export const SeachBtn = styled.button``;
 
 // best
 export const MainBest = styled.section`
