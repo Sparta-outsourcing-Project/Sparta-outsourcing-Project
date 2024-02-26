@@ -3,35 +3,28 @@ import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
-import { getMostPopularThumbnails, readSearchKeyWord } from '../../api/dataApi';
+import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
 import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
   const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
-  // const { data: videos, isLoading, isError } = useMostPopularVideos();
+  const { data: videos, isLoading, isError } = useMostPopularVideos();
   const [searchedKeyword, setSearchedKeyword] = useState('');
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
-  // useEffect(() => {
-  //   const getThumbnails = async () => {
-  //     if (videos) {
-  //       const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
-  //       const getOneThumbnail = await Promise.all(getFiveThumbnails);
-  //       setThumbmails(getOneThumbnail);
-  //     }
-  //   };
-  //   getThumbnails();
-  // }, [videos]);
-
-  const testSliderApi = async () => {
-    const data = await readSearchKeyWord('뷰티');
-    console.log(data);
-    return data;
-  };
-  testSliderApi();
+  useEffect(() => {
+    const getThumbnails = async () => {
+      if (videos) {
+        const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
+        const getOneThumbnail = await Promise.all(getFiveThumbnails);
+        setThumbmails(getOneThumbnail);
+      }
+    };
+    getThumbnails();
+  }, [videos]);
 
   const handleSearchInputChange = (e) => {
     setSearchedKeyword(e.target.value);
@@ -49,9 +42,9 @@ export default function Main() {
     navigate(`/list/${keyword}`);
   };
 
-  // if (isLoading) return <div>..Loading</div>;
+  if (isLoading) return <div>..Loading</div>;
 
-  // if (isError) return <div>{isError.message}</div>;
+  if (isError) return <div>{isError.message}</div>;
 
   return (
     <MainWrap>
@@ -65,7 +58,7 @@ export default function Main() {
           onChange={handleSearchInputChange}
           onKeyDown={handleKeyDown}
         />
-        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" />
+        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" width={30} />
         <SearchKeyWord>
           {keyWords.map((keyword) => {
             return (
@@ -141,8 +134,6 @@ export const SearchKeyWord = styled.div`
     margin: 0 8px;
   }
 `;
-
-export const SeachBtn = styled.button``;
 
 // best
 export const MainBest = styled.section`
