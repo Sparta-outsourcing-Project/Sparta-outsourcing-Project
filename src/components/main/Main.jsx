@@ -5,10 +5,15 @@ import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
+import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
+  const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
+  const [searchedKeyword, setSearchedKeyword] = useState('');
+
+  const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
   useEffect(() => {
     const getThumbnails = async () => {
@@ -21,6 +26,28 @@ export default function Main() {
     getThumbnails();
   }, [videos]);
 
+  const handleSearchInputChange = (e) => {
+    setSearchedKeyword(e.target.value);
+  };
+
+  // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      // Enter 키가 눌렸을 때
+      navigate(`/list/${searchedKeyword}`);
+    }
+  };
+
+  const handleKeyWordClick = async (keyword) => {
+    navigate(`/list/${keyword}`);
+  };
+  const handleSearchEnter = (e) => {
+    if (e.key === 'Enter') {
+      // 엔터 키가 눌렸을 때 검색 수행
+      navigate(`/list/${searchTerm}`);
+    }
+  };
+
   if (isLoading) return <div>..Loading</div>;
 
   if (isError) return <div>{isError.message}</div>;
@@ -29,14 +56,23 @@ export default function Main() {
     <MainWrap>
       <HeaderSlider />
       <MainSearch>
-        <input type="search" placeholder="주제를 검색하세요." />
+        <input
+          id="search-input"
+          type="search"
+          placeholder="주제를 검색하세요."
+          value={searchedKeyword}
+          onChange={handleSearchInputChange}
+          onKeyDown={handleKeyDown}
+        />
+        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" width={30} />
         <SearchKeyWord>
-          <span>#먹방</span>
-          <span>#여행</span>
-          <span>#생활</span>
-          <span>#운동</span>
-          <span>#뷰티</span>
-          <span>#패션</span>
+          {keyWords.map((keyword) => {
+            return (
+              <span key={keyword} onClick={() => handleKeyWordClick(keyword)}>
+                #{keyword}
+              </span>
+            );
+          })}
         </SearchKeyWord>
       </MainSearch>
       <BodySlider />
@@ -60,22 +96,6 @@ export const MainWrap = styled.main`
   width: 100%;
   & > section {
     margin-bottom: 3rem;
-  }
-`;
-
-//main slider
-export const MainSlider = styled.section`
-  width: 100%;
-  height: 400px;
-  background-color: #212121;
-
-  & > div {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
   }
 `;
 
@@ -119,49 +139,6 @@ export const SearchKeyWord = styled.div`
     padding: 2px 1.2rem;
     margin: 0 8px;
   }
-`;
-
-//youtuberslider
-export const MainYoutuberSlider = styled.section`
-  width: 1280px;
-  height: 300px;
-  margin: auto;
-  /* border: 1px solid red; */
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 1300px) {
-    max-width: calc(100% - 2rem);
-    margin: 1rem;
-  }
-`;
-export const SliderWrap = styled.div`
-  width: 100%;
-  display: flex;
-`;
-export const SliderItem = styled.article`
-  width: calc(100% / 3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* border: 1px solid red; */
-`;
-export const SliderItemImgWrap = styled.div`
-  width: calc(100% - 3rem);
-  height: 180px;
-  background-color: #febe98;
-  border-radius: 1rem;
-`;
-export const SliderItemInfo = styled.div`
-  padding: 1rem 2rem;
-  width: 100%;
-`;
-export const SliderItemInfoTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
 `;
 
 // best
