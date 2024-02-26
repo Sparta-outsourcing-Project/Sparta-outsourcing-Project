@@ -48,9 +48,9 @@ const BodySlider = () => {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={50}
           slidesPerView={3}
-          navigation={{ clickable: true }}
-          autoplay={{ delay: 0, disableOnInteraction: true }}
-          speed={7000}
+          // navigation={{ clickable: true }}
+          autoplay={{ delay: 0, disableOnInteraction: false }}
+          speed={8000}
           loop={true}
         >
           <SliderWrap>
