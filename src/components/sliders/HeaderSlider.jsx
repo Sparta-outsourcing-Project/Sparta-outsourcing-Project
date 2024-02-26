@@ -23,12 +23,12 @@ const HeaderSlider = () => {
       >
         <SwiperSlide>
           <MainSlider>
-            <div>Main Slider</div>
+            <img src="src\assets\main_banner03.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
         <SwiperSlide>
           <MainSlider>
-            <div>Main Slider</div>
+            <img src="src\assets\main_banner02.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
       </StSwiper>
