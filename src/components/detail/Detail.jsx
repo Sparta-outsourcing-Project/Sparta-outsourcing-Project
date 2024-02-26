@@ -1,45 +1,39 @@
 import styled from 'styled-components';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
-import { useParams } from 'react-router-dom';
+
 import { useEffect, useState } from 'react';
-import { getMostPopularThumbnails, readByChannelId, readMostPopularVideos } from '../../api/dataApi';
-import RecentVideo from './RecentVideo';
+import { getVideoChannelDatabyId } from '../../api/mainSliderDataApi';
+// import { getDetailDataApi } from '../../api/detailApi';
 
 export default function Detail() {
-  const { id } = useParams();
+  // const { id } = useParams();
   const [channelInfo, setChannelInfo] = useState(null);
-  const [recentVideos, setRecentVideos] = useState([]);
+  // const [detailInfo, setDetailInfo] = useState(null);
+  // const [recentVideos, setRecentVideos] = useState([]);
 
   // channel 정보 가져오기
   useEffect(() => {
     const fetchChannelInfo = async () => {
-      try {
-        const data = await readByChannelId(id);
-        console.log('channel Info', data);
-        setChannelInfo(data);
-      } catch (error) {
-        console.error('Error fetchChannelInfo', error);
-      }
-    };
-    fetchChannelInfo();
-  }, [id]);
+      const channelData = await getVideoChannelDatabyId('OzHPMTZXs8U');
+      console.log('Channel Data', channelData);
+      setChannelInfo(channelData);
 
-  // 최근 영상 가져오기 api 호출
-  useEffect(() => {
-    const fetchRecentVideos = async () => {
-      try {
-        const videos = await readMostPopularVideos();
-        console.log('Recent Videos:', videos); // 데이터 출력
-        const thumbnails = await getMostPopularThumbnails(id);
-        console.log('Thumbnails:', thumbnails); // 데이터 출력
-        setRecentVideos(videos);
-      } catch (error) {
-        console.error('Error fetchRecentVideos', error);
-      }
+      // setRecentVideos(channelData.recentVideos);
     };
-    fetchRecentVideos();
-  }, [id]);
+
+    fetchChannelInfo();
+  }, []);
+
+  // 댓글수, 좋아요 수 정보 가져오기
+  // useEffect(() => {
+  //   const likedAndCommentApi = async () => {
+  //     const detailData = await getDetailDataApi('OzHPMTZXs8U');
+  //     console.log('detailData', detailData);
+  //     setDetailInfo(detailData);
+  //   };
+  //   likedAndCommentApi();
+  // }, []);
 
   return (
     <Wrap>
@@ -47,20 +41,35 @@ export default function Detail() {
       <TopImage>Top BackGroundImage </TopImage>
       <ProfileContainer>
         <ProfileImage></ProfileImage>
-        <YoutuberTitle>{channelInfo.title}</YoutuberTitle>
-        <Text>{channelInfo.subscriberNum}</Text>
-        <Text>{channelInfo.averageViewNum}</Text>
+        {channelInfo && (
+          <>
+            <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
+            <Text>구독자 {channelInfo.subscriberCount}</Text>
+            <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
+          </>
+        )}
       </ProfileContainer>
       <LinkToChannel>채널 방문</LinkToChannel>
       <GraphContainer>
         <Graph>그래프 자리</Graph>
-        <Table>표 자리</Table>
+        <Table>
+          테이블 자리
+          {channelInfo && (
+            <>
+              <Text>구독자 수 {channelInfo.subscriberCount}</Text>
+              <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
+              {/* <Text>평균 좋아요 수 {detailInfo.likeCount}</Text>
+              <Text>평균 댓글 수 {detailInfo.commentCount}</Text> */}
+              <Text>광고 실적 {channelInfo.subscriberCount}</Text>
+            </>
+          )}
+        </Table>
       </GraphContainer>
       <VideoContainer>
         <RecentVideos>최근 영상</RecentVideos>
-        {recentVideos.slice(0, 6).map((video) => {
-          <RecentVideo key={video.id} video={video} />;
-        })}
+        {/* {recentVideos.slice(0, 6).map((video) => {
+          <RecentVideo key={video.channelId} video={video} />;
+        })} */}
       </VideoContainer>
       <Footer />
     </Wrap>
@@ -89,7 +98,7 @@ const ProfileContainer = styled.div`
   gap: 50px;
   padding: 10px;
 `;
-const ProfileImage = styled.image`
+const ProfileImage = styled.img`
   background-color: black;
   width: 100px;
   height: 100px;
@@ -104,6 +113,7 @@ const YoutuberTitle = styled.span`
 
 const Text = styled.span`
   font-size: large;
+  font-weight: 600;
 `;
 
 const LinkToChannel = styled.button`
@@ -132,6 +142,11 @@ const Table = styled.div`
   height: 300px;
   background-color: #ff9b62;
   text-align: center;
+
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const VideoContainer = styled.div`
