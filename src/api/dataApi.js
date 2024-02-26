@@ -18,37 +18,41 @@ export const readSearchKeyWord = async (keyword) => {
   // if (keyword == "뷰티") {
   // const videoCategoryId = 26
   //  };
-  const params = { q: keyword }; // &q=${keyword}
-  const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
+  try {
+    const params = { q: keyword }; // &q=${keyword}
+    const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
 
-  const videoItems = videoResponse.data.items;
-  const result = [];
+    const videoItems = videoResponse.data.items;
+    const result = [];
 
-  // NOTE 정보들 - 전역상태관리해야할것같다 RQ 사용해야할듯 여기서 return 후?
-  for (const item of videoItems) {
-    const channelId = item.snippet.channelId;
-    const channelTitle = item.snippet.channelTitle;
+    // NOTE 정보들 - 전역상태관리해야할것같다 RQ 사용해야할듯 여기서 return 후?
+    for (const item of videoItems) {
+      const channelId = item.snippet.channelId;
+      const channelTitle = item.snippet.channelTitle;
 
-    // NOTE 아래부분 mainSliderDataApi 에서도 쓰이는데, 따로 빼는게 좋을지..  => but snippet도 추가
-    const channelResponse = await axiosInstance.get(`${request.getChannelSnippetStatistics}&id=${channelId}`);
+      // NOTE 아래부분 mainSliderDataApi 에서도 쓰이는데, 따로 빼는게 좋을지..  => but snippet도 추가
+      const channelResponse = await axiosInstance.get(`${request.getChannelSnippetStatistics}&id=${channelId}`);
 
-    const snippet = channelResponse.data.items[0].snippet;
-    const description = snippet.description; // 채널설명
-    const thumbnailUrl = snippet.thumbnails.medium.url; // 채널 썸네일 url
+      const snippet = channelResponse.data.items[0].snippet;
+      const description = snippet.description; // 채널설명
+      const thumbnailUrl = snippet.thumbnails.medium.url; // 채널 썸네일 url
 
-    const statistics = channelResponse.data.items[0].statistics;
-    const initSubscriberCount = statistics.subscriberCount; // 채널 구독자수
-    const videoCount = statistics.videoCount; // 채널 총 영상수
-    const viewCount = statistics.viewCount; // 채널 총 조회수(모든 영상 조회수의 합)
-    const initAverageViewCount = viewCount / videoCount; // (일반적인) 채널 평균 조회수 (총 조회수 / 총 영상 수)
+      const statistics = channelResponse.data.items[0].statistics;
+      const initSubscriberCount = statistics.subscriberCount; // 채널 구독자수
+      const videoCount = statistics.videoCount; // 채널 총 영상수
+      const viewCount = statistics.viewCount; // 채널 총 조회수(모든 영상 조회수의 합)
+      const initAverageViewCount = viewCount / videoCount; // (일반적인) 채널 평균 조회수 (총 조회수 / 총 영상 수)
 
-    const subscriberCount = Math.round(initSubscriberCount / 10000) + '만'; // 구독자수 만 단위 반올림
-    const averageViewCount = Math.round(initAverageViewCount / 10000) + '만'; // 평균조회수 만 단위 반올림 89만6천.. => 90만
+      const subscriberCount = Math.round(initSubscriberCount / 10000) + '만'; // 구독자수 만 단위 반올림
+      const averageViewCount = Math.round(initAverageViewCount / 10000) + '만'; // 평균조회수 만 단위 반올림 89만6천.. => 90만
 
-    result.push({ channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount });
+      result.push({ channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount });
+    }
+    return result; // 객체담긴 배열 형태로 리턴 - {채널명, 채널썸네일이미지url, 구독자수(만), 평균조회수(만)}
+  } catch (error) {
+    console.error('fail get readSearchKeyWord', error.message);
   }
-  return result;
-}; // 객체담긴 배열 형태로 리턴 - {채널명, 채널썸네일이미지url, 구독자수(만), 평균조회수(만)}
+};
 
 export const readMostPopularVideos = async () => {
   const { data } = await axiosInstance.get(`${request.getMostPopularVideos}&regionCode=KR`);
@@ -58,6 +62,13 @@ export const readMostPopularVideos = async () => {
 export const getMostPopularThumbnails = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
   return data.items[0].snippet.thumbnails;
+};
+
+//get banner from channelId
+export const getBanner = async (channelId) => {
+  const url = request.getChannelBannerURL(channelId);
+  const { data } = await axiosInstance.get(url);
+  return data.items[0].brandingSettings.image.bannerExternalUrl();
 };
 
 export const readByChannelId = async () => {
