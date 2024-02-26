@@ -112,30 +112,37 @@ export const MainYoutuberSlider = styled.section`
 `;
 
 const StyledSwiper = styled.div`
-  /* position: absolute; */
-  /* top: 0; */
   z-index: 10;
   width: 100%;
-  background-color: blue;
+  /* background-color: blue; */
+
+  .slick-prev {
+    left: -50px; /* 원하는 만큼 왼쪽으로 이동 */
+  }
 `;
 
 export const SliderWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  .slick-prev:before,
+  .slick-next:before {
+    color: #f1c97f;
+    font-size: 40px;
+  }
 `;
 
 // 각 슬라이드에 적용될 스타일드 컴포넌트 정의
 export const SliderItem = styled.div`
   width: calc(100% / 3);
-  /* width: 500px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 3rem;
 
   /* background-color: green; */
-  z-index: 20;
+
+  padding-left: 20px;
 
   &:hover {
     cursor: pointer;

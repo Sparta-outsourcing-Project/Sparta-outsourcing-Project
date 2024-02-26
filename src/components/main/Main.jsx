@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
-import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
@@ -49,7 +48,6 @@ export default function Main() {
           })}
         </SearchKeyWord>
       </MainSearch>
-      {/* <BodySlider /> */}
       <BodySliderCopy />
       <MainBest>
         <MainBestTitle>
