@@ -4,19 +4,22 @@ import Footer from '../layout/Footer';
 
 import { useEffect, useState } from 'react';
 import { getVideoChannelDatabyId } from '../../api/mainSliderDataApi';
+import { getDetailDataApi } from '../../api/detailApi';
+import { getBanner } from '../../api/dataApi';
+
 // import { getDetailDataApi } from '../../api/detailApi';
 
 export default function Detail() {
   // const { id } = useParams();
   const [channelInfo, setChannelInfo] = useState(null);
-  // const [detailInfo, setDetailInfo] = useState(null);
+  const [detailInfo, setDetailInfo] = useState(null);
+  const [bannerUrl, setBannerUrl] = useState('');
   // const [recentVideos, setRecentVideos] = useState([]);
 
   // channel 정보 가져오기
   useEffect(() => {
     const fetchChannelInfo = async () => {
       const channelData = await getVideoChannelDatabyId('OzHPMTZXs8U');
-      console.log('Channel Data', channelData);
       setChannelInfo(channelData);
 
       // setRecentVideos(channelData.recentVideos);
@@ -26,19 +29,31 @@ export default function Detail() {
   }, []);
 
   // 댓글수, 좋아요 수 정보 가져오기
-  // useEffect(() => {
-  //   const likedAndCommentApi = async () => {
-  //     const detailData = await getDetailDataApi('OzHPMTZXs8U');
-  //     console.log('detailData', detailData);
-  //     setDetailInfo(detailData);
-  //   };
-  //   likedAndCommentApi();
-  // }, []);
+  useEffect(() => {
+    const likedAndCommentApi = async () => {
+      const detailData = await getDetailDataApi('');
+      // console.log('detailData', detailData);
+      setDetailInfo(detailData);
+    };
+    likedAndCommentApi();
+  }, []);
+
+  // 배너 url 가져오기
+  useEffect(() => {
+    const getBannerImage = async () => {
+      if (channelInfo) {
+        const BannerImage = await getBanner(``);
+        setBannerUrl(BannerImage);
+      }
+    };
+
+    getBannerImage();
+  }, [channelInfo]);
 
   return (
     <Wrap>
       <Header />
-      <TopImage>Top BackGroundImage </TopImage>
+      <BannerImage src={bannerUrl} alt="Banner Image" />
       <ProfileContainer>
         <ProfileImage></ProfileImage>
         {channelInfo && (
@@ -51,16 +66,21 @@ export default function Detail() {
       </ProfileContainer>
       <LinkToChannel>채널 방문</LinkToChannel>
       <GraphContainer>
-        <Graph>그래프 자리</Graph>
+        <Graph>
+          <h2>오각형 방사형 그래프</h2>
+        </Graph>
         <Table>
           테이블 자리
           {channelInfo && (
             <>
-              <Text>구독자 수 {channelInfo.subscriberCount}</Text>
-              <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
-              {/* <Text>평균 좋아요 수 {detailInfo.likeCount}</Text>
-              <Text>평균 댓글 수 {detailInfo.commentCount}</Text> */}
-              <Text>광고 실적 {channelInfo.subscriberCount}</Text>
+              <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
+              <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+            </>
+          )}
+          {detailInfo && (
+            <>
+              <Text>특정 영상 좋아요 수 {detailInfo.likeCount} 개</Text>
+              <Text>특정 영상 댓글 수 {detailInfo.commentCount} 개</Text>
             </>
           )}
         </Table>
@@ -83,10 +103,10 @@ export const Wrap = styled.div`
   flex-direction: column;
 `;
 
-const TopImage = styled.div`
+const BannerImage = styled.img`
   width: 100%;
   height: 180px;
-  background-color: #febe98;
+
   text-align: center;
 `;
 const ProfileContainer = styled.div`

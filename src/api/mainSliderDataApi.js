@@ -21,7 +21,6 @@ export const getVideoChannelDatabyId = async (videoId) => {
 
   // 위의 받은 채널 id 사용
   const channelResponse = await mainSliderDataClient.get(`${request.getChannelStatistics}&id=${channelId}`);
-
   const channelStatistics = channelResponse.data.items[0].statistics;
   const originalSubscriberCount = channelStatistics.subscriberCount; // 채널 구독자수
   const videoCount = channelStatistics.videoCount; // 채널 총 영상수
