@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { readSearchKeyWord } from '../../api/dataApi';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 export default function CardList() {
   const [channelData, setChannelData] = useState([]);
@@ -9,30 +9,29 @@ export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
   const { keyword } = useParams();
 
-  // 검색이나 메인에서 클릭한 키워드를 추출
   useEffect(() => {
     const fetchData = async () => {
-      // 추출된 키워드 사용 또는 route에서 제공되지 않으면 기본값으로 '뷰티' 사용
       const searchKeyword = keyword;
       const data = await readSearchKeyWord(searchKeyword);
 
       // 중복 제거 후 정렬된 데이터로 업데이트
       const uniqueSortedData = sortAndRemoveDuplicates(data, sortBy);
       setChannelData(uniqueSortedData);
-      setOriginalData(uniqueSortedData); // 원본 데이터 설정
+      setOriginalData(uniqueSortedData);
     };
 
     fetchData();
   }, [keyword, sortBy]);
 
+  // 정렬 옵션 변경 핸들러
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
 
-    // 정렬 변경 시 원본 데이터로 다시 정렬
     const sortedData = sortAndRemoveDuplicates(originalData, e.target.value);
     setChannelData(sortedData);
   };
 
+  // 중복 제거 및 정렬 함수
   const sortAndRemoveDuplicates = (data, sortBy) => {
     const uniqueData = Array.from(new Set(data.map((item) => item.channelTitle))).map((channelTitle) =>
       data.find((item) => item.channelTitle === channelTitle)
@@ -64,10 +63,14 @@ export default function CardList() {
                 <td>{index + 1}위</td>
                 <td>
                   <span key={channel.channelTitle}>
-                    <img src={channel.thumbnailUrl} alt={channel.channelTitle} />
+                    <Link to={`/list/${keyword}/${channel.channelId}`}>
+                      <img src={channel.thumbnailUrl} alt={channel.channelTitle} />
+                    </Link>
                   </span>
                 </td>
-                <td key={channel.channelTitle}>{channel.channelTitle}</td>
+                <td key={channel.channelTitle}>
+                  <Link to={`/list/${keyword}/${channel.channelId}`}>{channel.channelTitle}</Link>
+                </td>
                 <td>{channel.subscriberCount}</td>
                 <td>{channel.averageViewCount}</td>
               </tr>
@@ -113,7 +116,7 @@ export const ListTable = styled.table`
       margin-right: 1rem;
       overflow: hidden;
     }
-    & span > img {
+    & span img {
       width: 100%;
     }
   }
