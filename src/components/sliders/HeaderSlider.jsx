@@ -20,14 +20,19 @@ const HeaderSlider = () => {
         speed={1500}
         loop={true}
       >
+        {/* <SwiperSlide>
+          <MainSlider>
+            <img src="src\assets\main_banner01.jpg" alt="" />
+          </MainSlider>
+        </SwiperSlide> */}
         <SwiperSlide>
           <MainSlider>
-            <img src="src\assets\main_banner03.jpg" alt="" />
+            <img src="src\assets\main_banner02.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
         <SwiperSlide>
           <MainSlider>
-            <img src="src\assets\main_banner02.jpg" alt="" />
+            <img src="src\assets\main_banner03.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
       </StSwiper>
