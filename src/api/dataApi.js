@@ -50,7 +50,7 @@ export const readSearchKeyWord = async (keyword) => {
     }
     return result; // 객체담긴 배열 형태로 리턴 - {채널명, 채널썸네일이미지url, 구독자수(만), 평균조회수(만)}
   } catch (error) {
-    console.error('fail get readSearchKeyWord', error.message);
+    console.error('fail to get data by function readSearchKeyWord', error.message);
   }
 };
 

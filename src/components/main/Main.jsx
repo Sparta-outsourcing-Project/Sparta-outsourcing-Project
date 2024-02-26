@@ -37,7 +37,7 @@ export default function Main() {
     <MainWrap>
       <HeaderSlider />
       <MainSearch>
-        <input type="search" placeholder="주제를 검색하세요." />
+        <input type="search" placeholder="주제를 검색하세요." value="searchedKeyword" />
         <SearchKeyWord>
           {keyWords.map((keyword) => {
             return <span onClick={() => handleKeyWordClick(keyword)}>#{keyword}</span>;
