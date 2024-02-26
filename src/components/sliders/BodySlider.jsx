@@ -48,7 +48,7 @@ const BodySlider = () => {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={50}
           slidesPerView={3}
-          // navigation={{ clickable: true }}
+          navigation={{ clickable: true }}
           autoplay={{ delay: 0, disableOnInteraction: false }}
           speed={8000}
           loop={true}
@@ -113,6 +113,11 @@ export const MainYoutuberSlider = styled.section`
   }
 
   position: relative;
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    z-index: 1000;
+  }
 
   &::before,
   &::after {
