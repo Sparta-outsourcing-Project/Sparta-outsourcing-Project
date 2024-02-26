@@ -1,61 +1,90 @@
 import styled from 'styled-components';
-import Header from '../layout/Header';
 import Footer from '../layout/Footer';
-
+import Header from '../layout/Header';
 import { useEffect, useState } from 'react';
-import { getVideoChannelDatabyId } from '../../api/mainSliderDataApi';
+import { getBanner, readByChannelId, readSearchKeyWord } from '../../api/dataApi';
 import { getDetailDataApi } from '../../api/detailApi';
-import { getBanner } from '../../api/dataApi';
-
-// import { getDetailDataApi } from '../../api/detailApi';
 
 export default function Detail() {
   // const { id } = useParams();
+
   const [channelInfo, setChannelInfo] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
   const [bannerUrl, setBannerUrl] = useState('');
-  // const [recentVideos, setRecentVideos] = useState([]);
+  const [chnnelLink, setChannelLink] = useState('');
 
-  // channel 정보 가져오기
+  // channel 정보 불러오기
   useEffect(() => {
     const fetchChannelInfo = async () => {
-      const channelData = await getVideoChannelDatabyId('OzHPMTZXs8U');
-      setChannelInfo(channelData);
-
-      // setRecentVideos(channelData.recentVideos);
+      try {
+        const channelData = await readSearchKeyWord(`쯔양`);
+        // console.log(channelData[1]);
+        const specificChannel = channelData[1];
+        setChannelInfo(specificChannel);
+      } catch (error) {
+        console.error('Failed to fetch channel info:', error.message);
+      }
     };
-
     fetchChannelInfo();
   }, []);
 
-  // 댓글수, 좋아요 수 정보 가져오기
+  // 댓글수, 좋아요 수 불러오기
   useEffect(() => {
-    const likedAndCommentApi = async () => {
-      const detailData = await getDetailDataApi('');
-      // console.log('detailData', detailData);
-      setDetailInfo(detailData);
-    };
-    likedAndCommentApi();
-  }, []);
-
-  // 배너 url 가져오기
-  useEffect(() => {
-    const getBannerImage = async () => {
-      if (channelInfo) {
-        const BannerImage = await getBanner(``);
-        setBannerUrl(BannerImage);
+    const fetchDetailInfo = async () => {
+      try {
+        const detailData = await getDetailDataApi('OzHPMTZXs8U');
+        // console.log(detailData);
+        setDetailInfo(detailData);
+      } catch (error) {
+        console.error('Failed to fetch detail info:', error.message);
       }
     };
+    fetchDetailInfo();
+  }, []);
 
-    getBannerImage();
+  // banner url 불러오기
+  useEffect(() => {
+    const fetchBanner = async () => {
+      try {
+        if (channelInfo) {
+          const bannerImage = await getBanner('UCfpaSruWW3S4dibonKXENjA');
+          setBannerUrl(bannerImage);
+        }
+      } catch (error) {
+        console.error('Failed to fetch banner:', error.message);
+      }
+    };
+    fetchBanner();
   }, [channelInfo]);
 
+  useEffect(() => {
+    const fetchChannelLink = async () => {
+      const getChannelInfo = await readByChannelId();
+      const getChannelLink = getChannelInfo.items[0].snippet.customUrl;
+
+      // console.log('getChannelInfo', getChannelInfo);
+      // console.log('getChannelLink', getChannelLink);
+
+      setChannelLink(getChannelLink);
+    };
+    fetchChannelLink();
+  }, []);
+
+  // 채널 방문 버튼 클릭시, 채널 페이지로 이동
+
+  const onChannelBtnClickHandler = () => {
+    const youtubeURL = `https://www.youtube.com/${chnnelLink}`;
+    window.open(youtubeURL, '_blank');
+  };
   return (
     <Wrap>
       <Header />
-      <BannerImage src={bannerUrl} alt="Banner Image" />
+      <BannerContainer>
+        <BannerImage src={bannerUrl} alt="Banner Image" />
+      </BannerContainer>
+
       <ProfileContainer>
-        <ProfileImage></ProfileImage>
+        <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
         {channelInfo && (
           <>
             <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
@@ -64,7 +93,7 @@ export default function Detail() {
           </>
         )}
       </ProfileContainer>
-      <LinkToChannel>채널 방문</LinkToChannel>
+      <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
       <GraphContainer>
         <Graph>
           <h2>오각형 방사형 그래프</h2>
@@ -96,28 +125,31 @@ export default function Detail() {
   );
 }
 
-export const Wrap = styled.div`
+const Wrap = styled.div`
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 `;
+const BannerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 300px;
+`;
 
 const BannerImage = styled.img`
-  width: 100%;
-  height: 180px;
-
   text-align: center;
+  width: 100%;
 `;
+
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
-
   align-items: center;
-
   gap: 50px;
   padding: 10px;
 `;
+
 const ProfileImage = styled.img`
   background-color: black;
   width: 100px;
@@ -141,7 +173,6 @@ const LinkToChannel = styled.button`
   border-color: transparent;
   border-radius: 10px;
   height: 40px;
-
   margin-left: 200px;
 `;
 
@@ -151,18 +182,19 @@ const GraphContainer = styled.div`
   padding: 20px;
   gap: 20px;
 `;
+
 const Graph = styled.div`
   width: 50%;
   height: 300px;
   background-color: #febe98;
   text-align: center;
 `;
+
 const Table = styled.div`
   width: 50%;
   height: 300px;
   background-color: #ff9b62;
   text-align: center;
-
   padding: 20px;
   display: flex;
   flex-direction: column;
