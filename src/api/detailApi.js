@@ -55,7 +55,5 @@ export const getDetailDataApi = async (channelId) => {
     return { totalCommentCount, totalLikeCount, averageCommentCount, averageLikeCount };
   } catch (error) {
     console.error('Error fetching channel details:', error.message);
-    // 오류가 발생한 경우 기본값 또는 오류 처리 로직을 추가할 수 있습니다.
-    return { totalCommentCount: 0, totalLikeCount: 0, averageCommentCount: 0, averageLikeCount: 0 };
   }
 };
