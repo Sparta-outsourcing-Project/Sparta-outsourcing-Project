@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { MainSlider } from '../main/Main';
 
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -17,18 +16,23 @@ const HeaderSlider = () => {
         spaceBetween={50}
         slidesPerView={1}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 2500 }}
-        speed={3000}
+        autoplay={{ delay: 5000 }}
+        speed={1500}
         loop={true}
       >
+        {/* <SwiperSlide>
+          <MainSlider>
+            <img src="src\assets\main_banner01.jpg" alt="" />
+          </MainSlider>
+        </SwiperSlide> */}
         <SwiperSlide>
           <MainSlider>
-            <div>Main Slider</div>
+            <img src="src\assets\main_banner02.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
         <SwiperSlide>
           <MainSlider>
-            <div>Main Slider</div>
+            <img src="src\assets\main_banner03.jpg" alt="" />
           </MainSlider>
         </SwiperSlide>
       </StSwiper>
@@ -39,8 +43,24 @@ const HeaderSlider = () => {
 export default HeaderSlider;
 
 // swiper
-export const StSwiper = styled(Swiper)`
+const StSwiper = styled(Swiper)`
   --swiper-theme-color: #fff;
   height: 400px;
   margin-bottom: 3rem;
+`;
+
+//main slider
+const MainSlider = styled.section`
+  width: 100%;
+  height: 400px;
+  background-color: #212121;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
 `;
