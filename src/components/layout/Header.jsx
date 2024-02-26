@@ -1,13 +1,12 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import logo from '../../assets/utrend_logo.png';
 export default function Header() {
   return (
     <HeaderWrap>
       <Logo>
         <Link to="/">
-          <img src="src\assets\utrend_logo.png" alt="" />
+          <img src={logo} alt="" />
         </Link>
       </Logo>
     </HeaderWrap>

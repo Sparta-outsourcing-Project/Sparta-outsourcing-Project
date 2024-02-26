@@ -11,7 +11,10 @@ const axiosInstance = axios.create({
 
 // 필요한 정보 - 채널명, 채널썸네일이미지, 구독자수, 평균조회수, (상세페이지? -평균 좋아요수, 평균 댓글 수, 최근 or 인기 영상?)
 
+// TODO 채널중복걸러내기 / 날짜 한달전으로 설정
+
 // NOTE 해시태그# 검색 기능 - get 키워드검색 영상들에대한 채널ID -   input: keyword   output: 채널 정보 객체들이 담긴 배열
+
 export const readSearchKeyWord = async (keyword) => {
   // ? 키워드에 따라서 q=에 넣을 값 다르게 바꾸기 ('생활'은 다르게 바꿔넣어야할거같다?)
   // TODO categoryId 설정해주기 / 채널중복걸러내기
@@ -32,7 +35,6 @@ export const readSearchKeyWord = async (keyword) => {
       const channelId = item.snippet.channelId;
       // console.log(item.snippet);
       const channelResponse = await axiosInstance.get(`${request.getChannelSnippetStatistics}&id=${channelId}`);
-
       const snippet = channelResponse.data.items[0].snippet;
       const channelTitle = snippet.title;
       const description = snippet.description; // 채널설명
@@ -95,6 +97,7 @@ export const getChannelInfoById = async (channelId) => {
 
 export const readMostPopularVideos = async () => {
   const { data } = await axiosInstance.get(`${request.getMostPopularVideos}&regionCode=KR`);
+  // console.log(data);
   return data.items;
 };
 
@@ -107,7 +110,8 @@ export const getMostPopularThumbnails = async (channelId) => {
 export const getBanner = async (channelId) => {
   const url = request.getChannelBannerURL(channelId);
   const { data } = await axiosInstance.get(url);
-  return data.items[0].brandingSettings.image.bannerExternalUrl();
+  // console.log(data.items[0].brandingSettings.image.bannerExternalUrl());
+  return data.items[0].brandingSettings.image.bannerExternalUrl;
 };
 
 export const readByChannelId = async () => {

@@ -10,9 +10,10 @@ const request = {
   getI18nRegions: `/i18nRegions?part=snippet&hl=es_MX&key=${apiKey}`,
   getChannelBannerURL: (channelId) => `/channels?part=brandingSettings&id=${channelId}&key=${apiKey}`,
 
-  getVideoSnippet: `/videos?part=snippet&key=${apiKey}&fields=${videoSnippetFields}`,
-  getChannelStatistics: `/channels?part=statistics&key=${apiKey}&fields=${channelStatisticsFields}`,
-  getChannelSnippetStatistics: `/channels?part=snippet,statistics&key=${apiKey}`
+  getVideoSnippet: `/videos?part=snippet&key=${apiKey}`,
+  getChannelStatistics: `/channels?part=statistics&key=${apiKey}`,
+  getChannelSnippetStatistics: `/channels?part=snippet,statistics&key=${apiKey}`,
+  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`
 };
 
 export default request;

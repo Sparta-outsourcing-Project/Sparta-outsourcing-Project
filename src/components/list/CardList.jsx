@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
 import styled from 'styled-components';
 import { readSearchKeyWord } from '../../api/dataApi';
 import { useParams, Link } from 'react-router-dom';
