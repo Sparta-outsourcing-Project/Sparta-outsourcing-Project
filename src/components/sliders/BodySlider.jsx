@@ -9,6 +9,7 @@ import {
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { useEffect, useState } from 'react';
 import { getVideoChannelDatabyId } from '../../api/mainSliderDataApi';
+import { Swiper } from 'swiper/react';
 
 const BodySlider = () => {
   // 카테고리 분야 6개 배열
@@ -23,23 +24,13 @@ const BodySlider = () => {
   //   { videoId: 'ESzcNpnPgW8', category: '패션' }
   // ];
 
-  // video Id 1개로 test
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const videoId = '1nVPaBoiq7I';
-  //     const result = await getVideoChannelDatabyId(videoId);
-  //     console.log(result);
-  //   };
-  //   fetchData();
-  // }, []);
-
   // API로 받아올 videoID에 따른 return 객체의 배열 설정
   const [videoDatas, setVideoDatas] = useState([]);
 
   // video Id 6개 배열일때
   useEffect(() => {
     // 영상 id 6개 배열
-    const videoIds = ['1nVPaBoiq7I', 'wphai3v-SXE', 'oqxYf5udE80', 'mKka_BPMQ9E', 'CodQ9aHyXAY', 'ESzcNpnPgW8'];
+    const videoIds = ['1nVPaBoiq7I', 'wphai3v-SXE', 'oqxYf5udE80', 'meeMvpwnGy0', 'CodQ9aHyXAY', 'ESzcNpnPgW8'];
 
     const fetchDataForVideoIds = async () => {
       const fetchDataPromises = videoIds.map(async (id) => {
@@ -69,44 +60,45 @@ const BodySlider = () => {
 
   return (
     <>
-      <MainYoutuberSlider
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={50}
-        slidesPerView={3}
-        navigation={{ clickable: true }}
-        autoplay={{ delay: 2500 }}
-        speed={3000}
-        loop={true}
-      >
-        <SliderWrap>
-          {videoDatas.map((videoData, idx) => {
-            return (
-              <SliderItem
-                key={idx}
-                onClick={() => {
-                  onVideoClickHandler('1nVPaBoiq7I');
-                }}
-                style={{ cursor: 'pointer' }}
-              >
-                <SliderItemImgWrap>
-                  <img
-                    src={videoData.thumbnailUrl}
-                    alt=""
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </SliderItemImgWrap>
-                <SliderItemInfo>
-                  <SliderItemInfoTop>
-                    <h3>{videoData.channelTitle}</h3>
-                    <span>{videoData.subscriberCount}</span>
-                  </SliderItemInfoTop>
-                  <p>분야</p>
-                  <p>{videoData.averageViewCount}</p>
-                </SliderItemInfo>
-              </SliderItem>
-            );
-          })}
-          {/* <SliderItem
+      <MainYoutuberSlider>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={3}
+          navigation={{ clickable: true }}
+          autoplay={{ delay: 1000 }}
+          speed={5000}
+          loop={true}
+        >
+          <SliderWrap>
+            {videoDatas.map((videoData, idx) => {
+              return (
+                <SliderItem
+                  key={idx}
+                  onClick={() => {
+                    onVideoClickHandler('1nVPaBoiq7I');
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <SliderItemImgWrap>
+                    <img
+                      src={videoData.thumbnailUrl}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </SliderItemImgWrap>
+                  <SliderItemInfo>
+                    <SliderItemInfoTop>
+                      <h3>{videoData.channelTitle}</h3>
+                      <span>{videoData.subscriberCount}</span>
+                    </SliderItemInfoTop>
+                    <p>분야</p>
+                    <p>{videoData.averageViewCount}</p>
+                  </SliderItemInfo>
+                </SliderItem>
+              );
+            })}
+            {/* <SliderItem
             onClick={() => {
               onVideoClickHandler('1nVPaBoiq7I');
             }}
@@ -163,7 +155,8 @@ const BodySlider = () => {
               <p>view</p>
             </SliderItemInfo>
           </SliderItem> */}
-        </SliderWrap>
+          </SliderWrap>
+        </Swiper>
       </MainYoutuberSlider>
     </>
   );

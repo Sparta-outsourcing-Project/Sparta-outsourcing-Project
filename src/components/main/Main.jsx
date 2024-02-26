@@ -5,7 +5,7 @@ import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide } from 'swiper/react';
 
 export default function Main() {
   const [thumbnails, setThumbmails] = useState([]);
@@ -123,8 +123,7 @@ export const SearchKeyWord = styled.div`
 `;
 
 //youtuberslider
-// export const MainYoutuberSlider = styled.section`
-export const MainYoutuberSlider = styled(Swiper)`
+export const MainYoutuberSlider = styled.section`
   width: 1280px;
   height: 300px;
   margin: 0 auto 3rem auto;
@@ -153,8 +152,10 @@ export const SliderItem = styled(SwiperSlide)`
 export const SliderItemImgWrap = styled.div`
   width: calc(100% - 3rem);
   height: 180px;
-  background-color: #febe98;
-  border-radius: 1rem;
+  /* background-color: #febe98; */
+  & > img {
+    border-radius: 1rem;
+  }
 `;
 export const SliderItemInfo = styled.div`
   padding: 1rem 2rem;
