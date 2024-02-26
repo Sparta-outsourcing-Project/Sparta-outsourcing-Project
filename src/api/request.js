@@ -7,7 +7,8 @@ const request = {
   getVidoeId: `/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=${apiKey}`,
   getI18nRegions: `/i18nRegions?part=snippet&hl=es_MX&key=${apiKey}`,
   getVideoSnippet: `/videos?part=snippet&key=${apiKey}`,
-  getChannelStatistics: `/channels?part=statistics&key=${apiKey}`
+  getChannelStatistics: `/channels?part=statistics&key=${apiKey}`,
+  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`
 };
 
 export default request;
