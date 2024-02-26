@@ -1,7 +1,6 @@
-import React from 'react';
 import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
 import CardList from '../components/list/CardList';
+import Footer from '../components/layout/Footer';
 import styled from 'styled-components';
 
 export default function List() {
