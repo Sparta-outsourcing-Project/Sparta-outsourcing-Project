@@ -5,10 +5,14 @@ import BodySlider from '../sliders/BodySlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
 import { getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
+import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
+  const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
+
+  const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
   useEffect(() => {
     const getThumbnails = async () => {
@@ -21,6 +25,10 @@ export default function Main() {
     getThumbnails();
   }, [videos]);
 
+  const handleKeyWordClick = async (keyword) => {
+    navigate(`/list/${keyword}`);
+  };
+
   if (isLoading) return <div>..Loading</div>;
 
   if (isError) return <div>{isError.message}</div>;
@@ -31,12 +39,9 @@ export default function Main() {
       <MainSearch>
         <input type="search" placeholder="주제를 검색하세요." />
         <SearchKeyWord>
-          <span>#먹방</span>
-          <span>#여행</span>
-          <span>#생활</span>
-          <span>#운동</span>
-          <span>#뷰티</span>
-          <span>#패션</span>
+          {keyWords.map((keyword) => {
+            return <span onClick={() => handleKeyWordClick(keyword)}>#{keyword}</span>;
+          })}
         </SearchKeyWord>
       </MainSearch>
       <BodySlider />
