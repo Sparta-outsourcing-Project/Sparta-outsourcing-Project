@@ -41,6 +41,12 @@ export default function Main() {
   const handleKeyWordClick = async (keyword) => {
     navigate(`/list/${keyword}`);
   };
+  const handleSearchEnter = (e) => {
+    if (e.key === 'Enter') {
+      // 엔터 키가 눌렸을 때 검색 수행
+      navigate(`/list/${searchTerm}`);
+    }
+  };
 
   if (isLoading) return <div>..Loading</div>;
 
