@@ -11,6 +11,7 @@ export default function Main() {
   const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
+  const [searchTerm, setSearchTerm] = useState(''); // 추가
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
 
@@ -25,8 +26,18 @@ export default function Main() {
     getThumbnails();
   }, [videos]);
 
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   const handleKeyWordClick = async (keyword) => {
     navigate(`/list/${keyword}`);
+  };
+  const handleSearchEnter = (e) => {
+    if (e.key === 'Enter') {
+      // 엔터 키가 눌렸을 때 검색 수행
+      navigate(`/list/${searchTerm}`);
+    }
   };
 
   if (isLoading) return <div>..Loading</div>;
@@ -37,10 +48,20 @@ export default function Main() {
     <MainWrap>
       <HeaderSlider />
       <MainSearch>
-        <input type="search" placeholder="주제를 검색하세요." />
+        <input
+          type="search"
+          placeholder="주제를 검색하세요."
+          value={searchTerm}
+          onChange={handleSearchInputChange}
+          onKeyDown={handleSearchEnter}
+        />
         <SearchKeyWord>
-          {keyWords.map((keyword) => {
-            return <span onClick={() => handleKeyWordClick(keyword)}>#{keyword}</span>;
+          {keyWords.map((keyword, index) => {
+            return (
+              <span key={index} onClick={() => handleKeyWordClick(keyword)}>
+                #{keyword}
+              </span>
+            );
           })}
         </SearchKeyWord>
       </MainSearch>
