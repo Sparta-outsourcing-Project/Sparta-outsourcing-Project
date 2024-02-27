@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import YouTube from 'react-youtube';
 import { BsXSquareFill } from 'react-icons/bs';
 const VideoModal = ({ videoData, onClose }) => {
-  const { videoId, channelTitle } = videoData;
+  const { videoId } = videoData;
   // 모달 내용 및 스타일링 작성
   return (
     <ModalOverlay>
