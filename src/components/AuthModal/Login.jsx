@@ -51,14 +51,14 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => 
     }
   };
 
+  // 구글 로그인 클릭
   const onGoogleLogin = () => {
     setIsLoginOpen((prev) => !prev);
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then((data) => {
-        console.log(data);
+      .then((userData) => {
         alert('로그인 되었습니다.');
-        sessionStorage.setItem('userId', data.user.email);
+        sessionStorage.setItem('userId', userData.user.email);
         setIsLogin(true);
       })
       .catch((error) => {
