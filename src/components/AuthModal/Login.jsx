@@ -43,10 +43,10 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
               <St.InputBtnWrapper>
                 <p>로그인</p>
                 <St.InputContainer>
-                  <input placeholder="이메일" value={userId} onChange={onUserId} />
+                  <input placeholder="이메일 (utrend@gmail.com)" value={userId} onChange={onUserId} />
                 </St.InputContainer>
                 <St.InputContainer>
-                  <input placeholder="비밀번호" type="password" value={userPw} onChange={onUserPw} />
+                  <input placeholder="비밀번호 (6글자 이상)" type="password" value={userPw} onChange={onUserPw} />
                 </St.InputContainer>
                 <button onClick={onLoginHandler}>로그인</button>
               </St.InputBtnWrapper>

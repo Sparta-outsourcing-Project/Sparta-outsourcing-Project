@@ -75,10 +75,10 @@ export const InputBtnWrapper = styled.div`
 `;
 
 export const InputContainer = styled.div`
-  border: 1px solid #febe98;
+  border: 1.5px solid #febe98;
   border-radius: 3px;
   &:focus-within {
-    border: 2px solid #febe98;
+    border: 3px solid #febe98;
   }
 
   & > input {
@@ -88,6 +88,9 @@ export const InputContainer = styled.div`
     outline: none;
     color: gray;
     padding-left: 20px;
+  }
+  & > input::placeholder {
+    color: lightgray;
   }
 `;
 
