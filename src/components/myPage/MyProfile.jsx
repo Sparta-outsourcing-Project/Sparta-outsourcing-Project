@@ -105,7 +105,7 @@ const MyProfile = () => {
           )}
 
           <UserEmail>{userId}</UserEmail>
-          {isEdit ? <input type="text" value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
+          {isEdit ? <Textarea value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
         </ProfileContent>
         {isEdit ? (
           <UpdateButton>
@@ -136,4 +136,9 @@ export const UpdateButton = styled.div`
     border: none;
     border-radius: 0.5rem;
   }
+`;
+
+export const Textarea = styled.textarea`
+  font-size: 1.3rem;
+  min-height: 70px;
 `;
