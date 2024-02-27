@@ -88,9 +88,9 @@ function RecentVideo({ channelId }) {
               <VideoInfoContainer>{video.snippet.title}</VideoInfoContainer>
               <VideoInfoContainer>{localizedDate}</VideoInfoContainer>
               <SpanContainer>
-                <span>👁️ {video.statistics.viewCount}</span>
-                <span>👍 {video.statistics.likeCount}</span>
-                <span>💬 {video.statistics.commentCount}</span>
+                <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
+                <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
+                <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
               </SpanContainer>
             </VideoItem>
           </>
@@ -131,6 +131,11 @@ const ThumbnailImage = styled.img`
 const VideoInfoContainer = styled.div`
   padding: 10px;
   gap: 20px;
+  line-height: 1.5;
 `;
 
 const SpanContainer = styled.div``;
+
+const TextStyle = styled.span`
+  line-height: 1.5;
+`;
