@@ -2,28 +2,13 @@ import * as St from './styles/Login.style';
 import { Background, InputBtnWrapper } from './styles/SignUp.style';
 import logo from '../../assets/utrend_logo.png';
 import { useState } from 'react';
+// import { createUserWithEmailAndPassword } from 'firebase/auth';
+// import { auth } from '../../api/config';
 
 const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) => {
   const [userId, setUserId] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPw, setUserPw] = useState('');
-
-  // 닫기 버튼 클릭
-  const onCloseButtonHandler = () => {
-    setIsSignUpOpen((prev) => !prev);
-  };
-
-  // 회원가입 클릭 - 가입 로직 추가 예정
-  const onSignUpHandler = (event) => {
-    event.preventDefault();
-    setIsSignUpOpen((prev) => !prev);
-  };
-
-  // '로그인하기' 클릭
-  const onLoginHandler = () => {
-    setIsSignUpOpen((prev) => !prev);
-    setIsLoginOpen((prev) => !prev);
-  };
 
   // 아이디, 닉네임, 비밀번호 입력값
   const onUserId = (e) => {
@@ -36,6 +21,32 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
 
   const onUserPw = (e) => {
     setUserPw(e.target.value);
+  };
+
+  // 닫기 버튼 클릭
+  const onCloseButtonHandler = () => {
+    setIsSignUpOpen((prev) => !prev);
+  };
+
+  // 회원가입 클릭 - 가입 로직 추가 예정
+  const onSignUpHandler = (event) => {
+    event.preventDefault();
+    // createUserWithEmailAndPassword(auth, userId, userPw)
+    //   .then((userCredential) => {
+    //     // 회원가입 성공시
+    //     console.log(userCredential);
+    //   })
+    //   .catch((error) => {
+    //     // 회원가입 실패시
+    //     console.error(error);
+    //   });
+    setIsSignUpOpen((prev) => !prev);
+  };
+
+  // '로그인하기' 클릭
+  const onLoginHandler = () => {
+    setIsSignUpOpen((prev) => !prev);
+    setIsLoginOpen((prev) => !prev);
   };
 
   return (
