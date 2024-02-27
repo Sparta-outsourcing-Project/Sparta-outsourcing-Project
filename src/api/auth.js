@@ -35,7 +35,7 @@ export const getUserInfo = async (uid) => {
 };
 
 // 회원정보 수정
-export const editUserInfo = async (uid, newUserInfo) => {
+export const updateUserInfo = async (uid, newUserInfo) => {
   //   const newUserInfo = {
   //     nickname: newNickname,
   //     intro: newIntro,

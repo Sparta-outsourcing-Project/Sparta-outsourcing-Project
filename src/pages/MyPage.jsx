@@ -9,12 +9,9 @@ export default function MyPage() {
   const uid = sessionStorage.getItem('uid');
   const [userInfo, setUserInfo] = useState({});
   const [isEdit, setIsEdit] = useState(false);
-  const [newNickname, setNewNickname] = useState('');
-  const [newIntro, setNewIntro] = useState('');
-  const [newImage, setNewImage] = useState('');
-
   // userInfo 샘플
   // {
+  //   intro : '소개를 입력해주세요'
   //   favChannels: [];
   //   image: null;
   //   nickname: 'test';
@@ -32,14 +29,28 @@ export default function MyPage() {
   }, [uid]);
   const { userId, nickname, image, favChannels, intro } = userInfo;
 
+  const [newNickname, setNewNickname] = useState(nickname);
+  const [newIntro, setNewIntro] = useState(intro);
+  const [newImage, setNewImage] = useState(image);
+
   // 회원정보 수정 handler
-  const onEditUserInfo = () => {
+  const onUpdateUserInfo = () => {
     if (!isEdit) {
       setIsEdit(true);
     } else {
       const isConfirmed = window.confirm('수정하시겠습니까?');
       isConfirmed && setIsEdit(false);
     }
+  };
+
+  // 닉네임 입력
+  const onNewNickname = (e) => {
+    setNewNickname(e.target.value);
+  };
+
+  // 소개 입력
+  const onNewIntro = (e) => {
+    setNewIntro(e.target.value);
   };
 
   return (
@@ -49,11 +60,16 @@ export default function MyPage() {
         <ProfileSection>
           <img src={image === null ? defaultImg : image} alt="defaultImg" width={200} />
           <ProfileContent>
-            <UserNickname>{nickname}</UserNickname>
+            {isEdit ? (
+              <UserNicknameInput type="text" value={newNickname} onChange={onNewNickname} />
+            ) : (
+              <UserNickname>{nickname}</UserNickname>
+            )}
+
             <UserEmail>{userId}</UserEmail>
-            <UserIntro>{intro}</UserIntro>
+            {isEdit ? <input type="text" value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
           </ProfileContent>
-          <button onClick={onEditUserInfo}>{isEdit ? '수정완료' : '수정하기'}</button>
+          <button onClick={onUpdateUserInfo}>{isEdit ? '수정완료' : '수정하기'}</button>
         </ProfileSection>
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
@@ -126,9 +142,18 @@ export const ProfileContent = styled.div`
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 4rem;
+
+  & > input {
+    width: 100%;
+    height: 40px;
+  }
 `;
 
 export const UserNickname = styled.p`
+  font-size: 1.3rem;
+`;
+
+export const UserNicknameInput = styled.input`
   font-size: 1.3rem;
 `;
 
