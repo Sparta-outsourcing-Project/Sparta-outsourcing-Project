@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import List from '../pages/List';
 import Error from '../pages/Error';
 import Detail from '../components/detail/Detail';
+import MyPage from '../pages/MyPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/list/:keyword/:id',
     element: <Detail />
+  },
+  {
+    path: '/mypage',
+    element: <MyPage />
   },
   {
     path: '*',
