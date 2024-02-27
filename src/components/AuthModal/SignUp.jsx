@@ -31,20 +31,20 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
     setUserPw('');
   };
 
-  // 회원가입 클릭 - 가입 로직 추가 예정
+  // 회원가입 클릭
   const onSignUpHandler = () => {
     createUserWithEmailAndPassword(auth, userId, userPw)
       .then((userCredential) => {
         // 회원가입 성공시
         console.log(userCredential);
         console.log('회원가입이 완료되었습니다 🎉');
+        setIsSignUpOpen((prev) => !prev);
       })
       .catch((error) => {
         // 회원가입 실패시
         console.error(error);
         alert('입력하신 값을 확인해주세요.');
       });
-    setIsSignUpOpen((prev) => !prev);
   };
 
   // '로그인하기' 클릭

@@ -1,10 +1,21 @@
 import * as St from './styles/Login.style';
 import logo from '../../assets/utrend_logo.png';
 import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../api/config';
 
 const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) => {
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
+
+  // 아이디, 비밀번호 입력값
+  const onUserId = (e) => {
+    setUserId(e.target.value);
+  };
+
+  const onUserPw = (e) => {
+    setUserPw(e.target.value);
+  };
 
   // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
@@ -17,19 +28,17 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
     setIsSignUpOpen((prev) => !prev);
   };
 
-  // 로그인 클릭 - 로그인 로직 추가 예정
-  const onLoginHandler = (event) => {
-    event.preventDefault();
-    setIsLoginOpen((prev) => !prev);
-  };
-
-  // 아이디, 비밀번호 입력값
-  const onUserId = (e) => {
-    setUserId(e.target.value);
-  };
-
-  const onUserPw = (e) => {
-    setUserPw(e.target.value);
+  // 로그인 클릭
+  const onLoginHandler = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, userId, userPw);
+      console.log(userCredential);
+      alert('로그인 되었습니다.');
+      setIsLoginOpen((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+      alert('입력하신 값을 확인해주세요.');
+    }
   };
 
   return (

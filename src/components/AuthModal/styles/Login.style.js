@@ -24,7 +24,7 @@ export const Container = styled.div`
   border-radius: 12px;
 `;
 
-export const LoginWrapper = styled.form`
+export const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
