@@ -15,6 +15,19 @@ const axiosInstance = axios.create({
 
 // NOTE 해시태그# 검색 기능 - get 키워드검색 영상들에대한 채널ID -   input: keyword   output: 채널 정보 객체들이 담긴 배열
 
+axiosInstance.interceptors.response.use(undefined, async (err) => {
+  const { config, response } = err;
+  const retry = config.retry || 3;
+  const delay = config.retryDelay || 1000;
+
+  if (response && retry < 2) {
+    config.retry += 1;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    return axiosInstance(config);
+  }
+  return Promise.reject(err);
+});
+
 export const readSearchKeyWord = async (keyword) => {
   // ? 키워드에 따라서 q=에 넣을 값 다르게 바꾸기 ('생활'은 다르게 바꿔넣어야할거같다?)
   // TODO categoryId 설정해주기 / 채널중복걸러내기
@@ -24,7 +37,7 @@ export const readSearchKeyWord = async (keyword) => {
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
-    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 1 };
+    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 15 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
     // console.log(videoResponse.data);
     const videoItems = videoResponse.data.items;
@@ -113,10 +126,26 @@ export const getMostChannelInfo = async (channelId) => {
 
 //get banner from channelId
 export const getBanner = async (channelId) => {
-  const url = request.getChannelBannerURL(channelId);
+  try {
+    const url = request.getChannelBannerURL(channelId);
+    const { data } = await axiosInstance.get(url);
+    return data.items[0].brandingSettings.image.bannerExternalUrl;
+  } catch (error) {
+    console.error('failed to fetch getBanner', error.message);
+  }
+};
+
+//get UploadPlayListId
+export const getUpLoadPlayListId = async (channelId) => {
+  const url = request.getChannelVideos(channelId);
   const { data } = await axiosInstance.get(url);
-  // console.log(data.items[0].brandingSettings.image.bannerExternalUrl());
-  return data.items[0].brandingSettings.image.bannerExternalUrl;
+  return data.items[0].contentDetails.relatedPlaylists.uploads;
+};
+
+export const getUpLoadPlayLists = async (uploadPlaylistId) => {
+  const url = request.getPlayListVideo(uploadPlaylistId);
+  const { data } = await axiosInstance.get(url);
+  return data;
 };
 
 export const readByChannelId = async () => {
