@@ -17,7 +17,7 @@ const HeaderSlider = () => {
         slidesPerView={1}
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000 }}
-        speed={1500}
+        speed={500}
         loop={true}
       >
         {/* <SwiperSlide>
@@ -54,6 +54,7 @@ const MainSlider = styled.section`
   width: 100%;
   height: 400px;
   background-color: #212121;
+  overflow: hidden;
 
   & > div {
     width: 100%;
@@ -62,5 +63,10 @@ const MainSlider = styled.section`
     justify-content: center;
     align-items: center;
     color: #fff;
+  }
+  & img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;

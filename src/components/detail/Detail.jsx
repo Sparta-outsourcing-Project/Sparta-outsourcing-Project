@@ -81,9 +81,7 @@ export default function Detail() {
   return (
     <Wrap>
       <Header />
-      <BannerContainer>
-        <BannerImage src={formattedBannerUrl} alt="Banner Image" />
-      </BannerContainer>
+      <BannerContainer>{bannerUrl ? <BannerImage src={formattedBannerUrl} alt="Banner Image" /> : ''}</BannerContainer>
       <BottomContainer>
         <DetailInfoContainer>
           <ProfileContainer>
@@ -143,6 +141,7 @@ const BannerContainer = styled.div`
   display: flex;
   justify-content: center;
   height: 300px;
+  background-color: #febe98; // 배너이미지가 없는 경우 배경색깔 주기
 `;
 
 const BannerImage = styled.img`
