@@ -34,12 +34,18 @@ export default function Main() {
   // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
   const handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
+      if (!searchTerm.trim()) {
+        return alert('검색어를 입력해주세요.');
+      }
       navigate(`/list/${searchTerm}`);
     }
   };
 
   // 검색아이콘 눌러 검색 (=> 리스트페이지로 이동)
   const handleSearchClick = () => {
+    if (!searchTerm.trim()) {
+      return alert('검색어를 입력해주세요.');
+    }
     navigate(`/list/${searchTerm}`);
   };
 
