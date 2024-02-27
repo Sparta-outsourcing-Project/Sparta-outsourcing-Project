@@ -65,7 +65,7 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((userData) => {
-        console.log(userData);
+        // console.log(userData);
         alert('로그인 되었습니다.');
 
         // sessionStorage에 저장
