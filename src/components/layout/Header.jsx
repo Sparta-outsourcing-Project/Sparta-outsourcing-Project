@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/utrend_logo.png';
 import { useEffect, useState } from 'react';
 import Login from '../AuthModal/Login';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/modules/loginSlice';
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
@@ -37,6 +38,12 @@ export default function Header() {
     sessionStorage.clear();
     auth.signOut();
     dispatch(login(false));
+
+    navigate('/');
+  };
+
+  const onMypageClickLink = () => {
+    navigate(`/mypage`);
   };
 
   return (
@@ -49,6 +56,7 @@ export default function Header() {
       <Auth>
         {loginState ? (
           <>
+            <p onClick={onMypageClickLink}>마이페이지</p>
             <p onClick={onLogoutHandler}>로그아웃</p>
           </>
         ) : (
