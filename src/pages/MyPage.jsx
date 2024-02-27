@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 export default function MyPage() {
   const uid = sessionStorage.getItem('uid');
   const [userInfo, setUserInfo] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
+  const [newNickname, setNewNickname] = useState('');
+  const [newIntro, setNewIntro] = useState('');
+  const [newImage, setNewImage] = useState('');
 
   // userInfo 샘플
   // {
@@ -28,6 +32,16 @@ export default function MyPage() {
   }, [uid]);
   const { userId, nickname, image, favChannels, intro } = userInfo;
 
+  // 회원정보 수정 handler
+  const onEditUserInfo = () => {
+    if (!isEdit) {
+      setIsEdit(true);
+    } else {
+      const isConfirmed = window.confirm('수정하시겠습니까?');
+      isConfirmed && setIsEdit(false);
+    }
+  };
+
   return (
     <Wrap>
       <Header />
@@ -39,7 +53,7 @@ export default function MyPage() {
             <UserEmail>{userId}</UserEmail>
             <UserIntro>{intro}</UserIntro>
           </ProfileContent>
-          <button>수정하기</button>
+          <button onClick={onEditUserInfo}>{isEdit ? '수정완료' : '수정하기'}</button>
         </ProfileSection>
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
