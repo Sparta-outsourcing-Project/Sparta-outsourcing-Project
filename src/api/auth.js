@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore/lite';
 import db from './config';
 
 // 회원가입시 userInfo fireStore에 저장
@@ -32,4 +32,15 @@ export const getUserInfo = async (uid) => {
     console.error(error);
     return null;
   }
+};
+
+// 회원정보 수정
+export const editUserInfo = async (uid, newUserInfo) => {
+  //   const newUserInfo = {
+  //     nickname: newNickname,
+  //     intro: newIntro,
+  //     image: newImage
+  //   };
+  const { nickname, intro, image } = newUserInfo;
+  await updateDoc(doc(db, 'users', uid), { nickname, intro, image });
 };
