@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import VideoModal from './VideoModal'; // VideoModal 컴포넌트 import 추가
 
 const BodySliderCopy = () => {
   // API로 받아올 videoID에 따른 return 객체의 배열 설정
@@ -35,10 +36,18 @@ const BodySliderCopy = () => {
     fetchDataForVideoIds();
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태
+  const [selectedVideo, setSelectedVideo] = useState(null); // 선택된 비디오 데이터
+
+  const closeModal = () => {
+    setSelectedVideo(null); // 선택된 비디오 데이터 초기화
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   // 클릭 시 영상 링크로 이동
-  const onVideoClickHandler = (id) => {
-    const youtubeURL = `https://www.youtube.com/watch?v=${id}`;
-    window.open(youtubeURL, '_blank');
+  const onVideoClickHandler = (videoData) => {
+    setSelectedVideo(videoData); // 선택된 비디오 데이터 설정
+    setIsModalOpen(true); // 모달 열기
   };
 
   const settings = {
@@ -46,9 +55,9 @@ const BodySliderCopy = () => {
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: true,
-    speed: 6000,
-    autoplaySpeed: 700,
+    autoplay: false,
+    speed: 300,
+    // autoplaySpeed: 700,
     cssEase: 'linear',
     pauseOnHover: true
   };
@@ -61,12 +70,7 @@ const BodySliderCopy = () => {
             <Slider {...settings}>
               {videoDatas.map((videoData, idx) => {
                 return (
-                  <SliderItem
-                    key={idx}
-                    onClick={() => {
-                      onVideoClickHandler(videoData.videoId);
-                    }}
-                  >
+                  <SliderItem key={idx} onClick={() => onVideoClickHandler(videoData)}>
                     <SliderItemImgWrap>
                       <img
                         src={videoData.thumbnailUrl}
@@ -89,6 +93,14 @@ const BodySliderCopy = () => {
           </SliderWrap>
         </StyledSwiper>
       </MainYoutuberSlider>
+
+      {/* 모달이 열려있을 때만 VideoModal을 렌더링 */}
+      {isModalOpen && (
+        <VideoModal
+          videoData={selectedVideo} // VideoModal에 전달할 데이터
+          onClose={closeModal} // 모달 닫기 함수 전달
+        />
+      )}
     </>
   );
 };
@@ -100,7 +112,7 @@ export default BodySliderCopy;
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
-  height: 330px;
+  /* height: 330px; */
   margin: 0 auto 3rem auto;
   display: flex;
   align-items: center;
@@ -115,15 +127,28 @@ export const MainYoutuberSlider = styled.section`
 const StyledSwiper = styled.div`
   width: 100%;
   /* background-color: blue; */
+  .slick-slider.slick-initialized {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    width: auto;
+    height: auto;
+  }
 
   .slick-prev {
-    left: -50px; /* 왼쪽버튼 이동 */
+    left: -10px;
+  }
+  .slick-next {
+    right: -10px;
   }
 `;
 
 export const SliderWrap = styled.div`
   width: 100%;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
 
   .slick-prev:before,
@@ -135,19 +160,16 @@ export const SliderWrap = styled.div`
 
 // 각 슬라이드에 적용될 스타일드 컴포넌트 정의
 export const SliderItem = styled.div`
-  width: calc(100% / 3);
-  display: flex;
+  width: 100%;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
-
+  margin-top: 3rem;
   /* background-color: green; */
-
-  padding-left: 20px;
 
   &:hover {
     cursor: pointer;
-    transform: scale(1.1);
+    transform: scale(1.08);
     transition: 0.3s;
   }
 `;
@@ -159,7 +181,7 @@ export const SliderItemImgWrap = styled.div`
   }
 `;
 export const SliderItemInfo = styled.div`
-  padding: 1rem 3rem 1rem 0rem;
+  padding: 1.5rem;
   width: 100%;
 `;
 export const SliderItemInfoTop = styled.div`
@@ -171,5 +193,8 @@ export const SliderItemInfoTop = styled.div`
 
   & > h3 {
     width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
