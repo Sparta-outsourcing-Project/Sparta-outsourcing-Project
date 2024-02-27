@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
 import { getDetailDataApi } from '../../api/detailApi';
 import { useParams } from 'react-router-dom';
+import RecentVideo from './RecentVideo';
 
 export default function Detail() {
   const params = useParams();
@@ -115,10 +116,9 @@ export default function Detail() {
           </Table>
         </GraphContainer>
         <VideoContainer>
-          <RecentVideos>최근 영상</RecentVideos>
-          {/* {recentVideos.slice(0, 6).map((video) => {
-          <RecentVideo key={video.channelId} video={video} />;
-        })} */}
+          <RecentVideos>
+            인기 동영상 <RecentVideo channelId={channelId} />
+          </RecentVideos>
         </VideoContainer>
       </DetailInfoContainer>
 
