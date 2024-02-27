@@ -4,6 +4,7 @@ import logo from '../../assets/utrend_logo.png';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../api/config';
+import { addDefaultUserInfo } from '../../api/auth';
 
 const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
   const [userId, setUserId] = useState('');
@@ -39,6 +40,17 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
         console.log(userCredential);
         alert('회원가입이 완료되었습니다 🎉');
         setIsSignUpOpen((prev) => !prev);
+
+        // firestore에 newUserInfo 저장하기
+        const { uid } = userCredential.user;
+        const newUserInfo = {
+          uid,
+          userId,
+          nickname: userNickname,
+          image: null,
+          favChannels: []
+        };
+        addDefaultUserInfo(uid, newUserInfo);
       })
       .catch((error) => {
         // 회원가입 실패시

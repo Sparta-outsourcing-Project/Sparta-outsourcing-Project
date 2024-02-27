@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 
 import { auth } from '../../api/config';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/modules/loginSlice';
+import { addGoogleUserInfo } from '../../api/auth';
 
 const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const [userId, setUserId] = useState('');
@@ -73,6 +74,18 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
 
         // 로그인상태 RTK true로 변경
         dispatch(login(true));
+
+        // fireStore에 newUserInfo 저장하기
+        const { uid } = userData.user;
+        const newUserInfo = {
+          uid,
+          userId: userData.user.email,
+          nickname: userData.user.displayName,
+          image: null,
+          favChannels: []
+        };
+
+        addGoogleUserInfo(uid, newUserInfo);
       })
       .catch((error) => {
         console.log(error);

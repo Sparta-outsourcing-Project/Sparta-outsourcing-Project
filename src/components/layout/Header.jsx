@@ -14,7 +14,6 @@ export default function Header() {
 
   // login상태 RTK에서 가져오기
   const loginState = useSelector((state) => state.loginReducer);
-  console.log(loginState);
   const dispatch = useDispatch();
 
   // 렌더링시 sessionStorage로 로그인상태 확인
