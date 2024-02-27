@@ -19,7 +19,7 @@ export const readSearchKeyWord = async (keyword) => {
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
-    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 1 };
+    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 3 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
     // console.log(videoResponse.data);
     const videoItems = videoResponse.data.items;
@@ -28,32 +28,10 @@ export const readSearchKeyWord = async (keyword) => {
     // NOTE 정보들 - 전역상태관리해야할것같다 RQ 사용해야할듯 여기서 return 후?
     for (const item of videoItems) {
       const channelId = item.snippet.channelId;
-      // console.log(item.snippet);
-      // const channelResponse = await axiosInstance.get(`${request.getChannelSnippetStatistics}&id=${channelId}`);
-      // const snippet = channelResponse.data.items[0].snippet;
-      // const channelTitle = snippet.title;
-      // const description = snippet.description; // 채널설명
-      // const thumbnailUrl = snippet.thumbnails.medium.url; // 채널 썸네일 url
-
-      // const statistics = channelResponse.data.items[0].statistics;
-      // const initSubscriberCount = statistics.subscriberCount; // 채널 구독자수
-      // const videoCount = statistics.videoCount; // 채널 총 영상수
-      // const viewCount = statistics.viewCount; // 채널 총 조회수(모든 영상 조회수의 합)
-      // const initAverageViewCount = viewCount / videoCount; // (일반적인) 채널 평균 조회수 (총 조회수 / 총 영상 수)
-
-      // const subscriberCount =
-      //   initSubscriberCount > 10000
-      //     ? Math.round(initSubscriberCount / 10000) + '만'
-      //     : Math.round((initSubscriberCount / 1000) * 10) / 10 + '천';
-      // const averageViewCount =
-      //   initAverageViewCount > 10000
-      //     ? Math.round(initAverageViewCount / 10000) + '만'
-      //     : Math.round((initAverageViewCount / 1000) * 10) / 10 + '천';
       const channelInfo = await getChannelInfoById(channelId);
       result.push({ channelId, ...channelInfo });
     }
-    // console.log(result);
-    return result; // 객체담긴 배열 형태로 리턴 - {채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만)}
+    return result; // 객체담긴 배열 형태로 리턴 - {채널ID, 채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만)}
   } catch (error) {
     console.error('Failed to get data by function readSearchKeyWord - ', error.message);
   }
