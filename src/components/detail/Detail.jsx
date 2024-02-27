@@ -2,38 +2,38 @@ import styled from 'styled-components';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import { useEffect, useState } from 'react';
-import { getBanner, readByChannelId, readSearchKeyWord } from '../../api/dataApi';
+import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
 import { getDetailDataApi } from '../../api/detailApi';
+import { useParams } from 'react-router-dom';
 
 export default function Detail() {
-  // const { id } = useParams();
+  const params = useParams();
+  const channelId = params.id;
 
   const [channelInfo, setChannelInfo] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
   const [bannerUrl, setBannerUrl] = useState('');
-  const [chnnelLink, setChannelLink] = useState('');
+  const [channelLink, setChannelLink] = useState('');
 
-  // channel 정보 불러오기
+  // channelId로 채널 정보 데이터 불러오기
   useEffect(() => {
-    const fetchChannelInfo = async () => {
+    const fetchChannelInfo = async (channelId) => {
       try {
-        const channelData = await readSearchKeyWord(`쯔양`);
-        // console.log(channelData[1]);
-        const specificChannel = channelData[1];
-        setChannelInfo(specificChannel);
+        const channelData = await getChannelInfoById(channelId);
+        setChannelInfo(channelData);
       } catch (error) {
         console.error('Failed to fetch channel info:', error.message);
       }
     };
-    fetchChannelInfo();
-  }, []);
+    fetchChannelInfo(channelId);
+  }, [channelId]);
 
   // 댓글수, 좋아요 수 불러오기
   useEffect(() => {
     const fetchDetailInfo = async () => {
       try {
         const detailData = await getDetailDataApi('OzHPMTZXs8U');
-        // console.log(detailData);
+
         setDetailInfo(detailData);
       } catch (error) {
         console.error('Failed to fetch detail info:', error.message);
@@ -44,36 +44,33 @@ export default function Detail() {
 
   // banner url 불러오기
   useEffect(() => {
-    const fetchBanner = async () => {
+    const fetchBanner = async (channelId) => {
       try {
         if (channelInfo) {
-          const bannerImage = await getBanner('UCfpaSruWW3S4dibonKXENjA');
+          const bannerImage = await getBanner(channelId);
           setBannerUrl(bannerImage);
         }
       } catch (error) {
         console.error('Failed to fetch banner:', error.message);
       }
     };
-    fetchBanner();
-  }, [channelInfo]);
+    fetchBanner(channelId);
+  }, [channelInfo, channelId]);
 
+  // 채널 방문 link 불러오기
   useEffect(() => {
     const fetchChannelLink = async () => {
-      const getChannelInfo = await readByChannelId();
-      const getChannelLink = getChannelInfo.items[0].snippet.customUrl;
+      const getChannelInfo = await getMostChannelInfo(channelId);
 
-      // console.log('getChannelInfo', getChannelInfo);
-      // console.log('getChannelLink', getChannelLink);
-
-      setChannelLink(getChannelLink);
+      setChannelLink(getChannelInfo);
     };
     fetchChannelLink();
-  }, []);
+  }, [channelLink, channelId]);
 
   // 채널 방문 버튼 클릭시, 채널 페이지로 이동
 
   const onChannelBtnClickHandler = () => {
-    const youtubeURL = `https://www.youtube.com/${chnnelLink}`;
+    const youtubeURL = `https://www.youtube.com/${channelLink}`;
     window.open(youtubeURL, '_blank');
   };
   return (
@@ -82,44 +79,49 @@ export default function Detail() {
       <BannerContainer>
         <BannerImage src={bannerUrl} alt="Banner Image" />
       </BannerContainer>
-
-      <ProfileContainer>
-        <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
-        {channelInfo && (
-          <>
-            <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
-            <Text>구독자 {channelInfo.subscriberCount}</Text>
-            <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
-          </>
-        )}
-      </ProfileContainer>
-      <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
-      <GraphContainer>
-        <Graph>
-          <h2>오각형 방사형 그래프</h2>
-        </Graph>
-        <Table>
-          테이블 자리
+      <DetailInfoContainer>
+        <ProfileContainer>
+          <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
           {channelInfo && (
             <>
-              <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
-              <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+              <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
+              <Text>구독자 {channelInfo.subscriberCount}</Text>
+              <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
             </>
           )}
-          {detailInfo && (
-            <>
-              <Text>특정 영상 좋아요 수 {detailInfo.likeCount} 개</Text>
-              <Text>특정 영상 댓글 수 {detailInfo.commentCount} 개</Text>
-            </>
-          )}
-        </Table>
-      </GraphContainer>
-      <VideoContainer>
-        <RecentVideos>최근 영상</RecentVideos>
-        {/* {recentVideos.slice(0, 6).map((video) => {
+        </ProfileContainer>
+        {channelInfo && (
+          <>
+            <ChannelDescription> {channelInfo.description} </ChannelDescription>
+          </>
+        )}
+        <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
+        <GraphContainer>
+          <Graph>막대형 그래프로 변경 예정</Graph>
+          <Table>
+            테이블 자리
+            {channelInfo && (
+              <>
+                <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
+                <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+              </>
+            )}
+            {detailInfo && (
+              <>
+                <Text>특정 영상 좋아요 수 {detailInfo.likeCount} 개</Text>
+                <Text>특정 영상 댓글 수 {detailInfo.commentCount} 개</Text>
+              </>
+            )}
+          </Table>
+        </GraphContainer>
+        <VideoContainer>
+          <RecentVideos>최근 영상</RecentVideos>
+          {/* {recentVideos.slice(0, 6).map((video) => {
           <RecentVideo key={video.channelId} video={video} />;
         })} */}
-      </VideoContainer>
+        </VideoContainer>
+      </DetailInfoContainer>
+
       <Footer />
     </Wrap>
   );
@@ -141,7 +143,7 @@ const BannerImage = styled.img`
   text-align: center;
   width: 100%;
 `;
-
+const DetailInfoContainer = styled.div``;
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -167,13 +169,19 @@ const Text = styled.span`
   font-size: large;
   font-weight: 600;
 `;
-
+const ChannelDescription = styled.p`
+  margin: 0 200px;
+  width: 1280px;
+  font-size: large;
+  line-height: 1.5;
+`;
 const LinkToChannel = styled.button`
   width: 150px;
   border-color: transparent;
   border-radius: 10px;
   height: 40px;
   margin-left: 200px;
+  margin-top: 30px;
 `;
 
 const GraphContainer = styled.div`
@@ -181,19 +189,23 @@ const GraphContainer = styled.div`
   flex-direction: row;
   padding: 20px;
   gap: 20px;
+  margin: 0 200px;
 `;
 
 const Graph = styled.div`
   width: 50%;
   height: 300px;
-  background-color: #febe98;
+  border: 1px solid black;
+  border-radius: 10px;
   text-align: center;
+  padding: 20px;
 `;
 
 const Table = styled.div`
   width: 50%;
   height: 300px;
-  background-color: #ff9b62;
+  border: 1px solid black;
+  border-radius: 10px;
   text-align: center;
   padding: 20px;
   display: flex;
