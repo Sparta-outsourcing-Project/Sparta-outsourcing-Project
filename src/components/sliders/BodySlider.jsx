@@ -116,7 +116,7 @@ const StyledSwiper = styled.div`
 export const SliderWrap = styled.div`
   width: 100%;
 
-  display: flex;
+  /* display: flex; */
   justify-content: center;
 
   button {
