@@ -65,7 +65,7 @@ export default function Main() {
           <input
             id="search-input"
             type="search"
-            placeholder="주제를 검색하세요."
+            placeholder="원하는 주제를 검색해보세요 !"
             value={searchTerm}
             onChange={handleSearchInputChange}
             onKeyDown={handleSearchEnter}
@@ -75,9 +75,9 @@ export default function Main() {
         <SearchKeyWord>
           {keyWords.map((keyword) => {
             return (
-              <span key={keyword} onClick={() => handleKeyWordClick(keyword)}>
+              <KeywordText key={keyword} onClick={() => handleKeyWordClick(keyword)}>
                 #{keyword}
-              </span>
+              </KeywordText>
             );
           })}
         </SearchKeyWord>
@@ -152,16 +152,20 @@ export const SearchKeyWord = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  & > span {
-    display: block;
-    font-size: 14px;
-    background-color: #7cd8c6;
-    border-radius: 1rem;
-    padding: 2px 1.2rem;
-    margin: 0 8px;
-  }
 `;
 
+export const KeywordText = styled.div`
+  display: block;
+  font-size: 14px;
+  background-color: #7cd8c6;
+  border-radius: 1rem;
+  padding: 2px 1.2rem;
+  margin: 0 8px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
 // best
 export const MainBest = styled.section`
   width: 1280px;
