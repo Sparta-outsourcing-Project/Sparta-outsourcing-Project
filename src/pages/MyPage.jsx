@@ -33,10 +33,10 @@ export default function MyPage() {
       <Header />
       <MypageSection>
         <ProfileSection>
-          <img src={defaultImg} alt="defaultImg" width={200} />
+          <img src={image === null ? defaultImg : image} alt="defaultImg" width={200} />
           <ProfileContent>
-            <UserNickname>닉네임</UserNickname>
-            <UserEmail>이메일</UserEmail>
+            <UserNickname>{nickname}</UserNickname>
+            <UserEmail>{userId}</UserEmail>
             <UserIntro>내 소개</UserIntro>
           </ProfileContent>
           <button>수정하기</button>
