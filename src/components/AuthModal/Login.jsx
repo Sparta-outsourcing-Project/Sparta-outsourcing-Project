@@ -1,10 +1,11 @@
 import * as St from './styles/Login.style';
 import logo from '../../assets/utrend_logo.png';
+import googleIcon from '../../assets/google.png';
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../api/config';
 
-const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
+const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => {
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
 
@@ -36,14 +37,33 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const onLoginHandler = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, userId, userPw);
-      console.log(userCredential);
+      console.log('로그인', userCredential);
       alert('로그인 되었습니다.');
       setIsLoginOpen((prev) => !prev);
-      localStorage.setItem('userId', userId);
+      sessionStorage.setItem('userId', userId);
+      setIsLogin(true);
+
+      setUserId('');
+      setUserPw('');
     } catch (error) {
       console.log(error);
       alert('입력하신 값을 확인해주세요.');
     }
+  };
+
+  // 구글 로그인 클릭
+  const onGoogleLogin = () => {
+    setIsLoginOpen((prev) => !prev);
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((userData) => {
+        alert('로그인 되었습니다.');
+        sessionStorage.setItem('userId', userData.user.email);
+        setIsLogin(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -62,7 +82,13 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
                 <St.InputContainer>
                   <input placeholder="비밀번호 (6글자 이상)" type="password" value={userPw} onChange={onUserPw} />
                 </St.InputContainer>
-                <button onClick={onLoginHandler}>로그인</button>
+                <St.DefaultLogin onClick={onLoginHandler}>로그인</St.DefaultLogin>
+                <St.GoogleLoginBtn onClick={onGoogleLogin}>
+                  <St.GoogleWrapper>
+                    <img src={googleIcon} alt="" />
+                    <span>Google 로그인</span>
+                  </St.GoogleWrapper>
+                </St.GoogleLoginBtn>
               </St.InputBtnWrapper>
 
               <St.CheckSignUp>
