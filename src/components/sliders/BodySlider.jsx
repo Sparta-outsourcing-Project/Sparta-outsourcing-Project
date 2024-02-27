@@ -7,17 +7,16 @@ import 'slick-carousel/slick/slick-theme.css';
 import VideoModal from './VideoModal'; // VideoModal 컴포넌트 import 추가
 
 const BodySliderCopy = () => {
-  // API로 받아올 videoID에 따른 return 객체의 배열 설정
+  // videoId로 받아온 영상 정보 (6개의 객체 배열)
   const [videoDatas, setVideoDatas] = useState([]);
 
-  // video Id 6개 배열일때
   useEffect(() => {
-    // 영상 id 6개 배열
+    // 영상 id 6개
     const videoIds = ['1nVPaBoiq7I', 'I01pzEznbdU', 'r3C-iALopZo', 'meeMvpwnGy0', 'xKfCI4UciTo', 'ESzcNpnPgW8'];
 
     const fetchDataForVideoIds = async () => {
       const fetchDataPromises = videoIds.map(async (id, index) => {
-        // 각 비디오의 카테고리를 설정
+        // 각 비디오의 카테고리
         const categoryArr = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
         const category = categoryArr[index];
 
@@ -58,8 +57,10 @@ const BodySliderCopy = () => {
     autoplay: false,
     speed: 300,
     // autoplaySpeed: 700,
+
     cssEase: 'linear',
     pauseOnHover: true
+    // waitForAnimate: false
   };
 
   return (
@@ -107,8 +108,6 @@ const BodySliderCopy = () => {
 
 export default BodySliderCopy;
 
-// BodySlider 컴포넌트에서 사용할 스타일드 컴포넌트 정의
-
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
@@ -116,7 +115,6 @@ export const MainYoutuberSlider = styled.section`
   margin: 0 auto 3rem auto;
   display: flex;
   align-items: center;
-  /* background-color: red; */
 
   @media (max-width: 1300px) {
     max-width: calc(100% - 2rem);
@@ -126,17 +124,6 @@ export const MainYoutuberSlider = styled.section`
 
 const StyledSwiper = styled.div`
   width: 100%;
-  /* background-color: blue; */
-  .slick-slider.slick-initialized {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  button {
-    width: auto;
-    height: auto;
-  }
 
   .slick-prev {
     left: -10px;
@@ -164,8 +151,8 @@ export const SliderItem = styled.div`
   display: flex !important;
   flex-direction: column;
   align-items: center;
-  margin-top: 3rem;
-  /* background-color: green; */
+  padding-top: 3rem;
+  padding-left: 20px;
 
   &:hover {
     cursor: pointer;
