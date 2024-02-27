@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, updateUserInfo } from '../../api/auth';
 import { defaultUser, updateUserState } from '../../redux/modules/userSlice';
+import styled from 'styled-components';
 
 const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
@@ -107,10 +108,10 @@ const MyProfile = () => {
           {isEdit ? <input type="text" value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
         </ProfileContent>
         {isEdit ? (
-          <>
+          <UpdateButton>
             <button onClick={onUpdateUserInfo}>수정완료</button>
             <button onClick={onCancel}>취소</button>
-          </>
+          </UpdateButton>
         ) : (
           <>
             <button onClick={onUpdateHandler}>수정하기</button>
@@ -122,3 +123,17 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+
+export const UpdateButton = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  & > button {
+    background-color: white;
+    width: 8rem;
+    height: 3rem;
+    border: none;
+    border-radius: 0.5rem;
+  }
+`;
