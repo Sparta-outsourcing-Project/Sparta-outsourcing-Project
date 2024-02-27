@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-import { useEffect, useState } from 'react';
 import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
-import { getDetailDataApi } from '../../api/detailApi';
 import { useParams } from 'react-router-dom';
+import RecentVideo from './RecentVideo';
 import Loading from '../layout/Loading';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +11,7 @@ export default function Detail() {
   const params = useParams();
   const channelId = params.id;
 
-  const [detailInfo, setDetailInfo] = useState(null);
+  // const [detailInfo, setDetailInfo] = useState(null);
 
   // channelId로 채널 정보 데이터 불러오기
   const {
@@ -36,20 +35,6 @@ export default function Detail() {
 
   // console.log(detailInfo);
 
-  // 댓글수, 좋아요 수 불러오기
-  useEffect(() => {
-    const fetchDetailInfo = async () => {
-      try {
-        const detailData = await getDetailDataApi('OzHPMTZXs8U');
-        console.log(detailData);
-        setDetailInfo(detailData);
-      } catch (error) {
-        console.error('Failed to fetch detail info:', error.message);
-      }
-    };
-    fetchDetailInfo();
-  }, []);
-
   // banner url 불러오기 -> React Query로
   const {
     data: bannerUrl,
@@ -59,6 +44,8 @@ export default function Detail() {
     queryKey: ['bannerUrl', channelId, channelInfo],
     queryFn: () => getBanner(channelId)
   });
+
+  const formattedBannerUrl = `${bannerUrl}=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`;
 
   // 채널 방문 link 불러오기 -> React Query로
   const {
@@ -85,51 +72,50 @@ export default function Detail() {
     <Wrap>
       <Header />
       <BannerContainer>
-        <BannerImage src={bannerUrl} alt="Banner Image" />
+        <BannerImage src={formattedBannerUrl} alt="Banner Image" />
       </BannerContainer>
-      <DetailInfoContainer>
-        <ProfileContainer>
-          <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
-          {channelInfo && (
-            <>
-              <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
-              <Text>구독자 {channelInfo.subscriberCount}</Text>
-              <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
-            </>
-          )}
-        </ProfileContainer>
-        {channelInfo && (
-          <>
-            <ChannelDescription> {channelInfo.description} </ChannelDescription>
-          </>
-        )}
-        <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
-        <GraphContainer>
-          <Graph>막대형 그래프로 변경 예정</Graph>
-          <Table>
-            테이블 자리
+      <BottomContainer>
+        <DetailInfoContainer>
+          <ProfileContainer>
+            <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
             {channelInfo && (
               <>
-                <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
-                <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+                <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
+                <Text>구독자 {channelInfo.subscriberCount}</Text>
+                <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
               </>
             )}
-            {detailInfo && (
+          </ProfileContainer>
+          {channelInfo && (
+            <>
+              <ChannelDescription> {channelInfo.description} </ChannelDescription>
+            </>
+          )}
+          <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
+          <GraphContainer>
+            <Graph>막대형 그래프로 변경 예정</Graph>
+            <Table>
+              테이블 자리
+              {channelInfo && (
+                <>
+                  <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
+                  <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+                </>
+              )}
+              {/* {detailInfo && (
               <>
                 <Text>특정 영상 좋아요 수 {detailInfo.likeCount} 개</Text>
                 <Text>특정 영상 댓글 수 {detailInfo.commentCount} 개</Text>
               </>
-            )}
-          </Table>
-        </GraphContainer>
-        <VideoContainer>
-          <RecentVideos>최근 영상</RecentVideos>
-          {/* {recentVideos.slice(0, 6).map((video) => {
-          <RecentVideo key={video.channelId} video={video} />;
-        })} */}
-        </VideoContainer>
-      </DetailInfoContainer>
-
+            )} */}
+            </Table>
+          </GraphContainer>
+          <VideoContainer>
+            <RecentVideoTitle>최근 영상 </RecentVideoTitle>
+            <RecentVideo channelId={channelId} />
+          </VideoContainer>
+        </DetailInfoContainer>
+      </BottomContainer>
       <Footer />
     </Wrap>
   );
@@ -151,7 +137,13 @@ const BannerImage = styled.img`
   text-align: center;
   width: 100%;
 `;
-const DetailInfoContainer = styled.div``;
+const BottomContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const DetailInfoContainer = styled.div`
+  width: 1920px;
+`;
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -223,11 +215,17 @@ const Table = styled.div`
 
 const VideoContainer = styled.div`
   width: 100%;
-  height: 300px;
+
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-const RecentVideos = styled.span`
-  font-size: large;
+const RecentVideoTitle = styled.div`
+  font-size: larger;
   padding: 10px;
+  font-weight: 600;
+  width: 1280px;
 `;
