@@ -1,46 +1,53 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useMemo } from 'react';
 import styled from 'styled-components';
-import { readSearchKeyWord } from '../../api/dataApi';
+import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
+import Loading from '../layout/Loading';
+import { readSearchKeyWord } from '../../api/dataApi';
 
 export default function CardList() {
-  const [channelData, setChannelData] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
   const [sortBy, setSortBy] = useState('subscriberCount');
   const { keyword } = useParams();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const searchKeyword = keyword;
-      const data = await readSearchKeyWord(searchKeyword);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['keyword', keyword, sortBy],
+    queryFn: () => readSearchKeyWord(keyword),
+    keepPreviousData: true
+  });
 
-      // 중복 제거 후 정렬된 데이터로 업데이트
-      const uniqueSortedData = sortAndRemoveDuplicates(data, sortBy);
-      setChannelData(uniqueSortedData);
-      setOriginalData(uniqueSortedData);
-    };
+  // 중복 제거 및 정렬된 데이터
+  const sortedAndUniqueData = useMemo(() => {
+    if (!data) return [];
 
-    fetchData();
-  }, [keyword, sortBy]);
+    const uniqueData = Array.from(new Set(data.map((item) => item.channelTitle))).map((channelTitle) =>
+      data.find((item) => item.channelTitle === channelTitle)
+    );
+    return uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
+  }, [data, sortBy]);
+
+  // 페이지네이션
+  const [page, setPage] = useState(1); // 현재 페이지 수
+  const pageRange = 10; // 페이지당 보여줄 게시물 수
+  const btnRange = 3; // 보여질 페이지 버튼 수
+  const totalPost = sortedAndUniqueData.length; // 총 게시물 수
+  const currentSet = Math.ceil(page / btnRange); // 현재 페이지 세트
+  const startPage = (currentSet - 1) * btnRange + 1; // 시작 페이지 번호
+  const endPage = Math.min(startPage + btnRange - 1, Math.ceil(totalPost / pageRange)); // 마지막 페이지 번호
+  const indexOfLastPost = page * pageRange;
+  const indexOfFirstPost = indexOfLastPost - pageRange;
+  const currentPosts = sortedAndUniqueData.slice(indexOfFirstPost, indexOfLastPost);
 
   // 정렬 옵션 변경 핸들러
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
-
-    const sortedData = sortAndRemoveDuplicates(originalData, e.target.value);
-    setChannelData(sortedData);
   };
 
-  // 중복 제거 및 정렬 함수
-  const sortAndRemoveDuplicates = (data, sortBy) => {
-    const uniqueData = Array.from(new Set(data.map((item) => item.channelTitle))).map((channelTitle) =>
-      data.find((item) => item.channelTitle === channelTitle)
-    );
-
-    const sortedData = uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
-    return sortedData;
+  const handlePageNum = (pageNum) => {
+    setPage(pageNum);
   };
+
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <main>
@@ -59,9 +66,9 @@ export default function CardList() {
             </tr>
           </thead>
           <tbody>
-            {channelData.map((channel, index) => (
+            {currentPosts.map((channel, index) => (
               <tr key={index}>
-                <td>{index + 1}위</td>
+                <td>{(page - 1) * pageRange + index + 1}위</td>
                 <td>
                   <span key={channel.channelTitle}>
                     <Link to={`/list/${keyword}/${channel.channelId}`}>
@@ -78,10 +85,22 @@ export default function CardList() {
             ))}
           </tbody>
         </ListTable>
+        <PageButtonBox>
+          {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
+            <PageButton
+              key={pageNum}
+              onClick={() => handlePageNum(pageNum)}
+              style={{ fontWeight: page === pageNum ? 'bold' : 'normal' }}
+            >
+              {pageNum}
+            </PageButton>
+          ))}
+        </PageButtonBox>
       </ListWrapper>
     </main>
   );
 }
+
 export const ListWrap = styled.main``;
 export const ListWrapper = styled.div`
   width: 1280px;
@@ -121,4 +140,19 @@ export const ListTable = styled.table`
       width: 100%;
     }
   }
+`;
+
+const PageButtonBox = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  width: 100%;
+  margin-top: 1rem;
+  gap: 1rem;
+`;
+
+const PageButton = styled.button`
+  justify-content: center;
+  align-items: center;
 `;
