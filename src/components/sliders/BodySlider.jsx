@@ -136,7 +136,17 @@ const StyledSwiper = styled.div`
 export const SliderWrap = styled.div`
   width: 100%;
   /* display: flex; */
-  justify-content: center;
+  /* justify-content: center; */
+  .slick-slider.slick-initialized {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    width: auto;
+    height: auto;
+  }
 
   .slick-prev:before,
   .slick-next:before {
@@ -151,8 +161,7 @@ export const SliderItem = styled.div`
   display: flex !important;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
-  padding-left: 20px;
+  margin-top: 3rem;
 
   &:hover {
     cursor: pointer;
