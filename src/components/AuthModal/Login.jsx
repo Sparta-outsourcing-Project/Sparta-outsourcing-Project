@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../api/config';
 
-const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
+const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => {
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
 
@@ -36,10 +36,11 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const onLoginHandler = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, userId, userPw);
-      console.log(userCredential);
+      console.log('로그인', userCredential);
       alert('로그인 되었습니다.');
       setIsLoginOpen((prev) => !prev);
-      localStorage.setItem('userId', userId);
+      sessionStorage.setItem('userId', userId);
+      setIsLogin(true);
     } catch (error) {
       console.log(error);
       alert('입력하신 값을 확인해주세요.');
