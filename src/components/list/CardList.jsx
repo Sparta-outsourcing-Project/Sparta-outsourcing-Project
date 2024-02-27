@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { readSearchKeyWord } from '../../api/dataApi';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 export default function CardList() {
   const [channelData, setChannelData] = useState([]);
@@ -10,15 +11,28 @@ export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
   const { keyword } = useParams();
 
+  const searchKeyword = keyword;
+  // RQ 추가  {채널ID, 채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만)}
+  const {
+    data: channelInfos,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['channelInfos'], // searchKeyword가 인자로 전달?
+    queryFn: readSearchKeyWord(searchKeyword)
+  });
+
   useEffect(() => {
     const fetchData = async () => {
-      const searchKeyword = keyword;
-      const data = await readSearchKeyWord(searchKeyword);
-
-      // 중복 제거 후 정렬된 데이터로 업데이트
-      const uniqueSortedData = sortAndRemoveDuplicates(data, sortBy);
-      setChannelData(uniqueSortedData);
-      setOriginalData(uniqueSortedData);
+      if (channelInfos) {
+        const data = await channelInfos;
+        // const data = await readSearchKeyWord(searchKeyword);
+        console.log(data);
+        // 중복 제거 후 정렬된 데이터로 업데이트
+        const uniqueSortedData = sortAndRemoveDuplicates(data, sortBy);
+        setChannelData(uniqueSortedData);
+        setOriginalData(uniqueSortedData);
+      }
     };
 
     fetchData();
