@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
+import { getBanner, getMostChannelInfo } from '../../api/dataApi';
 import { useParams } from 'react-router-dom';
 import RecentVideo from './RecentVideo';
 import Loading from '../layout/Loading';
 import { useQuery } from '@tanstack/react-query';
+import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
+import VideoInfoGraph from './VideoInfoGraph';
 
 export default function Detail() {
   const params = useParams();
@@ -14,14 +16,20 @@ export default function Detail() {
   // const [detailInfo, setDetailInfo] = useState(null);
 
   // channelId로 채널 정보 데이터 불러오기
+  // const {
+  //   data: channelInfo,
+  //   isLoading: isChannelInfoLoading,
+  //   error: channelInfoError
+  // } = useQuery({
+  //   queryKey: ['channelInfo', channelId],
+  //   queryFn: () => getChannelInfoById(channelId)
+  // });
+
   const {
     data: channelInfo,
     isLoading: isChannelInfoLoading,
     error: channelInfoError
-  } = useQuery({
-    queryKey: ['channelInfo', channelId],
-    queryFn: () => getChannelInfoById(channelId)
-  });
+  } = useChannelDetailInfo(channelId);
 
   // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
   // const {
@@ -64,6 +72,8 @@ export default function Detail() {
     window.open(youtubeURL, '_blank');
   };
 
+  // 평균 좋아요수, 댓글수 불러오기
+
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
   if (channelInfoError || bannerUrlError || channelLinkError)
     return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
@@ -93,7 +103,9 @@ export default function Detail() {
           )}
           <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
           <GraphContainer>
-            <Graph>막대형 그래프로 변경 예정</Graph>
+            <Graph>
+              <VideoInfoGraph channelId={channelId} />
+            </Graph>
             <Table>
               테이블 자리
               {channelInfo && (
