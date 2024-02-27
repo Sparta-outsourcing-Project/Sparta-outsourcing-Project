@@ -62,7 +62,17 @@ export const getChannelInfoById = async (channelId) => {
         ? Math.round(initAverageViewCount / 10000) + '만'
         : Math.round((initAverageViewCount / 1000) * 10) / 10 + '천';
 
-    return { channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount, viewCount, videoCount };
+    return {
+      channelTitle,
+      description,
+      thumbnailUrl,
+      subscriberCount,
+      averageViewCount,
+      viewCount,
+      videoCount,
+      initSubscriberCount,
+      initAverageViewCount
+    };
     // 객체담긴 배열 형태로 리턴 - {채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만), 채널 총 조회수, 채널 총 영상수}
   } catch (error) {
     console.error('Failed to get data by function getChannelInfoById - ', error.message);
