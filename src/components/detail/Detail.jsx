@@ -5,35 +5,43 @@ import { useEffect, useState } from 'react';
 import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
 import { getDetailDataApi } from '../../api/detailApi';
 import { useParams } from 'react-router-dom';
+import Loading from '../layout/Loading';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Detail() {
   const params = useParams();
   const channelId = params.id;
 
-  const [channelInfo, setChannelInfo] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
-  const [bannerUrl, setBannerUrl] = useState('');
-  const [channelLink, setChannelLink] = useState('');
 
   // channelId로 채널 정보 데이터 불러오기
-  useEffect(() => {
-    const fetchChannelInfo = async (channelId) => {
-      try {
-        const channelData = await getChannelInfoById(channelId);
-        setChannelInfo(channelData);
-      } catch (error) {
-        console.error('Failed to fetch channel info:', error.message);
-      }
-    };
-    fetchChannelInfo(channelId);
-  }, [channelId]);
+  const {
+    data: channelInfo,
+    isLoading: isChannelInfoLoading,
+    error: channelInfoError
+  } = useQuery({
+    queryKey: ['channelInfo', channelId],
+    queryFn: () => getChannelInfoById(channelId)
+  });
+
+  // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
+  // const {
+  //   data: detailInfo,
+  //   isLoading: isDetailInfoLoading,
+  //   error: detailInfoError
+  // } = useQuery({
+  //   queryKey: ['detailInfo', ],
+  //   queryFn: () => getDetailDataApi('OzHPMTZXs8U') // videoId
+  // });
+
+  // console.log(detailInfo);
 
   // 댓글수, 좋아요 수 불러오기
   useEffect(() => {
     const fetchDetailInfo = async () => {
       try {
         const detailData = await getDetailDataApi('OzHPMTZXs8U');
-
+        console.log(detailData);
         setDetailInfo(detailData);
       } catch (error) {
         console.error('Failed to fetch detail info:', error.message);
@@ -42,30 +50,25 @@ export default function Detail() {
     fetchDetailInfo();
   }, []);
 
-  // banner url 불러오기
-  useEffect(() => {
-    const fetchBanner = async (channelId) => {
-      try {
-        if (channelInfo) {
-          const bannerImage = await getBanner(channelId);
-          setBannerUrl(bannerImage);
-        }
-      } catch (error) {
-        console.error('Failed to fetch banner:', error.message);
-      }
-    };
-    fetchBanner(channelId);
-  }, [channelInfo, channelId]);
+  // banner url 불러오기 -> React Query로
+  const {
+    data: bannerUrl,
+    isLoading: isBannerUrlLoading,
+    error: bannerUrlError
+  } = useQuery({
+    queryKey: ['bannerUrl', channelId, channelInfo],
+    queryFn: () => getBanner(channelId)
+  });
 
-  // 채널 방문 link 불러오기
-  useEffect(() => {
-    const fetchChannelLink = async () => {
-      const getChannelInfo = await getMostChannelInfo(channelId);
-
-      setChannelLink(getChannelInfo);
-    };
-    fetchChannelLink();
-  }, [channelLink, channelId]);
+  // 채널 방문 link 불러오기 -> React Query로
+  const {
+    data: channelLink,
+    isLoading: isChannelLinkLoading,
+    error: channelLinkError
+  } = useQuery({
+    queryKey: ['channelLink', channelId],
+    queryFn: () => getMostChannelInfo(channelId)
+  });
 
   // 채널 방문 버튼 클릭시, 채널 페이지로 이동
 
@@ -73,6 +76,11 @@ export default function Detail() {
     const youtubeURL = `https://www.youtube.com/${channelLink}`;
     window.open(youtubeURL, '_blank');
   };
+
+  if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
+  if (channelInfoError || bannerUrlError || channelLinkError)
+    return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
+
   return (
     <Wrap>
       <Header />
