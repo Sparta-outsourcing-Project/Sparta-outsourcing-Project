@@ -37,7 +37,7 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
       .then((userCredential) => {
         // 회원가입 성공시
         console.log(userCredential);
-        console.log('회원가입이 완료되었습니다 🎉');
+        alert('회원가입이 완료되었습니다 🎉');
         setIsSignUpOpen((prev) => !prev);
       })
       .catch((error) => {

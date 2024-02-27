@@ -23,8 +23,16 @@ export default function Header() {
         </Link>
       </Logo>
       <Auth>
-        <p onClick={onLoginClickHandler}>로그인</p>
-        <p onClick={onSignUpClickHandler}>회원가입</p>
+        {sessionStorage.getItem('userId') ? (
+          <>
+            <p>로그아웃</p>
+          </>
+        ) : (
+          <>
+            <p onClick={onLoginClickHandler}>로그인</p>
+            <p onClick={onSignUpClickHandler}>회원가입</p>
+          </>
+        )}
       </Auth>
       {/* 로그인, 회원가입 모달창 */}
       <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} setIsSignUpOpen={setIsSignUpOpen} />
