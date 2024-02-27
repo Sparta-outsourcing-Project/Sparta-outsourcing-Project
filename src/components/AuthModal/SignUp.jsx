@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../api/config';
 
-const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) => {
+const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
   const [userId, setUserId] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPw, setUserPw] = useState('');
