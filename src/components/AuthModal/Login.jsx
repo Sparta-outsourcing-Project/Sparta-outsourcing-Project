@@ -4,10 +4,14 @@ import googleIcon from '../../assets/google.png';
 import { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../api/config';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/modules/loginSlice';
+import { addGoogleUserInfo } from '../../api/auth';
 
-const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => {
+const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
+  const dispatch = useDispatch();
 
   // 아이디, 비밀번호 입력값
   const onUserId = (e) => {
@@ -37,11 +41,15 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => 
   const onLoginHandler = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, userId, userPw);
-      console.log('로그인', userCredential);
       alert('로그인 되었습니다.');
       setIsLoginOpen((prev) => !prev);
+
+      // sessionStorage에 저장
       sessionStorage.setItem('userId', userId);
-      setIsLogin(true);
+      sessionStorage.setItem('uid', userCredential.user.uid);
+
+      // 로그인상태 RTK true로 변경
+      dispatch(login(true));
 
       setUserId('');
       setUserPw('');
@@ -57,9 +65,27 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen, setIsLogin }) => 
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((userData) => {
+        // console.log(userData);
         alert('로그인 되었습니다.');
+
+        // sessionStorage에 저장
         sessionStorage.setItem('userId', userData.user.email);
-        setIsLogin(true);
+        sessionStorage.setItem('uid', userData.user.uid);
+
+        // 로그인상태 RTK true로 변경
+        dispatch(login(true));
+
+        // fireStore에 newUserInfo 저장하기
+        const { uid } = userData.user;
+        const newUserInfo = {
+          uid,
+          userId: userData.user.email,
+          nickname: userData.user.displayName,
+          image: null,
+          favChannels: []
+        };
+
+        addGoogleUserInfo(uid, newUserInfo);
       })
       .catch((error) => {
         console.log(error);
