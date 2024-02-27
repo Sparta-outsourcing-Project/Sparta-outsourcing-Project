@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/utrend_logo.png';
 import { useEffect, useState } from 'react';
 import Login from '../AuthModal/Login';
@@ -7,6 +7,7 @@ import SignUp from '../AuthModal/SignUp';
 import { auth } from '../../api/config';
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
@@ -27,6 +28,12 @@ export default function Header() {
     sessionStorage.clear();
     auth.signOut();
     setIsLogin(false);
+
+    navigate('/');
+  };
+
+  const onMypageClickLink = () => {
+    navigate(`/mypage`);
   };
 
   // // 렌더링시 sessionStorage 확인
@@ -44,6 +51,7 @@ export default function Header() {
       <Auth>
         {isLogin ? (
           <>
+            <p onClick={onMypageClickLink}>마이페이지</p>
             <p onClick={onLogoutHandler}>로그아웃</p>
           </>
         ) : (
