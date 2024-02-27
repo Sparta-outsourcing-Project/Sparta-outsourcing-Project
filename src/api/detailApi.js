@@ -30,10 +30,9 @@ export const getDetailDataApi = async (videoId) => {
     const videoId = video.id;
     const videoResponse = await detailApiInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
     const videoStats = videoResponse.data.items[0]?.statistics;
-    console.log('videoResponse', videoResponse);
 
     if (!videoStats) {
-      console.log(`Statistics not found for video: ${videoId}`);
+      //   console.log(`Statistics not found for video: ${videoId}`);
       continue;
     }
 
