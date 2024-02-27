@@ -2,26 +2,35 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import HeaderSlider from '../sliders/HeaderSlider';
 import { useMostPopularVideos } from '../../hooks/useMostPopularChannel';
-import { getMostPopularThumbnails } from '../../api/dataApi';
+import { getMostChannelInfo, getMostPopularThumbnails } from '../../api/dataApi';
 import Thumbnail from '../main/Thumbnail';
 import { useNavigate } from 'react-router-dom';
 import BodySlider from '../sliders/BodySlider';
 
 export default function Main() {
   const navigate = useNavigate();
-  const [thumbnails, setThumbmails] = useState([]);
+
+  const [channelInfos, setChannelInfos] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
   const searchIconSrc = 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png';
+  const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
+  const order = ['1st', '2nd', '3rd', '4th', '5th'];
 
   useEffect(() => {
     const getThumbnails = async () => {
       if (videos) {
-        const getFiveThumbnails = videos.slice(0, 5).map((video) => getMostPopularThumbnails(video.snippet.channelId));
-        const getOneThumbnail = await Promise.all(getFiveThumbnails);
-        setThumbmails(getOneThumbnail);
+        const newChannelInfos = [];
+        for (const video of videos.slice(0, 5)) {
+          const channelTitle = video.snippet.channelTitle;
+          const channelThumbnail = (await getMostPopularThumbnails(video.snippet.channelId)).high.url;
+          const channelCustomUrl = await getMostChannelInfo(video.snippet.channelId);
+          const channelUrl = `https://www.youtube.com/${channelCustomUrl}`;
+          const channelInfo = { channelTitle, channelThumbnail, channelUrl };
+          newChannelInfos.push(channelInfo);
+        }
+        setChannelInfos(newChannelInfos);
       }
     };
     getThumbnails();
@@ -34,17 +43,27 @@ export default function Main() {
   // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
   const handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
+      if (!searchTerm.trim()) {
+        return alert('검색어를 입력해주세요.');
+      }
       navigate(`/list/${searchTerm}`);
     }
   };
 
   // 검색아이콘 눌러 검색 (=> 리스트페이지로 이동)
   const handleSearchClick = () => {
+    if (!searchTerm.trim()) {
+      return alert('검색어를 입력해주세요.');
+    }
     navigate(`/list/${searchTerm}`);
   };
 
-  const handleKeyWordClick = async (keyword) => {
+  const handleKeyWordClick = (keyword) => {
     navigate(`/list/${keyword}`);
+  };
+
+  const handleChannelClick = (channelUrl) => {
+    window.open(channelUrl, '_blank');
   };
 
   if (isLoading) return <div>..Loading</div>;
@@ -59,7 +78,7 @@ export default function Main() {
           <input
             id="search-input"
             type="search"
-            placeholder="주제를 검색하세요."
+            placeholder="원하는 주제를 검색해보세요 !"
             value={searchTerm}
             onChange={handleSearchInputChange}
             onKeyDown={handleSearchEnter}
@@ -69,9 +88,9 @@ export default function Main() {
         <SearchKeyWord>
           {keyWords.map((keyword) => {
             return (
-              <span key={keyword} onClick={() => handleKeyWordClick(keyword)}>
+              <KeywordText key={keyword} onClick={() => handleKeyWordClick(keyword)}>
                 #{keyword}
-              </span>
+              </KeywordText>
             );
           })}
         </SearchKeyWord>
@@ -83,8 +102,18 @@ export default function Main() {
           <p>이달의 인기 유튜버</p>
         </MainBestTitle>
         <MainBestContWrap>
-          {thumbnails.map((thumbnail, index) => (
-            <Thumbnail key={index} src={thumbnail.high.url} alt={`Thumbnail ${index + 1}`} text={`${index + 1}st`} />
+          {channelInfos.map((channelInfo, index) => (
+            <BestYoutuber>
+              <p>{order[index]}</p>
+              <Thumbnail
+                handleChannelClick={handleChannelClick}
+                channelUrl={channelInfo.channelUrl}
+                key={index}
+                src={channelInfo.channelThumbnail}
+                alt={`Thumbnail ${index + 1}`}
+              />
+              <p>{channelInfo.channelTitle}</p>
+            </BestYoutuber>
           ))}
         </MainBestContWrap>
       </MainBest>
@@ -146,16 +175,20 @@ export const SearchKeyWord = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  & > span {
-    display: block;
-    font-size: 14px;
-    background-color: #7cd8c6;
-    border-radius: 1rem;
-    padding: 2px 1.2rem;
-    margin: 0 8px;
-  }
 `;
 
+export const KeywordText = styled.div`
+  display: block;
+  font-size: 14px;
+  background-color: #7cd8c6;
+  border-radius: 1rem;
+  padding: 2px 1.2rem;
+  margin: 0 8px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
 // best
 export const MainBest = styled.section`
   width: 1280px;
@@ -183,4 +216,8 @@ export const MainBestContWrap = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  gap: 20px;
 `;
+
+export const BestYoutuber = styled.div``;
