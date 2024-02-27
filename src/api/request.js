@@ -8,7 +8,7 @@ const channelSnippetStatisticsFields =
 const request = {
   getSearchKeyWord: `/search?part=snippet&type=video&order=viewCount&fields=${searchKeyWordFields}&regionCode=KR&key=${apiKey}`,
   getMostPopularVideos: `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&key=${apiKey}`,
-  getByChannelId: `/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UC_x5XG1OV2P6uZZ5FSM9Ttw&key=${apiKey}`,
+  getByChannelId: `/channels?part=snippet%2CcontentDetails%2Cstatistics&key=${apiKey}`,
   getVidoeId: `/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=${apiKey}`,
   getI18nRegions: `/i18nRegions?part=snippet&hl=es_MX&key=${apiKey}`,
   getChannelBannerURL: (channelId) => `/channels?part=brandingSettings&id=${channelId}&key=${apiKey}`,
