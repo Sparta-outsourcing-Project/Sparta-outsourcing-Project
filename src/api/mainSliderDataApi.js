@@ -43,6 +43,6 @@ export const getVideoChannelDatabyId = async (videoId) => {
     return { videoId, channelTitle, thumbnailUrl, subscriberCount, averageViewCount };
     // 영상id, 채널명(유튜버명), 영상썸네일이미지url, 채널구독자수(만 단위), 채널평균조회수(만 단위)
   } catch (error) {
-    console.error('failed to get data by function getVideoChannelDatabyId', error.message);
+    console.error('Failed to get data by function getVideoChannelDatabyId', error.message);
   }
 };
