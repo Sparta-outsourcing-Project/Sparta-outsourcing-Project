@@ -6,17 +6,16 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const BodySliderCopy = () => {
-  // API로 받아올 videoID에 따른 return 객체의 배열 설정
+  // videoId로 받아온 영상 정보 (6개의 객체 배열)
   const [videoDatas, setVideoDatas] = useState([]);
 
-  // video Id 6개 배열일때
   useEffect(() => {
-    // 영상 id 6개 배열
+    // 영상 id 6개
     const videoIds = ['1nVPaBoiq7I', 'I01pzEznbdU', 'r3C-iALopZo', 'meeMvpwnGy0', 'xKfCI4UciTo', 'ESzcNpnPgW8'];
 
     const fetchDataForVideoIds = async () => {
       const fetchDataPromises = videoIds.map(async (id, index) => {
-        // 각 비디오의 카테고리를 설정
+        // 각 비디오의 카테고리
         const categoryArr = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
         const category = categoryArr[index];
 
@@ -35,7 +34,7 @@ const BodySliderCopy = () => {
     fetchDataForVideoIds();
   }, []);
 
-  // 클릭 시 영상 링크로 이동
+  // 영상 클릭 시 링크로 이동
   const onVideoClickHandler = (id) => {
     const youtubeURL = `https://www.youtube.com/watch?v=${id}`;
     window.open(youtubeURL, '_blank');
@@ -47,10 +46,11 @@ const BodySliderCopy = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 6000,
-    autoplaySpeed: 700,
+    speed: 3000,
+    autoplaySpeed: 2000,
     cssEase: 'linear',
     pauseOnHover: true
+    // waitForAnimate: false
   };
 
   return (
@@ -95,8 +95,6 @@ const BodySliderCopy = () => {
 
 export default BodySliderCopy;
 
-// BodySlider 컴포넌트에서 사용할 스타일드 컴포넌트 정의
-
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
@@ -104,7 +102,6 @@ export const MainYoutuberSlider = styled.section`
   margin: 0 auto 3rem auto;
   display: flex;
   align-items: center;
-  /* background-color: red; */
 
   @media (max-width: 1300px) {
     max-width: calc(100% - 2rem);
@@ -114,7 +111,6 @@ export const MainYoutuberSlider = styled.section`
 
 const StyledSwiper = styled.div`
   width: 100%;
-  /* background-color: blue; */
 
   .slick-prev {
     left: -50px; /* 왼쪽버튼 이동 */
@@ -140,9 +136,6 @@ export const SliderItem = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 3rem;
-
-  /* background-color: green; */
-
   padding-left: 20px;
 
   &:hover {
