@@ -27,10 +27,8 @@ const UserSlice = createSlice({
     },
     updateUserState: (state, action) => {
       const { nickname, intro, image } = action.payload;
-      if (image === null) {
-        return defaultImg;
-      }
-      return { ...state, nickname, intro, image };
+      const newImage = image || defaultImg;
+      return { ...state, nickname, intro, image: newImage };
     }
   }
 });
