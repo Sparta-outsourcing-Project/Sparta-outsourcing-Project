@@ -1,9 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
-import dotenv from 'dotenv';
 import { getAuth } from 'firebase/auth';
-
-dotenv.config();
 
 const {
   VITE_API_FIRESTORE_KEY,
