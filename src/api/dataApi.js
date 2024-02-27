@@ -88,10 +88,13 @@ export const getMostChannelInfo = async (channelId) => {
 
 //get banner from channelId
 export const getBanner = async (channelId) => {
-  const url = request.getChannelBannerURL(channelId);
-  const { data } = await axiosInstance.get(url);
-  // console.log(data.items[0].brandingSettings.image.bannerExternalUrl());
-  return data.items[0].brandingSettings.image.bannerExternalUrl;
+  try {
+    const url = request.getChannelBannerURL(channelId);
+    const { data } = await axiosInstance.get(url);
+    return data.items[0].brandingSettings.image.bannerExternalUrl;
+  } catch (error) {
+    console.error('failed to fetch getBanner', error.message);
+  }
 };
 
 export const readByChannelId = async () => {

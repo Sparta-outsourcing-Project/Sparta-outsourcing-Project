@@ -34,9 +34,13 @@ export default function Main() {
   // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
   const handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
-      // Enter 키가 눌렸을 때
       navigate(`/list/${searchTerm}`);
     }
+  };
+
+  // 검색아이콘 눌러 검색 (=> 리스트페이지로 이동)
+  const handleSearchClick = () => {
+    navigate(`/list/${searchTerm}`);
   };
 
   const handleKeyWordClick = async (keyword) => {
@@ -60,7 +64,7 @@ export default function Main() {
             onChange={handleSearchInputChange}
             onKeyDown={handleSearchEnter}
           />
-          <img src={searchIconSrc} />
+          <img src={searchIconSrc} onClick={handleSearchClick} />
         </SearchInputBox>
         <SearchKeyWord>
           {keyWords.map((keyword) => {
@@ -134,6 +138,7 @@ export const SearchInputBox = styled.div`
   & > img {
     margin-top: 0.3rem;
     height: 2rem;
+    cursor: pointer;
   }
 `;
 
