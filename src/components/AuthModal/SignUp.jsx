@@ -2,8 +2,8 @@ import * as St from './styles/Login.style';
 import { Background, InputBtnWrapper } from './styles/SignUp.style';
 import logo from '../../assets/utrend_logo.png';
 import { useState } from 'react';
-// import { createUserWithEmailAndPassword } from 'firebase/auth';
-// import { auth } from '../../api/config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../api/config';
 
 const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) => {
   const [userId, setUserId] = useState('');
@@ -29,17 +29,16 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
   };
 
   // 회원가입 클릭 - 가입 로직 추가 예정
-  const onSignUpHandler = (event) => {
-    event.preventDefault();
-    // createUserWithEmailAndPassword(auth, userId, userPw)
-    //   .then((userCredential) => {
-    //     // 회원가입 성공시
-    //     console.log(userCredential);
-    //   })
-    //   .catch((error) => {
-    //     // 회원가입 실패시
-    //     console.error(error);
-    //   });
+  const onSignUpHandler = () => {
+    createUserWithEmailAndPassword(auth, userId, userPw)
+      .then((userCredential) => {
+        // 회원가입 성공시
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        // 회원가입 실패시
+        console.error(error);
+      });
     setIsSignUpOpen((prev) => !prev);
   };
 
@@ -54,7 +53,7 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
       {isSignUpOpen && (
         <Background $isSignUpOpen={isSignUpOpen}>
           <St.Container>
-            <St.LoginWrapper onClick={onSignUpHandler}>
+            <St.LoginWrapper>
               <button onClick={onCloseButtonHandler}>X</button>
               <img src={logo} alt="" />
               <InputBtnWrapper>
@@ -68,7 +67,7 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
                 <St.InputContainer>
                   <input placeholder="비밀번호" type="password" value={userPw} onChange={onUserPw} />
                 </St.InputContainer>
-                <button>회원가입</button>
+                <button onClick={onSignUpHandler}>회원가입</button>
               </InputBtnWrapper>
 
               <St.CheckSignUp>

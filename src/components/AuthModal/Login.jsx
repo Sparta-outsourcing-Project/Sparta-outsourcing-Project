@@ -37,7 +37,7 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
       {isLoginOpen && (
         <St.Background $isLoginOpen={isLoginOpen}>
           <St.Container>
-            <St.LoginWrapper onClick={onLoginHandler}>
+            <St.LoginWrapper>
               <button onClick={onCloseButtonHandler}>X</button>
               <img src={logo} alt="" />
               <St.InputBtnWrapper>
@@ -48,7 +48,7 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
                 <St.InputContainer>
                   <input placeholder="비밀번호" type="password" value={userPw} onChange={onUserPw} />
                 </St.InputContainer>
-                <button>로그인</button>
+                <button onClick={onLoginHandler}>로그인</button>
               </St.InputBtnWrapper>
 
               <St.CheckSignUp>
