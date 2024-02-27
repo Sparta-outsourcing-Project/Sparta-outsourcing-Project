@@ -91,9 +91,12 @@ export const getBanner = async (channelId) => {
   try {
     const url = request.getChannelBannerURL(channelId);
     const { data } = await axiosInstance.get(url);
-    return data.items[0].brandingSettings.image.bannerExternalUrl;
+    // console.log(data);
+    // 배너 이미지가 없는 경우 brandingSettings에 image키 자체가 X - 없는 경우 빈문자열로 반환
+    return data.items[0].brandingSettings.image ? data.items[0].brandingSettings.image.bannerExternalUrl : '';
   } catch (error) {
     console.error('failed to fetch getBanner', error.message);
+    throw error;
   }
 };
 
