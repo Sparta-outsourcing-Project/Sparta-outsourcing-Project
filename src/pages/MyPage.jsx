@@ -26,7 +26,7 @@ export default function MyPage() {
     };
     getLoggedInUserInfo();
   }, [uid]);
-  const { userId, nickname, image, favChannels } = userInfo;
+  const { userId, nickname, image, favChannels, intro } = userInfo;
 
   return (
     <Wrap>
@@ -37,7 +37,7 @@ export default function MyPage() {
           <ProfileContent>
             <UserNickname>{nickname}</UserNickname>
             <UserEmail>{userId}</UserEmail>
-            <UserIntro>내 소개</UserIntro>
+            <UserIntro>{intro}</UserIntro>
           </ProfileContent>
           <button>수정하기</button>
         </ProfileSection>
