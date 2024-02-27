@@ -24,9 +24,9 @@ export const readSearchKeyWord = async (keyword) => {
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
-    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 15 };
+    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 1 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
-
+    // console.log(videoResponse.data);
     const videoItems = videoResponse.data.items;
     const result = [];
 
