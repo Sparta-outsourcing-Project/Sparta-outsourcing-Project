@@ -24,7 +24,7 @@ export const readSearchKeyWord = async (keyword) => {
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
-    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 15 };
+    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 1 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
 
     const videoItems = videoResponse.data.items;
@@ -97,13 +97,18 @@ export const getChannelInfoById = async (channelId) => {
 
 export const readMostPopularVideos = async () => {
   const { data } = await axiosInstance.get(`${request.getMostPopularVideos}&regionCode=KR`);
-  // console.log(data);
   return data.items;
 };
 
 export const getMostPopularThumbnails = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
   return data.items[0].snippet.thumbnails;
+};
+
+// channel Url
+export const getMostChannelInfo = async (channelId) => {
+  const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
+  return data.items[0].snippet.customUrl;
 };
 
 //get banner from channelId
