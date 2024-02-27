@@ -10,6 +10,14 @@ export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
   const { keyword } = useParams();
 
+  const [page, setPage] = useState < number > 1; //현재페이지수
+  const totalPost = 13; // 총 개시불
+  const pageRange = 5; // 페이지당 보여줄 게시물 수
+  const btnRange = 3; // 보여질 페이지 버튼 수
+
+  const currentSet = Math.ceil(page / btnRange); // 버튼이 몇번째 세트인지 나타내는 수
+  const startPage = (currentSet - 1) * btnRange + 1; // 현재 보여질 버튼의 첫번 째 슈
+
   useEffect(() => {
     const fetchData = async () => {
       const searchKeyword = keyword;
@@ -78,6 +86,15 @@ export default function CardList() {
             ))}
           </tbody>
         </ListTable>
+        {Array(btnRange)
+          .fill(startPage)
+          .map((_, i) => {
+            return (
+              <button key={i} onClick={() => setPage(startPage + 1)} $active={page === startPage + 1}>
+                {startPage + 1}
+              </button>
+            );
+          })}
       </ListWrapper>
     </main>
   );

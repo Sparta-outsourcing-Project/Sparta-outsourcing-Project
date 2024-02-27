@@ -1,11 +1,10 @@
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { useEffect, useState } from 'react';
 import { getVideoChannelDatabyId } from '../../api/mainSliderDataApi';
-import Slider from 'react-slick';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import styled from 'styled-components';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
-const BodySliderCopy = () => {
+const BodySlider = () => {
   // API로 받아올 videoID에 따른 return 객체의 배열 설정
   const [videoDatas, setVideoDatas] = useState([]);
 
@@ -30,6 +29,7 @@ const BodySliderCopy = () => {
       const results = await Promise.all(fetchDataPromises);
 
       setVideoDatas(results);
+      console.log(results);
     };
 
     fetchDataForVideoIds();
@@ -41,51 +41,45 @@ const BodySliderCopy = () => {
     window.open(youtubeURL, '_blank');
   };
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 6000,
-    autoplaySpeed: 700,
-    cssEase: 'linear',
-    pauseOnHover: true
-  };
-
   return (
     <>
       <MainYoutuberSlider>
-        <StyledSwiper>
+        <StyledSwiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={3}
+          navigation={{ clickable: true }}
+          autoplay={{ delay: 0, disableOnInteraction: false }}
+          speed={8000}
+          loop={true}
+        >
           <SliderWrap>
-            <Slider {...settings}>
-              {videoDatas.map((videoData, idx) => {
-                return (
-                  <SliderItem
-                    key={idx}
-                    onClick={() => {
-                      onVideoClickHandler(videoData.videoId);
-                    }}
-                  >
-                    <SliderItemImgWrap>
-                      <img
-                        src={videoData.thumbnailUrl}
-                        alt=""
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </SliderItemImgWrap>
-                    <SliderItemInfo>
-                      <SliderItemInfoTop>
-                        <h3>{videoData.channelTitle}</h3>
-                        <span>{videoData.subscriberCount}</span>
-                      </SliderItemInfoTop>
-                      <p>{videoData.category}</p>
-                      <p>평균 조회수 : {videoData.averageViewCount}</p>
-                    </SliderItemInfo>
-                  </SliderItem>
-                );
-              })}
-            </Slider>
+            {videoDatas.map((videoData, idx) => {
+              return (
+                <SliderItem
+                  key={idx}
+                  onClick={() => {
+                    onVideoClickHandler(videoData.videoId);
+                  }}
+                >
+                  <SliderItemImgWrap>
+                    <img
+                      src={videoData.thumbnailUrl}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </SliderItemImgWrap>
+                  <SliderItemInfo>
+                    <SliderItemInfoTop>
+                      <h3>{videoData.channelTitle}</h3>
+                      <span>{videoData.subscriberCount}</span>
+                    </SliderItemInfoTop>
+                    <p>{videoData.category}</p>
+                    <p>평균 조회수 : {videoData.averageViewCount}</p>
+                  </SliderItemInfo>
+                </SliderItem>
+              );
+            })}
           </SliderWrap>
         </StyledSwiper>
       </MainYoutuberSlider>
@@ -93,57 +87,75 @@ const BodySliderCopy = () => {
   );
 };
 
-export default BodySliderCopy;
+export default BodySlider;
 
 // BodySlider 컴포넌트에서 사용할 스타일드 컴포넌트 정의
+const StyledSwiper = styled(Swiper)`
+  position: relative;
+`;
 
 //youtuberslider
 export const MainYoutuberSlider = styled.section`
   width: 1280px;
   height: 330px;
   margin: 0 auto 3rem auto;
+  /* border: 1px solid red; */
   display: flex;
   align-items: center;
-  /* background-color: red; */
 
   @media (max-width: 1300px) {
     max-width: calc(100% - 2rem);
     margin: 1rem;
   }
-`;
 
-const StyledSwiper = styled.div`
-  width: 100%;
-  /* background-color: blue; */
+  .swiper-wrapper {
+    transition-timing-function: linear;
+  }
 
-  .slick-prev {
-    left: -50px; /* 왼쪽버튼 이동 */
+  position: relative;
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    z-index: 1000;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 200px; /* 흐린 효과의 너비 조절 */
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 2) 100%);
+    z-index: 1;
+  }
+
+  &::before {
+    left: 0;
+    z-index: 10;
+  }
+
+  &::after {
+    right: 0;
+    transform: scaleX(-1);
   }
 `;
 
 export const SliderWrap = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
-
-  .slick-prev:before,
-  .slick-next:before {
-    color: #febe98;
-    font-size: 40px;
-  }
 `;
 
 // 각 슬라이드에 적용될 스타일드 컴포넌트 정의
-export const SliderItem = styled.div`
-  width: calc(100% / 3);
+// export const SliderItem = styled.article`
+export const SliderItem = styled(SwiperSlide)`
+  /* width: calc(100% / 3); */
+  width: calc(100% / 6);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
-
-  /* background-color: green; */
-
-  padding-left: 20px;
+  /* border: 1px solid red; */
+  /* padding-top: 10%; */
 
   &:hover {
     cursor: pointer;
@@ -154,12 +166,13 @@ export const SliderItem = styled.div`
 export const SliderItemImgWrap = styled.div`
   width: calc(100% - 3rem);
   height: 180px;
+  /* background-color: #febe98; */
   & > img {
     border-radius: 1rem;
   }
 `;
 export const SliderItemInfo = styled.div`
-  padding: 1rem 3rem 1rem 0rem;
+  padding: 1rem 2rem;
   width: 100%;
 `;
 export const SliderItemInfoTop = styled.div`
