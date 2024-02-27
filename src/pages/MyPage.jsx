@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import defaultImg from '../assets/profile_defaultImage.png';
-import { getUserInfo } from '../api/auth';
+import { getUserInfo, updateUserInfo } from '../api/auth';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { defaultUser, updateIntro, updateNickname, updateUserState } from '../redux/modules/userSlice';
 
 export default function MyPage() {
   const uid = sessionStorage.getItem('uid');
-  const [userInfo, setUserInfo] = useState({});
+  // const [userInfo, setUserInfo] = useState({});
   const [isEdit, setIsEdit] = useState(false);
+  const dispatch = useDispatch();
   // userInfo 샘플
   // {
   //   intro : '소개를 입력해주세요'
@@ -22,35 +25,73 @@ export default function MyPage() {
   // 로그인된 user정보 fireStore에서 가져오기
   useEffect(() => {
     const getLoggedInUserInfo = async () => {
-      const res = await getUserInfo(uid);
-      setUserInfo(res);
+      const userInfo = await getUserInfo(uid);
+      // setUserInfo(res);
+      dispatch(defaultUser(userInfo));
     };
     getLoggedInUserInfo();
-  }, [uid]);
-  const { userId, nickname, image, favChannels, intro } = userInfo;
+  }, [dispatch, uid]);
 
+  // 가져온 정보 userReducer에 전달 및 state 가져오기
+  // dispatch(defaultUser(userInfo));
+  const userInfoState = useSelector((state) => state.userReducer);
+  const { userId, nickname, image, favChannels, intro } = userInfoState;
+
+  // state로 관리하던
+  // const { userId, nickname, image, favChannels, intro } = userInfo;
+
+  // input값 임시저장
   const [newNickname, setNewNickname] = useState(nickname);
   const [newIntro, setNewIntro] = useState(intro);
   const [newImage, setNewImage] = useState(image);
 
-  // 회원정보 수정 handler
-  const onUpdateUserInfo = () => {
-    if (!isEdit) {
-      setIsEdit(true);
-    } else {
-      const isConfirmed = window.confirm('수정하시겠습니까?');
-      isConfirmed && setIsEdit(false);
-    }
-  };
-
   // 닉네임 입력
   const onNewNickname = (e) => {
     setNewNickname(e.target.value);
+    // dispatch(updateNickname(e.target.value));
   };
 
   // 소개 입력
   const onNewIntro = (e) => {
     setNewIntro(e.target.value);
+    // dispatch(updateIntro(e.target.value));
+  };
+
+  // '수정하기' 클릭
+  const onUpdateHandler = () => {
+    setIsEdit((prev) => !prev);
+  };
+
+  // '취소' 클릭
+  const onCancel = () => {
+    setIsEdit((prev) => !prev);
+    setNewImage(image);
+    setNewNickname(nickname);
+    setNewIntro(intro);
+  };
+
+  // '수정완료' 클릭
+  const onUpdateUserInfo = async () => {
+    const isConfirmed = window.confirm('수정하시겠습니까?');
+    if (isConfirmed) {
+      // 리듀서에 변경된 값 전달
+      const updateUserInfoState = { nickname: newNickname, intro: newIntro, image: newImage };
+      dispatch(updateUserState(updateUserInfoState));
+      // useState 변경
+      setNewImage(image);
+      setNewNickname(nickname);
+      setNewIntro(intro);
+      const newUserInfo = {
+        nickname: newNickname,
+        intro: newIntro,
+        image
+        // nickname,
+        // intro,
+        // image: newImage
+      };
+      await updateUserInfo(uid, newUserInfo);
+      setIsEdit(false);
+    }
   };
 
   return (
@@ -69,7 +110,16 @@ export default function MyPage() {
             <UserEmail>{userId}</UserEmail>
             {isEdit ? <input type="text" value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
           </ProfileContent>
-          <button onClick={onUpdateUserInfo}>{isEdit ? '수정완료' : '수정하기'}</button>
+          {isEdit ? (
+            <>
+              <button onClick={onUpdateUserInfo}>수정완료</button>
+              <button onClick={onCancel}>취소</button>
+            </>
+          ) : (
+            <>
+              <button onClick={onUpdateHandler}>수정하기</button>
+            </>
+          )}
         </ProfileSection>
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
