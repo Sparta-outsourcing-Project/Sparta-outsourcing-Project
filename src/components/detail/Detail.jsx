@@ -56,7 +56,7 @@ export default function Detail() {
     isLoading: isBannerUrlLoading,
     error: bannerUrlError
   } = useQuery({
-    queryKey: ['bannerUrl', channelId],
+    queryKey: ['bannerUrl', channelId, channelInfo],
     queryFn: () => getBanner(channelId)
   });
 
@@ -79,7 +79,7 @@ export default function Detail() {
 
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
   if (channelInfoError || bannerUrlError || channelLinkError)
-    return <div>Error: {channelInfoError || bannerUrlError || channelLinkError.message}</div>;
+    return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
 
   return (
     <Wrap>
