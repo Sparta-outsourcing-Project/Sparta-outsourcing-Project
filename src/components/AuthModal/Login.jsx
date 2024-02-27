@@ -19,13 +19,17 @@ const Login = ({ isLoginOpen, setIsLoginOpen, isSignUpOpen, setIsSignUpOpen }) =
 
   // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
-    isLoginOpen((prev) => !prev);
+    setIsLoginOpen((prev) => !prev);
+    setUserId('');
+    setUserPw('');
   };
 
   // '회원가입' 클릭
   const onSignUpHandler = () => {
     setIsLoginOpen((prev) => !prev);
     setIsSignUpOpen((prev) => !prev);
+    setUserId('');
+    setUserPw('');
   };
 
   // 로그인 클릭

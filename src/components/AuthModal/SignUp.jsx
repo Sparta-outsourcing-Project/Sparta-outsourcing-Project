@@ -51,6 +51,9 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, isLoginOpen, setIsLoginOpen }) 
   const onLoginHandler = () => {
     setIsSignUpOpen((prev) => !prev);
     setIsLoginOpen((prev) => !prev);
+    setUserId('');
+    setUserNickname('');
+    setUserPw('');
   };
 
   return (
