@@ -11,9 +11,10 @@ export default function Main() {
   const navigate = useNavigate();
   const [thumbnails, setThumbmails] = useState([]);
   const { data: videos, isLoading, isError } = useMostPopularVideos();
-  const [searchedKeyword, setSearchedKeyword] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const keyWords = ['먹방', '여행', '생활', '운동', '뷰티', '패션'];
+  const searchIconSrc = 'https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png';
 
   useEffect(() => {
     const getThumbnails = async () => {
@@ -27,26 +28,19 @@ export default function Main() {
   }, [videos]);
 
   const handleSearchInputChange = (e) => {
-    setSearchedKeyword(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   // Enter 키를 눌러 검색 (=> 리스트페이지로 이동)
-  const handleKeyDown = (e) => {
+  const handleSearchEnter = (e) => {
     if (e.key === 'Enter') {
       // Enter 키가 눌렸을 때
-      navigate(`/list/${searchedKeyword}`);
+      navigate(`/list/${searchTerm}`);
     }
   };
 
   const handleKeyWordClick = async (keyword) => {
     navigate(`/list/${keyword}`);
-  };
-
-  const handleSearchEnter = (e) => {
-    if (e.key === 'Enter') {
-      // 엔터 키가 눌렸을 때 검색 수행
-      navigate(`/list/${searchTerm}`);
-    }
   };
 
   if (isLoading) return <div>..Loading</div>;
@@ -57,15 +51,17 @@ export default function Main() {
     <MainWrap>
       <HeaderSlider />
       <MainSearch>
-        <input
-          id="search-input"
-          type="search"
-          placeholder="주제를 검색하세요."
-          value={searchedKeyword}
-          onChange={handleSearchInputChange}
-          onKeyDown={handleKeyDown}
-        />
-        <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" width={30} />
+        <SearchInputBox>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="주제를 검색하세요."
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+            onKeyDown={handleSearchEnter}
+          />
+          <img src={searchIconSrc} />
+        </SearchInputBox>
         <SearchKeyWord>
           {keyWords.map((keyword) => {
             return (
@@ -114,6 +110,13 @@ export const MainSearch = styled.section`
     max-width: calc(100% - 2rem);
     margin: 1rem;
   }
+`;
+
+export const SearchInputBox = styled.div`
+  width: 1280px;
+  height: 60px;
+  display: flex;
+  gap: 0.7rem;
 
   & > input {
     border: 1px solid #212121;
@@ -122,12 +125,18 @@ export const MainSearch = styled.section`
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
     margin-bottom: 1rem;
+    text-align: center;
   }
   & > input::placeholder {
     text-align: center;
     font-size: 1rem;
   }
+  & > img {
+    margin-top: 0.3rem;
+    height: 2rem;
+  }
 `;
+
 export const SearchKeyWord = styled.div`
   width: 100%;
   display: flex;
