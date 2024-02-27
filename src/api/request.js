@@ -14,7 +14,8 @@ const request = {
   getVideoSnippet: `/videos?part=snippet&fields=${videoSnippetFields}&key=${apiKey}`,
   getChannelStatistics: `/channels?part=statistics&fields=${channelStatisticsFields}&key=${apiKey}`,
   getChannelSnippetStatistics: `/channels?part=snippet,statistics&key=${apiKey}`,
-  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`
+  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`,
+  getSearchMostPopularVideosInChannel: `/videos?part=snippet&type=video&order=viewCount&maxResults=10&chart=mostPopular&key=${apiKey}`
 };
 
 export default request;

@@ -100,6 +100,13 @@ export const readMostPopularVideos = async () => {
   return data.items;
 };
 
+export const getMostPopularVideosInChannel = async (channelId) => {
+  const { data } = await axiosInstance.get(
+    `${request.getSearchMostPopularVideosInChannel}&id=${channelId}&regionCode=KR`
+  );
+  return data.items;
+};
+
 export const getMostPopularThumbnails = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
   return data.items[0].snippet.thumbnails;
