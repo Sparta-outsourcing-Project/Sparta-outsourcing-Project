@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-export default function Thumbnail({ src, alt, text }) {
+export default function Thumbnail({ handleChannelClick, channelUrl, src, alt, text }) {
   return (
     <MainBestContents>
-      <div>
+      <div onClick={() => handleChannelClick(channelUrl)}>
         <img src={src} alt={alt} />
       </div>
       <span>{text}</span>
@@ -20,6 +20,7 @@ export const MainBestContents = styled.li`
     width: 8rem;
     height: 8rem;
     border-radius: 50%;
+    cursor: pointer;
   }
 
   img {
