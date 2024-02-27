@@ -1,10 +1,33 @@
-import React from 'react';
 import styled from 'styled-components';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import defaultImg from '../assets/profile_defaultImage.png';
+import { getUserInfo } from '../api/auth';
+import { useEffect, useState } from 'react';
 
 export default function MyPage() {
+  const uid = sessionStorage.getItem('uid');
+  const [userInfo, setUserInfo] = useState({});
+
+  // userInfo 샘플
+  // {
+  //   favChannels: [];
+  //   image: null;
+  //   nickname: 'test';
+  //   uid: 'vC2wON5Cy3eeSgJZBiP7qjeecsr2';
+  //   userId: 'test@nbc.com';
+  // }
+
+  // 로그인된 user정보 fireStore에서 가져오기
+  useEffect(() => {
+    const getLoggedInUserInfo = async () => {
+      const res = await getUserInfo(uid);
+      setUserInfo(res);
+    };
+    getLoggedInUserInfo();
+  }, [uid]);
+  const { userId, nickname, image, favChannels } = userInfo;
+
   return (
     <Wrap>
       <Header />
