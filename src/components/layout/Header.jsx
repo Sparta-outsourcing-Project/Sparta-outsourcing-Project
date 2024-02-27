@@ -5,11 +5,22 @@ import { useEffect, useState } from 'react';
 import Login from '../AuthModal/Login';
 import SignUp from '../AuthModal/SignUp';
 import { auth } from '../../api/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/modules/loginSlice';
 
 export default function Header() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+
+  // login상태 RTK에서 가져오기
+  const loginState = useSelector((state) => state.loginReducer);
+  console.log(loginState);
+  const dispatch = useDispatch();
+
+  // 렌더링시 sessionStorage로 로그인상태 확인
+  useEffect(() => {
+    sessionStorage.getItem('userId') && dispatch(login(true));
+  }, [dispatch]);
 
   // 로그인 모달
   const onLoginClickHandler = () => {
@@ -26,13 +37,8 @@ export default function Header() {
     alert('로그아웃되었습니다.');
     sessionStorage.clear();
     auth.signOut();
-    setIsLogin(false);
+    dispatch(login(false));
   };
-
-  // // 렌더링시 sessionStorage 확인
-  useEffect(() => {
-    sessionStorage.getItem('userId') && setIsLogin(true);
-  }, [isLogin]);
 
   return (
     <HeaderWrap>
@@ -42,7 +48,7 @@ export default function Header() {
         </Link>
       </Logo>
       <Auth>
-        {isLogin ? (
+        {loginState ? (
           <>
             <p onClick={onLogoutHandler}>로그아웃</p>
           </>
@@ -54,12 +60,7 @@ export default function Header() {
         )}
       </Auth>
       {/* 로그인, 회원가입 모달창 */}
-      <Login
-        isLoginOpen={isLoginOpen}
-        setIsLoginOpen={setIsLoginOpen}
-        setIsSignUpOpen={setIsSignUpOpen}
-        setIsLogin={setIsLogin}
-      />
+      <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} setIsSignUpOpen={setIsSignUpOpen} />
       <SignUp isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} setIsLoginOpen={setIsLoginOpen} />
     </HeaderWrap>
   );
