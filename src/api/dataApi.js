@@ -105,12 +105,31 @@ export const readByChannelId = async () => {
   return data;
 };
 
-export const readVidoeId = async () => {
-  const { data } = await axiosInstance.get(`${request.getVidoeId}&regionCode=KR`);
+export const readVideoId = async (channelId) => {
+  const { data } = await axiosInstance.get(`${request.getVidoeId}&regionCode=KR&id=${channelId}`);
   return data;
 };
 
 export const readI18nRegions = async () => {
   const { data } = await axiosInstance.get(request.getI18nRegions);
   return data;
+};
+
+//get UploadPlayListId
+export const getUpLoadPlayListId = async (channelId) => {
+  const url = request.getChannelVideos(channelId);
+  const { data } = await axiosInstance.get(url);
+  return data.items[0].contentDetails.relatedPlaylists.uploads;
+};
+
+export const getUpLoadPlayLists = async (uploadPlaylistId) => {
+  const url = request.getPlayListVideo(uploadPlaylistId);
+  const { data } = await axiosInstance.get(url);
+  return data;
+};
+
+// videoId로 좋아요, 댓글수, 조회수 등 가져오기
+export const getDetailDataApi = async (videoId) => {
+  const { data } = await axiosInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
+  return data.items;
 };

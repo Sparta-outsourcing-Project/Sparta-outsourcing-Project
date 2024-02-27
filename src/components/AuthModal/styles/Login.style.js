@@ -64,13 +64,35 @@ export const InputBtnWrapper = styled.div`
     text-align: center;
     margin-bottom: 10px;
   }
+`;
 
-  & > button {
-    background-color: #febe98;
-    height: 40px;
-    color: white;
-    border: none;
-    border-radius: 3px;
+export const DefaultLogin = styled.button`
+  background-color: #febe98;
+  height: 40px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+`;
+
+export const GoogleLoginBtn = styled.button`
+  background-color: white;
+  height: 40px;
+  border: 1.2px solid gray;
+  border-radius: 3px;
+`;
+
+export const GoogleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > img {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+  }
+  & > span {
+    color: gray;
   }
 `;
 
