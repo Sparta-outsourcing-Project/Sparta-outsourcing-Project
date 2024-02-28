@@ -8,7 +8,7 @@ import {
   UserNickname,
   UserNicknameInput
 } from '../../pages/MyPage';
-import { getUserInfo, updateImage, updateUserInfo } from '../../api/auth';
+import { getUserInfo, updateImage, updateUser } from '../../api/auth';
 import styled from 'styled-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../layout/Loading';
@@ -27,10 +27,22 @@ const MyProfile = () => {
   const queryClient = useQueryClient();
 
   // query로 newUserInfo update, invalidate(optimistic UI) 하기
+  // const mutation = useMutation({
+  //   mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(['userInfo']);
+  //   }
+  // });
+
   const mutation = useMutation({
-    mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
+    mutationFn: async (data) => {
+      const { uid, newUserInfo, newImage } = data;
+      await updateUser(uid, newUserInfo, newImage);
+      console.log('3', newImage);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
+      console.log('4', newImage);
     }
   });
 
@@ -85,6 +97,7 @@ const MyProfile = () => {
     setPreviewImage(imageUrl);
     // 이미지파일도 set -> 수정완료하면 storage에 업로드 위해
     setNewImage(file);
+    console.log('1', newImage);
   };
 
   // '수정완료' 클릭
@@ -97,9 +110,10 @@ const MyProfile = () => {
       };
 
       // mutation (수정된 정보 query로 전달하기)
-      mutation.mutate(newUserInfo);
+      mutation.mutate({ uid, newUserInfo, newImage });
+      console.log('2', newImage);
 
-      updateImage(uid, newImage);
+      // updateUser(uid, newUserInfo, newImage);
 
       setIsEdit(false);
     }

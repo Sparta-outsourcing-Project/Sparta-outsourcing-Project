@@ -46,14 +46,14 @@ export const getUserInfo = async (uid) => {
 // };
 
 // 회원정보 수정
-export const updateUserInfo = async (uid, newUserInfo) => {
-  //   const newUserInfo = {
-  //     nickname: newNickname,
-  //     intro: newIntro
-  //   };
-  const { nickname, intro } = newUserInfo;
-  await updateDoc(doc(db, 'users', uid), { nickname, intro });
-};
+// export const updateUserInfo = async (uid, newUserInfo) => {
+//   //   const newUserInfo = {
+//   //     nickname: newNickname,
+//   //     intro: newIntro
+//   //   };
+//   const { nickname, intro } = newUserInfo;
+//   await updateDoc(doc(db, 'users', uid), { nickname, intro });
+// };
 
 export const updateImage = async (uid, uploadedImage) => {
   const uploadedFile = await uploadBytes(ref(storage, `images/${uploadedImage.name}`), uploadedImage);
@@ -62,4 +62,16 @@ export const updateImage = async (uid, uploadedImage) => {
   // console.log('uploadedFile', uploadedFile, 'file_url', file_url);
 
   await updateDoc(doc(db, 'users', uid), { image: file_url });
+};
+
+export const updateUser = async (uid, newUserInfo, newImage) => {
+  try {
+    const { nickname, intro } = newUserInfo;
+    const uploadedFile = await uploadBytes(ref(storage, `images/${newImage.name}`), newImage);
+    const imageURL = await getDownloadURL(uploadedFile.ref);
+
+    await updateDoc(doc(db, 'users', uid), { nickname, intro, image: imageURL });
+  } catch (error) {
+    console.error('error', error);
+  }
 };
