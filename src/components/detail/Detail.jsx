@@ -22,6 +22,7 @@ export default function Detail() {
   } = useChannelDetailInfo(channelId);
 
   /* banner url 불러오기 -> React Query로 */
+
   const {
     data: bannerUrl,
     isLoading: isBannerUrlLoading,
