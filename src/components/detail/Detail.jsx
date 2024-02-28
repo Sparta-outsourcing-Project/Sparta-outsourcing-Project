@@ -11,9 +11,9 @@ import {
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import Loading from '../layout/Loading';
-import AdSuggestBtn from './AdSuggestBtn';
 import RecentVideo from './RecentVideo';
 import TwoLevelPieChart from './TwoLevelPieChart';
+// import AdSuggestBtn from '../../components/detail/AdSuggestBtn';
 
 export default function Detail() {
   const params = useParams();
@@ -64,6 +64,23 @@ export default function Detail() {
   //  영상 평균 조회수
   const averageVideoViewCount = channelInfo ? Math.ceil(channelInfo.initAverageViewCount).toLocaleString() : 0;
 
+  const totalViewNum = channelInfo?.viewCount;
+
+  const initialTotalViewCount = Number(totalViewNum);
+  const simpleViewCount = (initialViewCount) => {
+    let formattedViewCount;
+    if (initialViewCount > 100000000) {
+      formattedViewCount = Math.round(initialViewCount / 10000000) / 10 + '억';
+    } else if (initialViewCount > 10000) {
+      formattedViewCount = Math.round(initialViewCount / 10000) + '만';
+    } else if (initialViewCount > 1000) {
+      formattedViewCount = Math.round(initialViewCount / 1000) + '천';
+    } else {
+      formattedViewCount = initialViewCount.toString();
+    }
+    return formattedViewCount; // 함수가 값을 반환하도록 수정
+  };
+
   // 최근 채널 내 최근 50개 영상 불러오기
   // playListId 가져오기
   const { data: playListId } = usePlayListId(channelId);
@@ -76,7 +93,7 @@ export default function Detail() {
     return acc.concat(curr);
   }, []);
 
-  // 속성에 따라서 매핑된 배열을 반환하는 함수
+  // 속성에 따라 반복되는 함수 하나로 만들기
   const mapPropertyToArray = (videos, property) => {
     return videos?.map((video) => video.statistics[property]);
   };
@@ -92,13 +109,14 @@ export default function Detail() {
     const sum = array?.map(Number).reduce((acc, curr) => {
       return acc + curr;
     }, 0);
-    const averageCount = sum / 50;
+
+    const averageCount = array ? sum / array.length : 0;
     return averageCount;
   };
   const averageCommentCount = Math.round(calculateAverage(commentCount));
   const averageLikeCount = Math.round(calculateAverage(likeCount));
   const averageViewCount = Math.round(calculateAverage(viewCount));
-  console.log(averageCommentCount, averageLikeCount, averageViewCount);
+  // console.log(averageLikeCount, averageViewCount);
 
   // error handling
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
@@ -123,6 +141,9 @@ export default function Detail() {
                   <Text>
                     영상 평균 조회수 <h3>{channelInfo.averageViewCount}</h3>
                   </Text>
+                  <Text>
+                    채널 영상 총 조회수 <h3>{simpleViewCount(initialTotalViewCount)}</h3>
+                  </Text>
                 </>
               )}
             </ProfileContainer>
@@ -133,8 +154,7 @@ export default function Detail() {
             )}
             <ButtonWrap>
               <ButtonStyle onClick={onChannelBtnClickHandler}>채널 방문</ButtonStyle>
-
-              <AdSuggestBtn />
+              {/* <AdSuggestBtn /> */}
             </ButtonWrap>
           </ChannelInfoContainer>
           <GraphContainer>
@@ -148,33 +168,57 @@ export default function Detail() {
               />
             </Graph>
             <Table>
-              <span style={{ fontSize: 'larger' }}> 채널 정보</span>
+              <span style={{ fontSize: 'larger' }}> 채널 세부 정보</span>
               {channelInfo && (
                 <TableTextWrap>
-                  <TableText>
-                    구독자 수 <h3>{subscriberNum} 명</h3>
-                  </TableText>
-                  <TableText>
-                    영상 평균 조회수 <h3 style={{ marginLeft: '80px' }}>{averageVideoViewCount} 회</h3>
-                  </TableText>
-                  <TableText>
-                    총 영상수 <h3>{formattedVideoCount} 개</h3>
-                  </TableText>
-                  <TableText>
-                    총 조회수 <h3>{initialViewCount} 회</h3>
-                  </TableText>
-                  <TableText>
-                    최근 영상 평균 조회수
-                    <h3 style={{ marginLeft: '43px' }}>{parseInt(averageViewCount).toLocaleString()} 회</h3>
-                  </TableText>
-                  <TableText>
-                    최근 영상 평균 좋아요수
-                    <h3 style={{ marginLeft: '27px' }}>{parseInt(averageLikeCount).toLocaleString()} 개</h3>
-                  </TableText>
-                  <TableText>
-                    최근 영상 평균 댓글수
-                    <h3 style={{ marginLeft: '43px' }}>{parseInt(averageCommentCount).toLocaleString()} 개</h3>
-                  </TableText>
+                  <LineWrap>
+                    <ColorCircle></ColorCircle>
+                    <TableText>
+                      총 영상수 <h3>{formattedVideoCount} 개</h3>
+                    </TableText>
+                  </LineWrap>
+                  <LineWrap>
+                    <ColorCircle></ColorCircle>
+                    <TableText>
+                      총 조회수 <h3>{initialViewCount} 회</h3>
+                    </TableText>
+                  </LineWrap>
+                  <LineWrap>
+                    <ColorCircle style={{ backgroundColor: '#febe98' }}></ColorCircle>
+                    <TableText>
+                      구독자 수 <h3>{subscriberNum} 명</h3>
+                    </TableText>
+                  </LineWrap>
+                  <br />
+                  <LineWrap>
+                    <ColorCircle style={{ backgroundColor: '#f9d46e' }}></ColorCircle>
+                    <TableText>
+                      채널 영상 평균 조회수 <h3 style={{ marginLeft: '43px' }}>{averageVideoViewCount} 회</h3>
+                    </TableText>
+                  </LineWrap>
+                  <LineWrap>
+                    <ColorCircle style={{ backgroundColor: '#B1C381' }}></ColorCircle>
+                    <TableText>
+                      최근 영상 평균 조회수
+                      <h3 style={{ marginLeft: '43px' }}>{parseInt(averageViewCount).toLocaleString()} 회</h3>
+                    </TableText>
+                  </LineWrap>
+
+                  <br />
+                  <LineWrap>
+                    <ColorCircle style={{ backgroundColor: '#dadada' }}></ColorCircle>
+                    <TableText>
+                      최근 영상 평균 좋아요수
+                      <h3 style={{ marginLeft: '25px' }}>{parseInt(averageLikeCount).toLocaleString()} 개</h3>
+                    </TableText>
+                  </LineWrap>
+                  <LineWrap>
+                    <ColorCircle style={{ backgroundColor: '#bfbebe' }}></ColorCircle>
+                    <TableText>
+                      최근 영상 평균 댓글수
+                      <h3 style={{ marginLeft: '43px' }}>{parseInt(averageCommentCount).toLocaleString()} 개</h3>
+                    </TableText>
+                  </LineWrap>
                 </TableTextWrap>
               )}
             </Table>
@@ -247,7 +291,7 @@ const YoutuberTitle = styled.span`
 const Text = styled.span`
   font-size: large;
   font-weight: 600;
-  color: #6e6e6e;
+  color: #5c5c5c;
 
   display: flex;
   flex-direction: row;
@@ -256,6 +300,7 @@ const Text = styled.span`
   gap: 0.5rem;
   > h3 {
     font-size: x-large;
+    color: red;
   }
 `;
 
@@ -285,11 +330,13 @@ const GraphContainer = styled.div`
 
   width: 1280px;
   padding: 1rem;
+
   display: flex;
   flex-direction: row;
-  padding: 20px;
-  gap: 20px;
-  margin: 20px 200px;
+  align-items: center;
+  justify-content: center;
+
+  margin: 20px 0;
 `;
 
 const Graph = styled.div`
@@ -319,11 +366,22 @@ const TableTextWrap = styled.div`
   align-items: flex-start;
   padding: 2rem;
 `;
+const LineWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+const ColorCircle = styled.div`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+`;
 const TableText = styled.span`
   font-size: large;
   font-weight: 600;
   padding: 5px;
-  color: #6e6e6e;
+  color: #2a2a2a;
 
   display: flex;
   flex-direction: row;
@@ -337,9 +395,9 @@ const TableText = styled.span`
 `;
 
 const VideoContainer = styled.div`
-  width: 100%;
+  width: 1280px;
 
-  padding: 20px;
+  padding: 30px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -348,7 +406,7 @@ const VideoContainer = styled.div`
 
 const RecentVideoTitle = styled.div`
   font-size: x-large;
-  padding: 10px;
+  padding: 20px;
   font-weight: 600;
   width: 1280px;
 `;
