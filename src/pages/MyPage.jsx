@@ -65,6 +65,7 @@ export const ProfileSection = styled.section`
 
   & > img {
     margin-top: 2rem;
+    width: 200px;
   }
   & > button {
     background-color: white;

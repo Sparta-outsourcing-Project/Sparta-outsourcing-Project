@@ -21,27 +21,18 @@ const MyProfile = () => {
   // 닉네임, 소개, 이미지 임시저장
   const [newNickname, setNewNickname] = useState('');
   const [newIntro, setNewIntro] = useState('');
-  const [newImage, setNewImage] = useState('');
+  // const [newImage, setNewImage] = useState('');
+  const [newImage, setNewImage] = useState(null);
 
   const queryClient = useQueryClient();
 
   // query로 newUserInfo update, invalidate(optimistic UI) 하기
-
-  // mutation 방식 1.
   const mutation = useMutation({
     mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
     }
   });
-
-  // mutation 방식 2.
-  // const { mutate: updateMutation } = useMutation({
-  //   mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(['userInfo']);
-  //   }
-  // });
 
   // query로 fireStore의 userInfo 가져오기
   const { isLoading, isError, data } = useQuery({
@@ -50,7 +41,8 @@ const MyProfile = () => {
       const res = await getUserInfo(uid);
       setNewNickname(res.nickname);
       setNewIntro(res.intro);
-      setNewImage(res.image);
+      // setNewImage(res.image);
+      !res.image === null && setNewImage(res.image);
       return res;
     }
   });
@@ -99,20 +91,39 @@ const MyProfile = () => {
       };
 
       // mutation (수정된 정보 query로 전달하기)
-      // 방식 1.
       mutation.mutate(newUserInfo);
-
-      // 방식 2.
-      // updateMutation(newUserInfo);
 
       setIsEdit(false);
     }
   };
 
+  const onImageHandler = (e) => {
+    const file = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setNewImage(imageUrl);
+  };
+
   return (
     <>
       <ProfileSection>
-        <img src={image === null ? defaultImg : image} alt="defaultImg" width={200} />
+        {isEdit ? (
+          <>
+            <label htmlFor="fileInput">
+              <EditingImg src={newImage === null ? defaultImg : newImage} alt="defaultImg" />
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              onChange={onImageHandler}
+              style={{ display: 'none' }}
+            />
+          </>
+        ) : (
+          <>
+            <img src={image === null ? defaultImg : image} alt="defaultImg" />
+          </>
+        )}
         <ProfileContent>
           {isEdit ? (
             <UserNicknameInput type="text" value={newNickname} onChange={onNewNickname} />
@@ -157,4 +168,9 @@ export const UpdateButton = styled.div`
 export const Textarea = styled.textarea`
   font-size: 1.3rem;
   min-height: 70px;
+`;
+
+export const EditingImg = styled.img`
+  width: 200px;
+  margin-top: 30px;
 `;
