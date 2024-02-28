@@ -68,10 +68,16 @@ export default function CardList() {
   return (
     <main>
       <ListWrapper>
-        <select name="" id="" onChange={handleSortChange} value={sortBy}>
-          <option value="subscriberCount">구독자</option>
-          <option value="averageViewCount">영상조회수</option>
-        </select>
+        <AboveListBox>
+          <select name="" id="" onChange={handleSortChange} value={sortBy}>
+            <option value="subscriberCount">구독자</option>
+            <option value="averageViewCount">영상조회수</option>
+          </select>
+          <SearchKeyWordBox>
+            <p>검색 키워드 │ &nbsp;</p>
+            <KeywordText>" {keyword} "</KeywordText>
+          </SearchKeyWordBox>
+        </AboveListBox>
         <ListTable>
           <thead>
             <tr>
@@ -101,7 +107,7 @@ export default function CardList() {
                   {userUid ? (
                     <ListFavoriteButton userUid={userUid} channelId={channel.channelId} />
                   ) : (
-                    <NonFavStar src={nonFavImg} width={50} onClick={handleNonUserFavClick} />
+                    <NonFavStar src={nonFavImg} width={30} onClick={handleNonUserFavClick} />
                   )}
                 </td>
               </tr>
@@ -183,4 +189,18 @@ const PageButton = styled.button`
 
 const NonFavStar = styled.img`
   cursor: pointer;
+`;
+
+const AboveListBox = styled.div`
+  display: flex;
+  gap: 35%;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+`;
+const SearchKeyWordBox = styled.div`
+  display: flex;
+`;
+
+const KeywordText = styled.p`
+  font-weight: bold;
 `;
