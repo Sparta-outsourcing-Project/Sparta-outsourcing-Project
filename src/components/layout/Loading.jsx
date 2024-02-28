@@ -1,21 +1,3 @@
-// import styled from 'styled-components';
-
-// export default function Loading() {
-//   return (
-//     <LodingBox>
-//       <img src="/public/img/loading.png" alt="loading.." />
-//     </LodingBox>
-//   );
-// }
-
-// const LodingBox = styled.div`
-//   min-height: 100vh;
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -23,7 +5,9 @@ export default function Loading() {
   const [filled, setFilled] = useState(0);
 
   useEffect(() => {
-    if (filled < 100) setTimeout(() => setFilled((prev) => (prev += 2)));
+    if (filled < 100) {
+      setTimeout(() => setFilled((prev) => (prev += 5)), 50);
+    }
   }, [filled]);
 
   return (

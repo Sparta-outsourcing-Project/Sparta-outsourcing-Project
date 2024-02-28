@@ -85,6 +85,7 @@ export default function CardList() {
               <th colSpan={2}></th>
               <th>구독자</th>
               <th>영상 조회수</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -143,10 +144,11 @@ export const ListTable = styled.table`
   margin: 0 auto;
   border-collapse: collapse;
   width: 100%;
+  font-size: 17px;
   & th,
   & td {
     text-align: left;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #c9c8c7;
     padding: 1rem;
     vertical-align: middle;
   }
@@ -180,11 +182,13 @@ const PageButtonBox = styled.button`
   margin-top: 1rem;
   gap: 1rem;
   background-color: transparent;
+  margin-bottom: 1rem;
 `;
 
 const PageButton = styled.button`
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
   border-color: transparent;
   background-color: transparent;
 `;
@@ -201,6 +205,7 @@ const AboveListBox = styled.div`
 `;
 const SearchKeyWordBox = styled.div`
   display: flex;
+  font-size: 17px;
 `;
 
 const KeywordText = styled.p`
