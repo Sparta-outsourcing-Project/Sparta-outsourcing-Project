@@ -187,6 +187,8 @@ const PageButton = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+  border-color: transparent;
+  background-color: transparent;
 `;
 
 const NonFavStar = styled.img`

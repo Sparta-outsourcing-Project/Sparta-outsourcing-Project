@@ -39,8 +39,8 @@ export default function Header() {
     sessionStorage.clear();
     auth.signOut();
     dispatch(login(false));
-
-    navigate('/');
+    window.location.reload();
+    // navigate('/');
   };
 
   const onMypageClickLink = () => {
