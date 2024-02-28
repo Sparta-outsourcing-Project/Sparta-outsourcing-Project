@@ -82,7 +82,8 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
           userId: userData.user.email,
           nickname: userData.user.displayName,
           image: null,
-          favChannels: []
+          favChannels: [],
+          intro: '소개를 입력해주세요.'
         };
 
         addGoogleUserInfo(uid, newUserInfo);

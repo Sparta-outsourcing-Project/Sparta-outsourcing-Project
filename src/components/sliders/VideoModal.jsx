@@ -1,10 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
 import { BsXSquareFill } from 'react-icons/bs';
-
 const VideoModal = ({ videoData, onClose }) => {
-  const { videoId, channelTitle } = videoData;
+  const { videoId } = videoData;
   // 모달 내용 및 스타일링 작성
   return (
     <ModalOverlay>
@@ -15,16 +13,13 @@ const VideoModal = ({ videoData, onClose }) => {
             <BsXSquareFill />
           </button>
         </h2>
-
         <YouTube videoId={videoId} />
-
         {/* 추가적인 영상 정보 표시 등 */}
       </ModalContent>
       <ModalBackGround onClick={onClose} />
     </ModalOverlay>
   );
 };
-
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -45,7 +40,6 @@ const ModalBackGround = styled.div`
   background: rgba(0, 0, 0, 0.8);
   z-index: 10000;
 `;
-
 const ModalContent = styled.div`
   background: white;
   padding: 20px;
@@ -62,5 +56,4 @@ const ModalContent = styled.div`
     }
   }
 `;
-
 export default VideoModal;
