@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import defaultImg from '../../assets/profile_defaultImage.png';
 import {
   ProfileContent,
@@ -8,15 +8,13 @@ import {
   UserNickname,
   UserNicknameInput
 } from '../../pages/MyPage';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, updateUserInfo } from '../../api/auth';
-import { defaultUser, updateUserState } from '../../redux/modules/userSlice';
 import styled from 'styled-components';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-const MyProfile = () => {
+const MyProfileCopy = () => {
   const uid = sessionStorage.getItem('uid');
   const [isEdit, setIsEdit] = useState(false);
-  const dispatch = useDispatch();
   // userInfo 샘플
   // {
   //   intro : '소개를 입력해주세요'
@@ -27,18 +25,24 @@ const MyProfile = () => {
   //   userId: 'test@nbc.com';
   // }
 
-  // 로그인된 user정보 fireStore에서 가져오기 + reducer 전달
-  useEffect(() => {
-    const getLoggedInUserInfo = async () => {
-      const userInfo = await getUserInfo(uid);
-      dispatch(defaultUser(userInfo));
-    };
-    getLoggedInUserInfo();
-  }, [dispatch, uid]);
+  // query로 fireStore의 userInfo 가져오기
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await getUserInfo(uid);
+      return res;
+    }
+  });
+  console.log(isLoading, isError, data);
+  const { userId, nickname, image, favChannels, intro } = data;
 
-  // reducer에서 user정보 가져오기
-  const userInfoState = useSelector((state) => state.userReducer);
-  const { userId, nickname, image, favChannels, intro } = userInfoState;
+  // query로 newUserInfo update, invalidate(optimistic UI) 하기
+  const queryClient = useQueryClient();
+  const mutation = useMutation((newUserInfo) => updateUserInfo(uid, newUserInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userInfo');
+    }
+  });
 
   // 닉네임, 소개, 이미지 임시저장
   const [newNickname, setNewNickname] = useState(nickname);
@@ -72,16 +76,6 @@ const MyProfile = () => {
   const onUpdateUserInfo = async () => {
     const isConfirmed = window.confirm('수정하시겠습니까?');
     if (isConfirmed) {
-      // 변경된 값 리듀서에 전달
-      const updateUserInfoState = { nickname: newNickname, intro: newIntro, image: newImage };
-      dispatch(updateUserState(updateUserInfoState));
-
-      // useState 변경
-      setNewImage(image);
-      setNewNickname(nickname);
-      setNewIntro(intro);
-
-      // fireStore userInfo 업데이트
       const newUserInfo = {
         nickname: newNickname,
         intro: newIntro,
@@ -89,7 +83,14 @@ const MyProfile = () => {
         // image
       };
 
-      await updateUserInfo(uid, newUserInfo);
+      // mutation (수정된 정보 query로 전달하기)
+      try {
+        await mutation.mutateAsync(newUserInfo);
+      } catch (error) {
+        console.error(error);
+      }
+      // mutation.mutate(newUserInfo);
+
       setIsEdit(false);
     }
   };
@@ -122,7 +123,7 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default MyProfileCopy;
 
 export const UpdateButton = styled.div`
   display: flex;

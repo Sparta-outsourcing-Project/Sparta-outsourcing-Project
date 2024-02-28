@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MyProfile from '../components/myPage/MyProfile';
+import MyProfileCopy from '../components/myPage/MyProfileCopy';
 
 export default function MyPage() {
   return (
@@ -9,6 +10,7 @@ export default function MyPage() {
       <Header />
       <MypageSection>
         <MyProfile />
+        {/* <MyProfileCopy /> */}
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
           <FavList>
