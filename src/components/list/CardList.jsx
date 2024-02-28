@@ -4,18 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
 import Loading from '../layout/Loading';
 import { readSearchKeyWord } from '../../api/dataApi';
+import { ListFavoriteButton } from './ListFavoriteButton';
 import nonFavImg from '../../assets/emptyStar.png';
-import favImg from '../../assets/coloredStar.png';
-import { addDoc, collection } from 'firebase/firestore/lite';
-import db from '../../api/config';
-
-// import { db } from 'database/firebase';
+import { useSelector } from 'react-redux';
 
 export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
-  const [favorite, setFavorite] = useState(false); // 리스트마다
   const [sortedAndUniqueData, setSortedAndUniqueData] = useState([]);
+  const [userUid, setUserUid] = useState('');
   const { keyword } = useParams();
+  const isLogin = useSelector((state) => state.loginReducer);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['keyword', keyword, sortBy],
@@ -26,6 +24,10 @@ export default function CardList() {
   useEffect(() => {
     if (!data) return;
 
+    if (sessionStorage.getItem('uid')) {
+      setUserUid(sessionStorage.getItem('uid'));
+    }
+
     const uniqueChannelTitles = Array.from(new Set(data.map((item) => item.channelTitle)));
     const uniqueData = uniqueChannelTitles.map((channelTitle) =>
       data.find((item) => item.channelTitle === channelTitle)
@@ -33,7 +35,7 @@ export default function CardList() {
     const sortedData = uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
 
     setSortedAndUniqueData(sortedData);
-  }, [data, sortBy]);
+  }, [data, sortBy, isLogin]);
 
   // 페이지네이션
   const [page, setPage] = useState(1); // 현재 페이지 수
@@ -56,39 +58,8 @@ export default function CardList() {
     setPage(pageNum);
   };
 
-  // 즐겨찾기 (별) 눌렀을 때 (toggle - 즐겨찾기 추가/해제)
-  // 사용자가 즐찾 누름 -> DB 갱신  post/delete
-  // 이미지 토글
-  const toggleFavoriteClick = async () => {
-    setFavorite(true);
-    // const userUid = sessionStorage.getItem('uid');
-    // console.log(uid);
-    // 세션스토리지 uid 값 가져오기 - 파이어베이스 db 해당 uid로 된 문서 찾기 -
-    // 문서 안 favChannels 필드에 해당 채널ID 추가  (배열처럼?)
-
-    // 파이어베이스store에 데이터 추가하는 함수
-    // const addFavChannelsToDB = async () => {
-    try {
-      //     const collectionRef = firestore().collection(userInfo);
-      //     await collectionRef.add(newdata);
-      //     console.log('Data added successfully to Firestore!');
-      //   } catch (error) {
-      //     console.error('Error adding data to Firestore: ', error);
-      //   }
-      // };
-
-      // const newdata = { userId: '..', nickname: '...', favChannels: [] };
-      // addFavChannelsToDB('userInfo', newdata);
-      const docRef = await addDoc(collection(db, 'userInfo'), {
-        name: 'Tokyo',
-        country: 'Japan'
-      });
-
-      console.log('Document written with ID: ', docRef.id);
-    } catch (error) {
-      console.error('Error adding document: ', error);
-    }
-    // addFavChannelsToDB();
+  const handleNonUserFavClick = () => {
+    alert('즐겨찾기 기능을 이용하시려면 로그인해주세요 !');
   };
 
   if (isLoading) return <Loading />;
@@ -127,7 +98,11 @@ export default function CardList() {
                 <td>{channel.subscriberCount}</td>
                 <td>{channel.averageViewCount}</td>
                 <td>
-                  <NonFavStar src={nonFavImg} width={50} onClick={toggleFavoriteClick} />
+                  {userUid ? (
+                    <ListFavoriteButton userUid={userUid} channelId={channel.channelId} />
+                  ) : (
+                    <NonFavStar src={nonFavImg} width={50} onClick={handleNonUserFavClick} />
+                  )}
                 </td>
               </tr>
             ))}
@@ -189,9 +164,6 @@ export const ListTable = styled.table`
     }
   }
 `;
-const NonFavStar = styled.img`
-  cursor: pointer;
-`;
 
 const PageButtonBox = styled.button`
   display: flex;
@@ -207,4 +179,8 @@ const PageButtonBox = styled.button`
 const PageButton = styled.button`
   justify-content: center;
   align-items: center;
+`;
+
+const NonFavStar = styled.img`
+  cursor: pointer;
 `;
