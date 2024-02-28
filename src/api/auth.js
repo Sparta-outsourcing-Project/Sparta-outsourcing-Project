@@ -23,11 +23,8 @@ export const addGoogleUserInfo = async (uid, newUserInfo) => {
 export const getUserInfo = async (uid) => {
   try {
     const userInfo = await getDoc(doc(db, 'users', uid));
-    if (userInfo.exists()) {
-      return userInfo.data();
-    }
-    console.log('문서가 존재하지 않습니다.');
-    return null;
+    // console.log(userInfo.data());
+    return userInfo.data();
   } catch (error) {
     console.error(error);
     return null;
