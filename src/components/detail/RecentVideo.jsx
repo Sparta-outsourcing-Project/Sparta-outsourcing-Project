@@ -57,7 +57,6 @@ const RecentVideoContainer = styled.div`
 
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-
   width: 1280px;
 `;
 
@@ -69,7 +68,7 @@ const VideoItem = styled.div`
 `;
 
 const ThumbnailImageWrap = styled.div`
-  width: calc(100% - 3rem);
+  width: calc(100% - 2rem);
   height: 200px;
   border-radius: 1rem;
   overflow: hidden;
@@ -92,23 +91,24 @@ const VideoTextWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0 1.5rem;
+  /* padding: 0 1.5rem; */
 `;
 const VideoTitle = styled.p`
-  font-size: larger;
+  /* font-size: larger; */
   font-weight: 600;
   line-height: 1.5;
-  padding: 2rem 0.5rem;
+  padding: 1rem;
 `;
 const VideoInfoContainer = styled.div`
   line-height: 1.5;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
 `;
 const VideoDate = styled.span`
-  padding: 5px 0;
+  /* padding: 5px 0; */
+  color: #666;
 `;
 
 const SpanContainer = styled.div`
