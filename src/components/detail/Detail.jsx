@@ -1,36 +1,27 @@
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { getBanner, getMostChannelInfo } from '../../api/dataApi';
+import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-import { getBanner, getMostChannelInfo } from '../../api/dataApi';
-import { useParams } from 'react-router-dom';
-import RecentVideo from './RecentVideo';
 import Loading from '../layout/Loading';
-import { useQuery } from '@tanstack/react-query';
-import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
+import AdSuggestBtn from './AdSuggestBtn';
+import RecentVideo from './RecentVideo';
 import TwoLevelPieChart from './TwoLevelPieChart';
 
 export default function Detail() {
   const params = useParams();
   const channelId = params.id;
 
-  // useChannelDetailInfo 커스텀훅으로부터 데이터 불러오기
+  /* useChannelDetailInfo 커스텀훅으로부터 데이터 불러오기 */
   const {
     data: channelInfo,
     isLoading: isChannelInfoLoading,
     error: channelInfoError
   } = useChannelDetailInfo(channelId);
 
-  // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
-  // const {
-  //   data: detailInfo,
-  //   isLoading: isDetailInfoLoading,
-  //   error: detailInfoError
-  // } = useQuery({
-  //   queryKey: ['detailInfo', ],
-  //   queryFn: () => getDetailDataApi('OzHPMTZXs8U') // videoId
-  // });
-
-  // banner url 불러오기 -> React Query로
+  /* banner url 불러오기 -> React Query로 */
   const {
     data: bannerUrl,
     isLoading: isBannerUrlLoading,
@@ -52,7 +43,7 @@ export default function Detail() {
     queryFn: () => getMostChannelInfo(channelId)
   });
 
-  // 채널 방문 버튼 클릭시, 채널 페이지로 이동
+  /* 채널 방문 버튼 클릭시, 채널 페이지로 이동 */
 
   const onChannelBtnClickHandler = () => {
     const youtubeURL = `https://www.youtube.com/${channelLink}`;
@@ -60,6 +51,7 @@ export default function Detail() {
   };
 
   /* 채널 정보 */
+
   // 채널 총 영상수
   const formattedVideoCount = channelInfo ? parseInt(channelInfo.videoCount).toLocaleString() : '';
   // 채널 총 조회수
@@ -101,7 +93,8 @@ export default function Detail() {
             )}
             <ButtonWrap>
               <ButtonStyle onClick={onChannelBtnClickHandler}>채널 방문</ButtonStyle>
-              <ButtonStyle style={{ backgroundColor: '#febe98' }}>광고 제안 하기</ButtonStyle>
+
+              <AdSuggestBtn />
             </ButtonWrap>
           </ChannelInfoContainer>
           <GraphContainer>
