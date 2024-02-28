@@ -9,8 +9,8 @@ export default function MyPage() {
     <Wrap>
       <Header />
       <MypageSection>
-        <MyProfile />
-        {/* <MyProfileCopy /> */}
+        {/* <MyProfile /> */}
+        <MyProfileCopy />
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
           <FavList>

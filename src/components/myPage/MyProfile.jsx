@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, updateUserInfo } from '../../api/auth';
 import { defaultUser, updateUserState } from '../../redux/modules/userSlice';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 
 const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
@@ -36,11 +37,22 @@ const MyProfile = () => {
     getLoggedInUserInfo();
   }, [dispatch, uid]);
 
+  // query로 fireStore의 userInfo 가져오기
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await getUserInfo(uid);
+      return res;
+    }
+  });
+  console.log(isLoading, isError, data);
+
   // reducer에서 user정보 가져오기
   const userInfoState = useSelector((state) => state.userReducer);
   const { userId, nickname, image, favChannels, intro } = userInfoState;
 
-  // 닉네임, 소개, 이미지 임시저장
+  // 닉네임, 소개, 이미지 임시저장 🌈🌈 초기값으로 둔게 다 undefined (위에서 멀쩡히 잘 들어오는 값임)
+  // -> 이거 해결되면 수정클릭시 input에 이전값 뜨는 이슈, 수정시 이미지파일 안뜨는 이슈 해결 가능!!
   const [newNickname, setNewNickname] = useState(nickname);
   const [newIntro, setNewIntro] = useState(intro);
   const [newImage, setNewImage] = useState(image);
@@ -85,10 +97,9 @@ const MyProfile = () => {
       const newUserInfo = {
         nickname: newNickname,
         intro: newIntro,
-        image: newImage
-        // image
+        // image: newImage
+        image
       };
-
       await updateUserInfo(uid, newUserInfo);
       setIsEdit(false);
     }

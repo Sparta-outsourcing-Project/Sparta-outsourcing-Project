@@ -11,43 +11,68 @@ import {
 import { getUserInfo, updateUserInfo } from '../../api/auth';
 import styled from 'styled-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Loading from '../layout/Loading';
+import Error from '../../pages/Error';
 
 const MyProfileCopy = () => {
   const uid = sessionStorage.getItem('uid');
   const [isEdit, setIsEdit] = useState(false);
-  // userInfo 샘플
-  // {
-  //   intro : '소개를 입력해주세요'
-  //   favChannels: [];
-  //   image: null;
-  //   nickname: 'test';
-  //   uid: 'vC2wON5Cy3eeSgJZBiP7qjeecsr2';
-  //   userId: 'test@nbc.com';
-  // }
 
-  // query로 fireStore의 userInfo 가져오기
-  const { isLoading, isError, data } = useQuery({
-    queryKey: ['userInfo'],
-    queryFn: async () => {
-      const res = await getUserInfo(uid);
-      return res;
-    }
-  });
-  console.log(isLoading, isError, data);
-  const { userId, nickname, image, favChannels, intro } = data;
+  const [newNickname, setNewNickname] = useState('');
+  const [newIntro, setNewIntro] = useState('');
+  const [newImage, setNewImage] = useState('');
 
-  // query로 newUserInfo update, invalidate(optimistic UI) 하기
   const queryClient = useQueryClient();
-  const mutation = useMutation((newUserInfo) => updateUserInfo(uid, newUserInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('userInfo');
-    }
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['userInfo', uid],
+    queryFn: () => getUserInfo(uid)
   });
+  console.log('useQuery 확인', data, isLoading, isError);
+
+  const mutation = useMutation((newUserInfo) => updateUserInfo(uid, newUserInfo), {
+    onSuccess: () => queryClient.invalidateQueries(['userInfo'], uid)
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <Error />;
+
+  const { userId, nickname, image, intro } = data;
+  console.log(data);
+
+  // const { userId, nickname, image, intro } = data ?? {
+  //   userId: '',
+  //   nickname: '',
+  //   image: null,
+  //   favChannels: [],
+  //   intro: ''
+  // };
+  // console.log(data);
+
+  setNewNickname(nickname);
+  setNewIntro(intro);
+  setNewImage(image);
 
   // 닉네임, 소개, 이미지 임시저장
-  const [newNickname, setNewNickname] = useState(nickname);
-  const [newIntro, setNewIntro] = useState(intro);
-  const [newImage, setNewImage] = useState(image);
+  // const [newNickname, setNewNickname] = useState(nickname);
+  // const [newIntro, setNewIntro] = useState(intro);
+  // const [newImage, setNewImage] = useState(image);
+
+  // query로 fireStore의 userInfo 가져오기
+  // const { isLoading, isError, error, data } = useQuery({
+  //   queryKey: ['userInfo', uid],
+  //   queryFn: () => getUserInfo(uid)
+  // });
+  // console.log(isLoading, isError, data);
+
+  // const { userId, nickname, image, favChannels, intro } = data;
+  // console.log(data);
+
+  // query로 newUserInfo update, invalidate(optimistic UI) 하기
+  // const queryClient = useQueryClient();
+  // const mutation = useMutation((newUserInfo) => updateUserInfo(uid, newUserInfo), {
+  //   onSuccess: () => queryClient.invalidateQueries(['userInfo'], uid)
+  // });
 
   // 닉네임 입력
   const onNewNickname = (e) => {
@@ -94,6 +119,9 @@ const MyProfileCopy = () => {
       setIsEdit(false);
     }
   };
+
+  // if (isLoading) return <Loading />;
+  // if (isError) return console.log(error.message);
   return (
     <>
       <ProfileSection>
