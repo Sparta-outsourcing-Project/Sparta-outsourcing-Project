@@ -85,6 +85,7 @@ export default function CardList() {
               <th colSpan={2}></th>
               <th>구독자</th>
               <th>영상 조회수</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -147,7 +148,7 @@ export const ListTable = styled.table`
   & th,
   & td {
     text-align: left;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #eecdbe;
     padding: 1rem;
     vertical-align: middle;
   }
