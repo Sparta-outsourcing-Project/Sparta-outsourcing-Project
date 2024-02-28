@@ -180,11 +180,13 @@ const PageButtonBox = styled.button`
   margin-top: 1rem;
   gap: 1rem;
   background-color: transparent;
+  margin-bottom: 1rem;
 `;
 
 const PageButton = styled.button`
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
   border-color: transparent;
   background-color: transparent;
 `;
