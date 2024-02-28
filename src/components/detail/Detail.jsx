@@ -263,8 +263,8 @@ export default function Detail() {
                       </tr>
                       <tr>
                         <th>
-                          {' '}
-                          <ColorCircle></ColorCircle>구독자 수{' '}
+                          <ColorCircle style={{ backgroundColor: '#febe98' }}></ColorCircle>
+                          구독자 수
                         </th>
                         <td>{subscriberNum} 명</td>
                       </tr>
