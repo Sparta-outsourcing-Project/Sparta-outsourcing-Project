@@ -22,7 +22,10 @@ const request = {
   getChannelStatistics: `/channels?part=statistics&fields=${channelStatisticsFields}&key=${apiKey}`,
 
   getChannelSnippetStatistics: `/channels?part=snippet,statistics&key=${apiKey}`,
-  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`
+  getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`,
+
+  // 최근 3개월 내 올린 채널 내 영상 업로드
+  getRecentUploadsPlaylistVideo: `/playlistItems?part=snippet&key=${apiKey}`
 };
 
 export default request;
