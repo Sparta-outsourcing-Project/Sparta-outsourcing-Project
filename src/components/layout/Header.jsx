@@ -7,7 +7,7 @@ import SignUp from '../AuthModal/SignUp';
 import { auth } from '../../api/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/modules/loginSlice';
-import { HiUser, HiUserAdd, HiUserCircle, HiLogout, HiLogin, HiUserRemove } from 'react-icons/hi';
+import { LuUserPlus, LuUserCircle, LuHome, LuLogOut, LuLogIn } from 'react-icons/lu';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -56,22 +56,26 @@ export default function Header() {
           </Link>
         </Logo>
         <Auth>
+          <Link to="/">
+            <LuHome />
+          </Link>
+
           {loginState ? (
             <>
               <p onClick={onMypageClickLink}>
-                <HiUserCircle />
+                <LuUserCircle />
               </p>
               <p onClick={onLogoutHandler}>
-                <HiUserRemove />
+                <LuLogOut />
               </p>
             </>
           ) : (
             <>
-              <p onClick={onLoginClickHandler}>
-                <HiUser />
-              </p>
               <p onClick={onSignUpClickHandler}>
-                <HiUserAdd />
+                <LuUserPlus />
+              </p>
+              <p onClick={onLoginClickHandler}>
+                <LuLogIn />
               </p>
             </>
           )}
@@ -113,9 +117,10 @@ export const Auth = styled.div`
   display: flex;
   gap: 0.8rem;
 
-  & p svg {
+  & p,
+  a {
     color: #febe98;
-    font-size: 2rem;
+    font-size: 1.5rem;
     cursor: pointer;
     &:hover {
       transform: scale(1.1);
