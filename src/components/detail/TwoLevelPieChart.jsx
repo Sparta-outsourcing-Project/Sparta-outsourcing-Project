@@ -1,5 +1,6 @@
 import { Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
+import Loading from '../layout/Loading';
 function TwoLevelPieChart({ channelId }) {
   const { data: channelInfo, isLoading, error } = useChannelDetailInfo(channelId);
 
@@ -32,6 +33,8 @@ function TwoLevelPieChart({ channelId }) {
     { name: '구독자 수', value: channelInfo.subscriberCount, realValue: subscriberNum },
     { name: '영상 평균 조회수', value: channelInfo.averageViewCount, realValue: averageViewNum }
   ];
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error: {error?.message}</div>;
 
   return (
     <>
