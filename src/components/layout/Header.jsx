@@ -7,7 +7,7 @@ import SignUp from '../AuthModal/SignUp';
 import { auth } from '../../api/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/modules/loginSlice';
-import { IoPersonAddSharp } from 'react-icons/io5';
+import { HiUser, HiUserAdd, HiUserCircle, HiLogout, HiLogin, HiUserRemove } from 'react-icons/hi';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -52,20 +52,26 @@ export default function Header() {
       <HeaderWrapInner>
         <Logo>
           <Link to="/">
-            <img src={logo} alt="" />
+            <img src={logo} alt="Dtrand-logo" />
           </Link>
         </Logo>
         <Auth>
           {loginState ? (
             <>
-              <p onClick={onMypageClickLink}>마이페이지</p>
-              <p onClick={onLogoutHandler}>로그아웃</p>
+              <p onClick={onMypageClickLink}>
+                <HiUserCircle />
+              </p>
+              <p onClick={onLogoutHandler}>
+                <HiUserRemove />
+              </p>
             </>
           ) : (
             <>
-              <p onClick={onLoginClickHandler}>로그인</p>
+              <p onClick={onLoginClickHandler}>
+                <HiUser />
+              </p>
               <p onClick={onSignUpClickHandler}>
-                <IoPersonAddSharp />
+                <HiUserAdd />
               </p>
             </>
           )}
@@ -105,11 +111,11 @@ export const Logo = styled.h1`
 
 export const Auth = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 0.8rem;
 
-  & > p {
+  & p svg {
     color: #febe98;
-    font-size: 20px;
+    font-size: 2rem;
     cursor: pointer;
     &:hover {
       transform: scale(1.1);
