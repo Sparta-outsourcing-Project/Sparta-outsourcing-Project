@@ -20,11 +20,6 @@ const HeaderSlider = () => {
         speed={500}
         loop={true}
       >
-        {/* <SwiperSlide>
-          <MainSlider>
-            <img src="src\assets\main_banner01.jpg" alt="" />
-          </MainSlider>
-        </SwiperSlide> */}
         <SwiperSlide>
           <MainSlider>
             <img src="src\assets\main_banner02.jpg" alt="" />
@@ -42,14 +37,12 @@ const HeaderSlider = () => {
 
 export default HeaderSlider;
 
-// swiper
 const StSwiper = styled(Swiper)`
   --swiper-theme-color: #fff;
   height: 400px;
   margin-bottom: 3rem;
 `;
 
-//main slider
 const MainSlider = styled.section`
   width: 100%;
   height: 400px;

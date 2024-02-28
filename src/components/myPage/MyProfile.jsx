@@ -18,21 +18,12 @@ const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
   const [isEdit, setIsEdit] = useState(false);
 
-  // 닉네임, 소개, 이미지 임시저장
   const [newNickname, setNewNickname] = useState('');
   const [newIntro, setNewIntro] = useState('');
   const [newImage, setNewImage] = useState('');
   const [previewImage, setPreviewImage] = useState('');
 
   const queryClient = useQueryClient();
-
-  // query로 newUserInfo update, invalidate(optimistic UI) 하기
-  // const mutation = useMutation({
-  //   mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(['userInfo']);
-  //   }
-  // });
 
   const mutation = useMutation({
     mutationFn: async (data) => {
@@ -46,7 +37,6 @@ const MyProfile = () => {
     }
   });
 
-  // query로 fireStore의 userInfo 가져오기
   const { isLoading, isError, data } = useQuery({
     queryKey: ['userInfo'],
     queryFn: async () => {
@@ -58,7 +48,6 @@ const MyProfile = () => {
       return res;
     }
   });
-  // console.log(isLoading, isError, data);
 
   if (isLoading) {
     return <Loading />;
@@ -69,38 +58,31 @@ const MyProfile = () => {
 
   const { userId, nickname, image, intro } = data;
 
-  // 닉네임 입력
   const onNewNickname = (e) => {
     setNewNickname(e.target.value);
   };
 
-  // 소개 입력
   const onNewIntro = (e) => {
     setNewIntro(e.target.value);
   };
 
-  // '수정하기' 클릭
   const onUpdateHandler = () => {
     setIsEdit((prev) => !prev);
   };
 
-  // '취소' 클릭 - 기존 값으로 복구
   const onCancel = () => {
     setIsEdit((prev) => !prev);
     setNewImage(image);
   };
 
-  // 이미지 미리보기 변경
   const onImageHandler = (e) => {
     const file = e.target.files[0];
     const imageUrl = URL.createObjectURL(file);
     setPreviewImage(imageUrl);
-    // 이미지파일도 set -> 수정완료하면 storage에 업로드 위해
     setNewImage(file);
     console.log('1', newImage);
   };
 
-  // '수정완료' 클릭
   const onUpdateUserInfo = async () => {
     const isConfirmed = window.confirm('수정하시겠습니까?');
     if (isConfirmed) {
@@ -109,11 +91,8 @@ const MyProfile = () => {
         intro: newIntro
       };
 
-      // mutation (수정된 정보 query로 전달하기)
       mutation.mutate({ uid, newUserInfo, newImage });
       console.log('2', newImage);
-
-      // updateUser(uid, newUserInfo, newImage);
 
       setIsEdit(false);
     }

@@ -2,16 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import defaultImg from '../../assets/profile_defaultImage.png';
 
 const initialState = {};
-// userInfo 샘플
-// {
-//   intro : '소개를 입력해주세요'
-//   favChannels: [];
-//   image: null;
-//   nickname: 'test';
-//   uid: 'vC2wON5Cy3eeSgJZBiP7qjeecsr2';
-//   userId: 'test@nbc.com';
-// }
-
 const UserSlice = createSlice({
   name: 'user',
   initialState,
