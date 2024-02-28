@@ -4,9 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
 import Loading from '../layout/Loading';
 import { readSearchKeyWord } from '../../api/dataApi';
+import nonFavImg from '../../assets/emptyStar.png';
+import favImg from '../../assets/coloredStar.png';
+import { addDoc, collection } from 'firebase/firestore/lite';
+import db from '../../api/config';
+
+// import { db } from 'database/firebase';
 
 export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
+  const [favorite, setFavorite] = useState(false); // 리스트마다
   const { keyword } = useParams();
 
   const { data, isLoading, error } = useQuery({
@@ -46,6 +53,41 @@ export default function CardList() {
     setPage(pageNum);
   };
 
+  // 즐겨찾기 (별) 눌렀을 때 (toggle - 즐겨찾기 추가/해제)
+  // 사용자가 즐찾 누름 -> DB 갱신  post/delete
+  // 이미지 토글
+  const toggleFavoriteClick = async () => {
+    setFavorite(true);
+    // const userUid = sessionStorage.getItem('uid');
+    // console.log(uid);
+    // 세션스토리지 uid 값 가져오기 - 파이어베이스 db 해당 uid로 된 문서 찾기 -
+    // 문서 안 favChannels 필드에 해당 채널ID 추가  (배열처럼?)
+
+    // 파이어베이스store에 데이터 추가하는 함수
+    // const addFavChannelsToDB = async () => {
+    try {
+      //     const collectionRef = firestore().collection(userInfo);
+      //     await collectionRef.add(newdata);
+      //     console.log('Data added successfully to Firestore!');
+      //   } catch (error) {
+      //     console.error('Error adding data to Firestore: ', error);
+      //   }
+      // };
+
+      // const newdata = { userId: '..', nickname: '...', favChannels: [] };
+      // addFavChannelsToDB('userInfo', newdata);
+      const docRef = await addDoc(collection(db, 'userInfo'), {
+        name: 'Tokyo',
+        country: 'Japan'
+      });
+
+      console.log('Document written with ID: ', docRef.id);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+    // addFavChannelsToDB();
+  };
+
   if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -81,6 +123,9 @@ export default function CardList() {
                 </td>
                 <td>{channel.subscriberCount}</td>
                 <td>{channel.averageViewCount}</td>
+                <td>
+                  <NonFavStar src={nonFavImg} width={50} onClick={toggleFavoriteClick} />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -140,6 +185,9 @@ export const ListTable = styled.table`
       width: 100%;
     }
   }
+`;
+const NonFavStar = styled.img`
+  cursor: pointer;
 `;
 
 const PageButtonBox = styled.button`
