@@ -1,20 +1,8 @@
 import styled from 'styled-components';
-import { useChannelRecentVideos, usePlayListId, useVideoStatisticInfo } from '../../hooks/useChannelDetailInfo';
 
-function RecentVideo({ channelId }) {
-  // playListId 가져오기
-  const { data: playListId } = usePlayListId(channelId);
-
-  // playListId로 최근 동영상 가져오기
-  const { data: recentVideos } = useChannelRecentVideos(playListId);
-
-  // videoId로 해당 Video의 조회수, 댓글수, 좋아요수 가져오기
-  const { data: videoDetailInfo } = useVideoStatisticInfo(recentVideos);
-
-  // 사용 가능한 video array로 형태 변경하기
-  const finalVideoDetailInfo = videoDetailInfo?.reduce(function (acc, curr) {
-    return acc.concat(curr);
-  }, []);
+function RecentVideo({ finalVideoDetailInfo }) {
+  // 최근 6개 영상만 사용하기
+  const recent6Videos = finalVideoDetailInfo?.slice(0, 6);
 
   // 영상 썸네일 이미지 클릭시, 해당 영상 링크로 이동
   const linkToVideoBtnClickHandler = (videoId) => {
@@ -24,7 +12,7 @@ function RecentVideo({ channelId }) {
 
   return (
     <RecentVideoContainer>
-      {finalVideoDetailInfo?.map((video) => {
+      {recent6Videos?.map((video) => {
         const localizedDate = new Date(video.snippet.publishedAt).toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: '2-digit',
@@ -42,6 +30,7 @@ function RecentVideo({ channelId }) {
                   alt={video.snippet.title}
                 />
               </ThumbnailImageWrap>
+
               <VideoTextWrap>
                 <VideoTitle>{video.snippet.title}</VideoTitle>
                 <VideoInfoContainer>
@@ -93,10 +82,11 @@ const ThumbnailImageWrap = styled.div`
   }
   & :hover {
     cursor: pointer;
-    transform: scale(1.1);
-    transition: 0.3s;
+    /* transform: scale(1.1);
+    transition: 0.3s; */
   }
 `;
+
 const VideoTextWrap = styled.div`
   width: 100%;
   display: flex;

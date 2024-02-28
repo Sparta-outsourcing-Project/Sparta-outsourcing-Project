@@ -2,7 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getBanner, getMostChannelInfo } from '../../api/dataApi';
-import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
+import {
+  useChannelDetailInfo,
+  useChannelRecentVideos,
+  usePlayListId,
+  useVideoStatisticInfo
+} from '../../hooks/useChannelDetailInfo';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
 import Loading from '../layout/Loading';
@@ -43,16 +48,6 @@ export default function Detail() {
     queryFn: () => getMostChannelInfo(channelId)
   });
 
-  // 평균 좋아요, 평균 댓글수 불러오기
-  // const {
-  //   data: averageCount,
-  //   isLoading,
-  //   error
-  // } = useQuery({
-  //   queryKey: ['averageCount', videoId],
-  //   queryFn: () => getLikedAndCommentDataApi(videoId)
-  // });
-
   /* 채널 방문 버튼 클릭시, 채널 페이지로 이동 */
   const onChannelBtnClickHandler = () => {
     const youtubeURL = `https://www.youtube.com/${channelLink}`;
@@ -60,7 +55,6 @@ export default function Detail() {
   };
 
   /* 채널 정보 */
-
   // 채널 총 영상수
   const formattedVideoCount = channelInfo ? parseInt(channelInfo.videoCount).toLocaleString() : '';
   // 채널 총 조회수
@@ -70,6 +64,43 @@ export default function Detail() {
   //  영상 평균 조회수
   const averageVideoViewCount = channelInfo ? Math.ceil(channelInfo.initAverageViewCount).toLocaleString() : 0;
 
+  // 최근 채널 내 최근 50개 영상 불러오기
+  // playListId 가져오기
+  const { data: playListId } = usePlayListId(channelId);
+  // playListId로 최근 동영상 가져오기
+  const { data: recentVideos } = useChannelRecentVideos(playListId);
+  // videoId로 해당 Video의 조회수, 댓글수, 좋아요수 가져오기
+  const { data: videoDetailInfo } = useVideoStatisticInfo(recentVideos);
+  // 사용 가능한 video array로 형태 변경하기
+  const finalVideoDetailInfo = videoDetailInfo?.reduce(function (acc, curr) {
+    return acc.concat(curr);
+  }, []);
+
+  // 속성에 따라서 매핑된 배열을 반환하는 함수
+  const mapPropertyToArray = (videos, property) => {
+    return videos?.map((video) => video.statistics[property]);
+  };
+
+  // finalVideoDetailInfo를 사용하여 각 속성에 대한 배열 생성
+  const commentCount = mapPropertyToArray(finalVideoDetailInfo, 'commentCount');
+  const likeCount = mapPropertyToArray(finalVideoDetailInfo, 'likeCount');
+  const viewCount = mapPropertyToArray(finalVideoDetailInfo, 'viewCount');
+  // console.log(commentCount, likeCount, viewCount);
+
+  // 최근 50개 동영상 평균값 구하기 함수 (평균 댓글수, 평균 좋아요수, 평균 조회수)
+  const calculateAverage = (array) => {
+    const sum = array?.map(Number).reduce((acc, curr) => {
+      return acc + curr;
+    }, 0);
+    const averageCount = sum / 50;
+    return averageCount;
+  };
+  const averageCommentCount = Math.round(calculateAverage(commentCount));
+  const averageLikeCount = Math.round(calculateAverage(likeCount));
+  const averageViewCount = Math.round(calculateAverage(viewCount));
+  console.log(averageCommentCount, averageLikeCount, averageViewCount);
+
+  // error handling
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
   if (channelInfoError || bannerUrlError || channelLinkError)
     return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
@@ -109,7 +140,12 @@ export default function Detail() {
           <GraphContainer>
             <Graph>
               <span style={{ fontSize: 'larger' }}> 채널 분석</span>
-              <TwoLevelPieChart channelId={channelId} />
+              <TwoLevelPieChart
+                channelId={channelId}
+                averageCommentCount={averageCommentCount}
+                averageLikeCount={averageLikeCount}
+                averageViewCount={averageViewCount}
+              />
             </Graph>
             <Table>
               <span style={{ fontSize: 'larger' }}> 채널 정보</span>
@@ -119,7 +155,7 @@ export default function Detail() {
                     구독자 수 <h3>{subscriberNum} 명</h3>
                   </TableText>
                   <TableText>
-                    영상 평균 조회수 <h3 style={{ marginLeft: '50px' }}>{averageVideoViewCount} 회</h3>
+                    영상 평균 조회수 <h3 style={{ marginLeft: '80px' }}>{averageVideoViewCount} 회</h3>
                   </TableText>
                   <TableText>
                     총 영상수 <h3>{formattedVideoCount} 개</h3>
@@ -127,13 +163,25 @@ export default function Detail() {
                   <TableText>
                     총 조회수 <h3>{initialViewCount} 회</h3>
                   </TableText>
+                  <TableText>
+                    최근 영상 평균 조회수
+                    <h3 style={{ marginLeft: '43px' }}>{parseInt(averageViewCount).toLocaleString()} 회</h3>
+                  </TableText>
+                  <TableText>
+                    최근 영상 평균 좋아요수
+                    <h3 style={{ marginLeft: '27px' }}>{parseInt(averageLikeCount).toLocaleString()} 개</h3>
+                  </TableText>
+                  <TableText>
+                    최근 영상 평균 댓글수
+                    <h3 style={{ marginLeft: '43px' }}>{parseInt(averageCommentCount).toLocaleString()} 개</h3>
+                  </TableText>
                 </TableTextWrap>
               )}
             </Table>
           </GraphContainer>
           <VideoContainer>
             <RecentVideoTitle>최근 영상 </RecentVideoTitle>
-            <RecentVideo channelId={channelId} />
+            <RecentVideo channelId={channelId} finalVideoDetailInfo={finalVideoDetailInfo} />
           </VideoContainer>
         </DetailInfoContainer>
       </BottomContainer>
@@ -233,7 +281,6 @@ const ButtonWrap = styled.div`
   margin-left: 200px;
 `;
 const GraphContainer = styled.div`
-  /* border: 1px solid black; */
   border-radius: 50px;
 
   width: 1280px;
@@ -248,7 +295,7 @@ const GraphContainer = styled.div`
 const Graph = styled.div`
   width: 50%;
   height: 300px;
-  /* border: 1px solid black; */
+
   border-radius: 10px;
   text-align: center;
 `;
@@ -256,7 +303,7 @@ const Graph = styled.div`
 const Table = styled.div`
   width: 50%;
   height: 300px;
-  /* border: 1px solid black; */
+
   border-radius: 10px;
   text-align: center;
 
@@ -285,7 +332,7 @@ const TableText = styled.span`
   gap: 0.5rem;
   > h3 {
     font-size: x-large;
-    margin-left: 100px;
+    margin-left: 130px;
   }
 `;
 

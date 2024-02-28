@@ -1,7 +1,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
 import Loading from '../layout/Loading';
-function TwoLevelPieChart({ channelId }) {
+function TwoLevelPieChart({ channelId, averageCommentCount, averageLikeCount, averageViewCount }) {
   const { data: channelInfo, isLoading, error } = useChannelDetailInfo(channelId);
 
   // 데이터 준비
@@ -24,9 +24,16 @@ function TwoLevelPieChart({ channelId }) {
     }
     return formattedViewCount; // 함수가 값을 반환하도록 수정
   };
+  console.log(simpleViewCount(initialViewCount));
+  console.log(averageViewCount);
 
   // 안쪽 부분의 데이터 (총 조회수)
-  const data01 = [{ name: '총 조회수', value: simpleViewCount(initialViewCount), realValue: 3000 || 0 }];
+  const data01 = [
+    { name: '평균 댓글수', value: averageCommentCount },
+    { name: '총 조회수', value: averageLikeCount },
+    { name: '총 조회수', value: averageViewCount }
+  ];
+  console.log(averageCommentCount);
 
   // 바깥쪽 부분의 데이터 (구독자수 대비 영상 평균 조회수 비교)
   const data02 = [
@@ -41,7 +48,7 @@ function TwoLevelPieChart({ channelId }) {
       <ResponsiveContainer className="recharts-layer" width="100%" height="100%">
         <PieChart width={400} height={400}>
           {/* 안쪽 부분 */}
-          <Pie data={data01} dataKey="realValue" cx="50%" cy="50%" outerRadius={65} fill="#febe98">
+          <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={65} fill="#febe98" label>
             <Cell style={{ outline: 'none' }} />
           </Pie>
           {/* 테두리 바깥쪽 부분 */}
@@ -58,9 +65,9 @@ function TwoLevelPieChart({ channelId }) {
             <Cell style={{ outline: 'none ' }} />
           </Pie>
           {/* 총 조회수 표시 */}
-          <text x="50%" y="47%" textAnchor="middle" fill="#000" fontWeight={600}>
+          {/* <text x="50%" y="47%" textAnchor="middle" fill="#000" fontWeight={600}>
             {data01[0].name}: {data01[0].value}
-          </text>
+          </text> */}
         </PieChart>
       </ResponsiveContainer>
     </>
