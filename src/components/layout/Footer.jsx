@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import logo from '../../assets/utrend_logo.png';
 import { Link } from 'react-router-dom';
+import { LuFacebook, LuTwitter, LuYoutube } from 'react-icons/lu';
 
 export default function Footer() {
   return (
@@ -23,7 +24,11 @@ export default function Footer() {
               Phone: +82 (02) 123-4567
             </p>
           </div>
-          <p>123</p>
+          <p>
+            <LuFacebook />
+            <LuTwitter />
+            <LuYoutube />
+          </p>
         </FooterTop>
         <FooterCopyright>© 2024 Dtrand. All rights reserved.</FooterCopyright>
       </FooterWrapInner>
@@ -50,8 +55,16 @@ export const FooterTop = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 6px;
-  & div {
-    width: 100%;
+  & > p {
+    margin-left: auto;
+    font-size: 1.5rem;
+    align-self: self-start;
+
+    & svg {
+      margin-left: 1rem;
+      opacity: 0.5;
+      cursor: pointer;
+    }
   }
 `;
 export const FooterLogo = styled.h2`
