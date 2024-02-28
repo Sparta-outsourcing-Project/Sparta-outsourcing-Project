@@ -1880,7 +1880,7 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
-faye-websocket@0.11.4:
+faye-websocket@0.11.4, faye-websocket@>=0.6.0:
   version "0.11.4"
   resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.4.tgz#7f0d9275cfdd86a1c963dc8b65fcc451edcbb1da"
   integrity sha512-CzbClwlXAuiRQAlUyfqPgvPoNKTckTPGfwZV4ZdAhVcP2lh9KUxJg2b5GkE7XbjKQ3YJnQ9z6D9ntLAlB+tP8g==
@@ -1908,6 +1908,11 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+firebase-token-generator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/firebase-token-generator/-/firebase-token-generator-2.0.0.tgz#9767d759ec13abdc99ba115fd5ea99d8b93d1206"
+  integrity sha512-EX/Rw6C0NLF6StuszW9Pn4zGUU8dw0UdHY6u8zP5t/CsbYRwWVh0CwN6INFE5U4IizZtgqbWQhcAQNkBtNkyfQ==
 
 firebase@^10.8.0:
   version "10.8.0"
@@ -1940,6 +1945,22 @@ firebase@^10.8.0:
     "@firebase/storage" "0.12.1"
     "@firebase/storage-compat" "0.3.4"
     "@firebase/util" "1.9.4"
+
+firebase@^2.1.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-2.4.2.tgz#4e1119ec0396ca561d8a7acbff1630feac6c0a31"
+  integrity sha512-+OA3MChRNTgKmC4Kq+Mnp41jteGSTyRxc6P7YVqk/bHUZK1EyxT0uNqLZWfbncjYy5MAKYUq+at9b2+8MlXs4w==
+  dependencies:
+    faye-websocket ">=0.6.0"
+
+firestore@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/firestore/-/firestore-1.1.6.tgz#73284bce9fe9b08bdad6c18278d25b696e123cc2"
+  integrity sha512-RW2IPatMS7XUFtecjN5gxAdX1badHwaoYgplFDNLeN9ZjapOjgRv9Voa3P9ffRT0/lxBUMOFNkLxGHYWQBeaZA==
+  dependencies:
+    firebase "^2.1.2"
+    firebase-token-generator "^2.0.0"
+    lodash "^3.1.0"
 
 flat-cache@^3.0.4:
   version "3.2.0"
@@ -2514,6 +2535,10 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
+lodash@^3.1.0:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+  integrity sha512-9mDDwqVIma6OZX79ZlDACZl8sBm0TEnkf99zV3iMA4GzkIT/9hiqP5mY0HoT1iNLCrKc/R1HByV+yJfRWVJryQ==
 lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
@@ -2854,6 +2879,19 @@ react-is@^16.10.2, react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
+  integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-loader-spinner@^6.1.6:
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/react-loader-spinner/-/react-loader-spinner-6.1.6.tgz#744d84a9763e963b565054f4f281dadfbd17e9e9"
+  integrity sha512-x5h1Jcit7Qn03MuKlrWcMG9o12cp9SNDVHVJTNRi9TgtGPKcjKiXkou4NRfLAtXaFB3+Z8yZsVzONmPzhv2ErA==
+  dependencies:
+    react-is "^18.2.0"
+    styled-components "^6.1.2"
 
 react-query@^3.39.3:
   version "3.39.3"
@@ -3277,7 +3315,7 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-styled-components@^6.1.8:
+styled-components@^6.1.2, styled-components@^6.1.8:
   version "6.1.8"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-6.1.8.tgz#c109d36aeea52d8f049e12de2f3be39a6fc86201"
   integrity sha512-PQ6Dn+QxlWyEGCKDS71NGsXoVLKfE1c3vApkvDYS5KAK+V8fNWGhbSUEo9Gg2iaID2tjLXegEW3bZDUGpofRWw==

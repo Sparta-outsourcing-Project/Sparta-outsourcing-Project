@@ -4,11 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
 import Loading from '../layout/Loading';
 import { readSearchKeyWord } from '../../api/dataApi';
+import { ListFavoriteButton } from './ListFavoriteButton';
+import nonFavImg from '../../assets/emptyStar.png';
+import { useSelector } from 'react-redux';
 
 export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
   const [sortedAndUniqueData, setSortedAndUniqueData] = useState([]);
+  const [userUid, setUserUid] = useState('');
   const { keyword } = useParams();
+  const isLogin = useSelector((state) => state.loginReducer);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['keyword', keyword, sortBy],
@@ -19,6 +24,10 @@ export default function CardList() {
   useEffect(() => {
     if (!data) return;
 
+    if (sessionStorage.getItem('uid')) {
+      setUserUid(sessionStorage.getItem('uid'));
+    }
+
     const uniqueChannelTitles = Array.from(new Set(data.map((item) => item.channelTitle)));
     const uniqueData = uniqueChannelTitles.map((channelTitle) =>
       data.find((item) => item.channelTitle === channelTitle)
@@ -26,7 +35,7 @@ export default function CardList() {
     const sortedData = uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
 
     setSortedAndUniqueData(sortedData);
-  }, [data, sortBy]);
+  }, [data, sortBy, isLogin]);
 
   // 페이지네이션
   const [page, setPage] = useState(1); // 현재 페이지 수
@@ -49,16 +58,26 @@ export default function CardList() {
     setPage(pageNum);
   };
 
+  const handleNonUserFavClick = () => {
+    alert('즐겨찾기 기능을 이용하시려면 로그인해주세요 !');
+  };
+
   if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <main>
       <ListWrapper>
-        <select name="" id="" onChange={handleSortChange} value={sortBy}>
-          <option value="subscriberCount">구독자</option>
-          <option value="averageViewCount">영상조회수</option>
-        </select>
+        <AboveListBox>
+          <select name="" id="" onChange={handleSortChange} value={sortBy}>
+            <option value="subscriberCount">구독자</option>
+            <option value="averageViewCount">영상조회수</option>
+          </select>
+          <SearchKeyWordBox>
+            <p>검색 키워드 │ &nbsp;</p>
+            <KeywordText>" {keyword} "</KeywordText>
+          </SearchKeyWordBox>
+        </AboveListBox>
         <ListTable>
           <thead>
             <tr>
@@ -84,6 +103,13 @@ export default function CardList() {
                 </td>
                 <td>{channel.subscriberCount}</td>
                 <td>{channel.averageViewCount}</td>
+                <td>
+                  {userUid ? (
+                    <ListFavoriteButton userUid={userUid} channelId={channel.channelId} />
+                  ) : (
+                    <NonFavStar src={nonFavImg} width={30} onClick={handleNonUserFavClick} />
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -159,4 +185,22 @@ const PageButtonBox = styled.button`
 const PageButton = styled.button`
   justify-content: center;
   align-items: center;
+`;
+
+const NonFavStar = styled.img`
+  cursor: pointer;
+`;
+
+const AboveListBox = styled.div`
+  display: flex;
+  gap: 35%;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+`;
+const SearchKeyWordBox = styled.div`
+  display: flex;
+`;
+
+const KeywordText = styled.p`
+  font-weight: bold;
 `;

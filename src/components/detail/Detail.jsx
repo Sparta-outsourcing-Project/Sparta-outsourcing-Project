@@ -20,16 +20,6 @@ export default function Detail() {
     error: channelInfoError
   } = useChannelDetailInfo(channelId);
 
-  // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
-  // const {
-  //   data: detailInfo,
-  //   isLoading: isDetailInfoLoading,
-  //   error: detailInfoError
-  // } = useQuery({
-  //   queryKey: ['detailInfo', ],
-  //   queryFn: () => getDetailDataApi('OzHPMTZXs8U') // videoId
-  // });
-
   // banner url 불러오기 -> React Query로
   const {
     data: bannerUrl,
@@ -59,24 +49,15 @@ export default function Detail() {
     window.open(youtubeURL, '_blank');
   };
 
-  // 채널 총 영상 수 & 총 조회수
-
+  /* 채널 정보 */
+  // 채널 총 영상수
   const formattedVideoCount = channelInfo ? parseInt(channelInfo.videoCount).toLocaleString() : '';
-
-  const initialViewCount = channelInfo ? channelInfo.viewCount : 0;
-  const simpleViewCount = (initialViewCount) => {
-    let formattedViewCount;
-    if (initialViewCount > 100000000) {
-      formattedViewCount = Math.round(initialViewCount / 10000000).toLocaleString() / 10 + '억';
-    } else if (initialViewCount > 10000) {
-      formattedViewCount = Math.round(initialViewCount / 10000).toLocaleString() + '만';
-    } else if (initialViewCount > 1000) {
-      formattedViewCount = Math.round(initialViewCount / 1000).toLocaleString() + '천';
-    } else {
-      formattedViewCount = initialViewCount.toString();
-    }
-    return formattedViewCount; // 함수가 값을 반환하도록 수정
-  };
+  // 채널 총 조회수
+  const initialViewCount = channelInfo ? parseInt(channelInfo.viewCount).toLocaleString() : 0;
+  //  구독자 수
+  const subscriberNum = channelInfo ? parseInt(channelInfo.initSubscriberCount).toLocaleString() : 0;
+  //  영상 평균 조회수
+  const averageVideoViewCount = channelInfo ? Math.ceil(channelInfo.initAverageViewCount).toLocaleString() : 0;
 
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
   if (channelInfoError || bannerUrlError || channelLinkError)
@@ -94,8 +75,12 @@ export default function Detail() {
               {channelInfo && (
                 <>
                   <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
-                  <Text>구독자 {channelInfo.subscriberCount}</Text>
-                  <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
+                  <Text>
+                    구독자 <h3>{channelInfo.subscriberCount}</h3>
+                  </Text>
+                  <Text>
+                    영상 평균 조회수 <h3>{channelInfo.averageViewCount}</h3>
+                  </Text>
                 </>
               )}
             </ProfileContainer>
@@ -104,7 +89,10 @@ export default function Detail() {
                 <ChannelDescription> {channelInfo.description} </ChannelDescription>
               </>
             )}
-            <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
+            <ButtonWrap>
+              <ButtonStyle onClick={onChannelBtnClickHandler}>채널 방문</ButtonStyle>
+              <ButtonStyle style={{ backgroundColor: '#febe98' }}>광고 제안 하기</ButtonStyle>
+            </ButtonWrap>
           </ChannelInfoContainer>
           <GraphContainer>
             <Graph>
@@ -114,12 +102,20 @@ export default function Detail() {
             <Table>
               <span style={{ fontSize: 'larger' }}> 채널 정보</span>
               {channelInfo && (
-                <>
-                  <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
-                  <Text> 영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
-                  <Text> 총 영상수 {formattedVideoCount} 개</Text>
-                  <Text> 총 조회수 {simpleViewCount(initialViewCount)} 회</Text>
-                </>
+                <TableTextWrap>
+                  <TableText>
+                    구독자 수 <h3>{subscriberNum} 명</h3>
+                  </TableText>
+                  <TableText>
+                    영상 평균 조회수 <h3 style={{ marginLeft: '50px' }}>{averageVideoViewCount} 회</h3>
+                  </TableText>
+                  <TableText>
+                    총 영상수 <h3>{formattedVideoCount} 개</h3>
+                  </TableText>
+                  <TableText>
+                    총 조회수 <h3>{initialViewCount} 회</h3>
+                  </TableText>
+                </TableTextWrap>
               )}
             </Table>
           </GraphContainer>
@@ -156,7 +152,6 @@ const BottomContainer = styled.div`
   justify-content: center;
 `;
 const DetailInfoContainer = styled.div`
-  width: 1920px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -166,6 +161,7 @@ const ChannelInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 1280px;
 `;
 const ProfileContainer = styled.div`
   display: flex;
@@ -191,25 +187,41 @@ const YoutuberTitle = styled.span`
 const Text = styled.span`
   font-size: large;
   font-weight: 600;
+  color: #6e6e6e;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  gap: 0.5rem;
+  > h3 {
+    font-size: x-large;
+  }
 `;
+
 const ChannelDescription = styled.p`
   margin: 0 200px;
-  width: 1280px;
+  width: 960px;
   font-size: large;
   line-height: 1.5;
 `;
-const LinkToChannel = styled.button`
+const ButtonStyle = styled.button`
   width: 150px;
   border-color: transparent;
   border-radius: 10px;
   height: 40px;
-  margin-left: 200px;
-  margin-top: 30px;
+  margin: 30px 0;
+  font-weight: 600;
 `;
 
+const ButtonWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-left: 200px;
+`;
 const GraphContainer = styled.div`
   /* border: 1px solid black; */
-  background-color: #ebeaea;
   border-radius: 50px;
 
   width: 1280px;
@@ -227,7 +239,6 @@ const Graph = styled.div`
   /* border: 1px solid black; */
   border-radius: 10px;
   text-align: center;
-  padding: 20px;
 `;
 
 const Table = styled.div`
@@ -236,10 +247,34 @@ const Table = styled.div`
   /* border: 1px solid black; */
   border-radius: 10px;
   text-align: center;
-  padding: 20px;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
+`;
+
+const TableTextWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+`;
+const TableText = styled.span`
+  font-size: large;
+  font-weight: 600;
+  padding: 5px;
+  color: #6e6e6e;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  gap: 0.5rem;
+  > h3 {
+    font-size: x-large;
+    margin-left: 100px;
+  }
 `;
 
 const VideoContainer = styled.div`
@@ -253,7 +288,7 @@ const VideoContainer = styled.div`
 `;
 
 const RecentVideoTitle = styled.div`
-  font-size: larger;
+  font-size: x-large;
   padding: 10px;
   font-weight: 600;
   width: 1280px;

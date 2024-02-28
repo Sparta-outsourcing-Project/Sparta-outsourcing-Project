@@ -78,20 +78,26 @@ function RecentVideo({ channelId }) {
         return (
           <>
             <VideoItem key={video.id}>
-              <ThumbnailImage
-                onClick={() => {
-                  linkToVideoBtnClickHandler(video.id);
-                }}
-                src={video.snippet.thumbnails.high.url}
-                alt={video.snippet.title}
-              />
-              <VideoInfoContainer>{video.snippet.title}</VideoInfoContainer>
-              <VideoInfoContainer>{localizedDate}</VideoInfoContainer>
-              <SpanContainer>
-                <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
-                <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
-                <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
-              </SpanContainer>
+              <ThumbnailImageWrap>
+                <img
+                  onClick={() => {
+                    linkToVideoBtnClickHandler(video.id);
+                  }}
+                  src={video.snippet.thumbnails.high.url}
+                  alt={video.snippet.title}
+                />
+              </ThumbnailImageWrap>
+              <VideoTextWrap>
+                <VideoTitle>{video.snippet.title}</VideoTitle>
+                <VideoInfoContainer>
+                  <VideoDate>{localizedDate}</VideoDate>
+                  <SpanContainer>
+                    <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
+                    <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
+                    <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
+                  </SpanContainer>
+                </VideoInfoContainer>
+              </VideoTextWrap>
             </VideoItem>
           </>
         );
@@ -112,28 +118,48 @@ const RecentVideoContainer = styled.div`
 `;
 
 const VideoItem = styled.div`
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 1rem;
 `;
 
-const ThumbnailImage = styled.img`
-  width: 100%;
-  height: 180px;
-
-  max-width: 100%;
-
-  border-radius: 30px;
+const ThumbnailImageWrap = styled.div`
+  width: calc(100% - 3rem);
+  height: 200px;
+  border-radius: 1rem;
+  overflow: hidden;
+  & > img {
+    width: 100%;
+    /* height: 100%; */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
   cursor: pointer;
 `;
-
-const VideoInfoContainer = styled.div`
-  padding: 10px;
-  gap: 20px;
+const VideoTextWrap = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 1.5rem;
+`;
+const VideoTitle = styled.p`
+  font-size: larger;
+  font-weight: 600;
   line-height: 1.5;
+  padding: 2rem 0.5rem;
+`;
+const VideoInfoContainer = styled.div`
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 0.5rem;
+`;
+const VideoDate = styled.span`
+  padding: 5px 0;
 `;
 
 const SpanContainer = styled.div`
@@ -141,7 +167,8 @@ const SpanContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  width: 200px;
+  width: 250px;
+  padding: 5px 0;
 `;
 
 const TextStyle = styled.span`
