@@ -29,7 +29,8 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         line-height: 1;
-        font-family: 'pretendard';
+        font-family: 'Pretendard-Regular';
+        letter-spacing: 1px;
         font-weight: 400;
         height: 100%;
     }
@@ -60,7 +61,8 @@ const GlobalStyle = createGlobalStyle`
 
     textarea{
         resize: none;
-        font-family: 'Noto Sans KR', sans-serif;
+        /* font-family: 'Noto Sans KR', sans-serif; */
+        font-family: 'Pretendard-Regular';
     }
 
     button{
@@ -74,6 +76,25 @@ const GlobalStyle = createGlobalStyle`
     .recharts-layer {
   outline: none !important;
 }
+
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+        format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Pretendard-Bold";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff")
+        format("woff");
+    font-weight: 700;
+    font-style: normal;
+}
+    input {
+        font-family: 'Pretendard-Regular';
+        letter-spacing: 2px;
+    }
 `;
 
 export default GlobalStyle;

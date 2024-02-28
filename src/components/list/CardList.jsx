@@ -143,6 +143,7 @@ export const ListTable = styled.table`
   margin: 0 auto;
   border-collapse: collapse;
   width: 100%;
+  font-size: 17px;
   & th,
   & td {
     text-align: left;
@@ -199,6 +200,7 @@ const AboveListBox = styled.div`
 `;
 const SearchKeyWordBox = styled.div`
   display: flex;
+  font-size: 17px;
 `;
 
 const KeywordText = styled.p`

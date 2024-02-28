@@ -15,7 +15,7 @@ export default function MyPage() {
             <thead>
               <tr>
                 <th />
-                <th colSpan={2}></th>
+                <th></th>
                 <th>구독자</th>
                 <th>영상 조회수</th>
               </tr>
@@ -101,7 +101,7 @@ export const UserEmail = styled.p`
 `;
 
 export const UserIntro = styled.p`
-  /* font-size: 1.2rem; */
+  font-size: 1.2rem;
 `;
 
 export const FavoriteSection = styled.section`
