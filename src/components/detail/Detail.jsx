@@ -13,11 +13,24 @@ import Header from '../layout/Header';
 import Loading from '../layout/Loading';
 import RecentVideo from './RecentVideo';
 import TwoLevelPieChart from './TwoLevelPieChart';
-// import AdSuggestBtn from '../../components/detail/AdSuggestBtn';
+import { useEffect, useState } from 'react';
+import { addFavoriteChannel, fetchIsFavorite, removeFavoriteChannel } from '../../api/favorites';
+import { useSelector } from 'react-redux';
+import nonFavImg from '../../assets/emptyStar.png';
+import favImg from '../../assets/coloredStar.png';
 
 export default function Detail() {
   const params = useParams();
   const channelId = params.id;
+  const [favorite, setFavorite] = useState(false);
+  const [userUid, setUserUid] = useState('');
+  const isLogin = useSelector((state) => state.loginReducer);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('uid')) {
+      setUserUid(sessionStorage.getItem('uid'));
+    }
+  }, [isLogin]);
 
   /* useChannelDetailInfo 커스텀훅으로부터 데이터 불러오기 */
   const {
@@ -116,12 +129,64 @@ export default function Detail() {
   const averageCommentCount = Math.round(calculateAverage(commentCount));
   const averageLikeCount = Math.round(calculateAverage(likeCount));
   const averageViewCount = Math.round(calculateAverage(viewCount));
-  // console.log(averageLikeCount, averageViewCount);
+
+  // 기존 즐겨찾기 데이터 가져와서 별표 뜨게하기 => RQ
+  const {
+    data: favoriteChannels,
+    isLoading: isFavoriteChannelsLoading,
+    error: favoriteChannelsError
+    // } = userUid ? useQuery({
+  } = useQuery({
+    queryKey: ['favoriteChannels', userUid, favorite],
+    queryFn: () => fetchIsFavorite(userUid)
+  });
+  // : { data: [], isLoading: false, error: null };
+
+  useEffect(() => {
+    if (userUid) {
+      favoriteChannels?.includes(channelId) ? setFavorite(true) : setFavorite(false);
+    }
+  }, [userUid, favorite, favoriteChannels, isLogin]);
+
+  const toggleFavoriteClick = async () => {
+    // 비유저이면
+    if (isLogin) {
+      if (!favorite) {
+        // 추가
+        try {
+          await addFavoriteChannel(userUid, channelId);
+          setFavorite(true);
+        } catch (error) {
+          alert('즐겨찾기 추가가 제대로 되지 않았어요. 다시 시도해주세요 !');
+        }
+      } else {
+        // 삭제(해제)
+        try {
+          await removeFavoriteChannel(userUid, channelId);
+          setFavorite(false);
+        } catch (error) {
+          alert('즐겨찾기 삭제가 제대로 되지 않았어요. 다시 시도해주세요 !');
+        }
+      }
+    } else {
+      // 비회원
+      alert('즐겨찾기 기능을 이용하시려면 로그인해주세요 !');
+    }
+  };
 
   // error handling
-  if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
-  if (channelInfoError || bannerUrlError || channelLinkError)
-    return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
+  if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading || isFavoriteChannelsLoading)
+    return <Loading />;
+  if (channelInfoError || bannerUrlError || channelLinkError || favoriteChannelsError)
+    return (
+      <div>
+        Error:
+        {channelInfoError?.message ||
+          bannerUrlError?.message ||
+          channelLinkError?.message ||
+          favoriteChannelsError?.message}
+      </div>
+    );
 
   return (
     <Wrap>
@@ -153,8 +218,15 @@ export default function Detail() {
               </>
             )}
             <ButtonWrap>
-              <ButtonStyle onClick={onChannelBtnClickHandler}>채널 방문</ButtonStyle>
-              {/* <AdSuggestBtn /> */}
+              <ButtonStyle onClick={onChannelBtnClickHandler} style={{ backgroundColor: ' #febe98' }}>
+                채널 방문
+              </ButtonStyle>
+              <ButtonStyle>
+                <FavoriteBox onClick={toggleFavoriteClick}>
+                  <FavStar src={favorite ? favImg : nonFavImg} width={20} />
+                  <p> &nbsp; 즐겨찾기 {favorite ? `해제` : `추가`}</p>
+                </FavoriteBox>
+              </ButtonStyle>
             </ButtonWrap>
           </ChannelInfoContainer>
           <GraphContainer>
@@ -409,4 +481,14 @@ const RecentVideoTitle = styled.div`
   padding: 20px;
   font-weight: 600;
   width: 1280px;
+`;
+
+const FavoriteBox = styled.div`
+  display: flex;
+  padding: 0.1rem;
+  justify-content: center;
+`;
+const FavStar = styled.img`
+  height: 20px;
+  cursor: pointer;
 `;
