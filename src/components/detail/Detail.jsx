@@ -22,7 +22,6 @@ export default function Detail() {
   } = useChannelDetailInfo(channelId);
 
   /* banner url 불러오기 -> React Query로 */
-
   const {
     data: bannerUrl,
     isLoading: isBannerUrlLoading,
@@ -44,8 +43,17 @@ export default function Detail() {
     queryFn: () => getMostChannelInfo(channelId)
   });
 
-  /* 채널 방문 버튼 클릭시, 채널 페이지로 이동 */
+  // 평균 좋아요, 평균 댓글수 불러오기
+  // const {
+  //   data: averageCount,
+  //   isLoading,
+  //   error
+  // } = useQuery({
+  //   queryKey: ['averageCount', videoId],
+  //   queryFn: () => getLikedAndCommentDataApi(videoId)
+  // });
 
+  /* 채널 방문 버튼 클릭시, 채널 페이지로 이동 */
   const onChannelBtnClickHandler = () => {
     const youtubeURL = `https://www.youtube.com/${channelLink}`;
     window.open(youtubeURL, '_blank');
