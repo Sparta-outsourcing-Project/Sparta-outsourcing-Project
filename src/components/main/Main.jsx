@@ -179,7 +179,8 @@ export const SearchKeyWord = styled.div`
 
 export const KeywordText = styled.div`
   display: block;
-  font-size: 14px;
+  /* font-size: 14px; 기존*/
+  font-size: 17px;
   background-color: #7cd8c6;
   border-radius: 1rem;
   padding: 2px 1.2rem;
