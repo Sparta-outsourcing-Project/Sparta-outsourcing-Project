@@ -13,6 +13,11 @@ const request = {
   getI18nRegions: `/i18nRegions?part=snippet&hl=es_MX&key=${apiKey}`,
   getChannelBannerURL: (channelId) => `/channels?part=brandingSettings&id=${channelId}&key=${apiKey}`,
 
+  //channel Id Video
+  getChannelVideos: (channelId) => `/channels?part=contentDetails&id=${channelId}&key=${apiKey}`,
+  getPlayListVideo: (uploadPlaylistId) =>
+    `/playlistItems?part=snippet&playlistId=${uploadPlaylistId}&maxResults=6&order=date&key=${apiKey}`,
+
   getVideoSnippet: `/videos?part=snippet&fields=${videoSnippetFields}&key=${apiKey}`,
   getChannelStatistics: `/channels?part=statistics&fields=${channelStatisticsFields}&key=${apiKey}`,
 

@@ -19,7 +19,7 @@ export const readSearchKeyWord = async (keyword) => {
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
-    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 1 };
+    const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 15 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
     // console.log(videoResponse.data);
     const videoItems = videoResponse.data.items;
@@ -62,8 +62,18 @@ export const getChannelInfoById = async (channelId) => {
         ? Math.round(initAverageViewCount / 10000) + '만'
         : Math.round((initAverageViewCount / 1000) * 10) / 10 + '천';
 
-    return { channelTitle, description, thumbnailUrl, subscriberCount, averageViewCount };
-    // 객체담긴 배열 형태로 리턴 - {채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만)}
+    return {
+      channelTitle,
+      description,
+      thumbnailUrl,
+      subscriberCount,
+      averageViewCount,
+      viewCount,
+      videoCount,
+      initSubscriberCount,
+      initAverageViewCount
+    };
+    // 객체담긴 배열 형태로 리턴 - {채널명, 채널설명, 채널썸네일이미지url, 구독자수(천/만), 평균조회수(천/만), 채널 총 조회수, 채널 총 영상수}
   } catch (error) {
     console.error('Failed to get data by function getChannelInfoById - ', error.message);
     throw error;
@@ -83,6 +93,7 @@ export const getMostPopularThumbnails = async (channelId) => {
 // channel Url
 export const getMostChannelInfo = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
+  // console.log(data);
   return data.items[0].snippet.customUrl;
 };
 
@@ -100,8 +111,9 @@ export const getBanner = async (channelId) => {
   }
 };
 
-export const readByChannelId = async () => {
-  const { data } = await axiosInstance.get(`${request.getByChannelId}&regionCode=KR`);
+export const readByChannelId = async (channelId) => {
+  const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
+  console.log(data);
   return data;
 };
 

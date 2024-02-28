@@ -9,7 +9,7 @@ export const detailApiInstance = axios.create({
   responseType: 'json'
 });
 
-export const getDetailDataApi = async (videoId) => {
+export const getLikedAndCommentDataApi = async (videoId) => {
   const response = await detailApiInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
   const video = response.data.items[0];
 
@@ -42,7 +42,9 @@ export const getDetailDataApi = async (videoId) => {
 
   // 유튜버의 모든 동영상의 평균 댓글 수와 좋아요 수 계산
   const averageCommentCount = totalCommentCount / videos.length;
+  console.log('댓글', averageCommentCount());
   const averageLikeCount = totalLikeCount / videos.length;
+  console.log('좋아요', averageLikeCount());
 
   return { commentCount, likeCount, averageCommentCount, averageLikeCount };
 };

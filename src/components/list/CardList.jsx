@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import db from '../../api/config';
 export default function CardList() {
   const [sortBy, setSortBy] = useState('subscriberCount');
   const [favorite, setFavorite] = useState(false); // 리스트마다
+  const [sortedAndUniqueData, setSortedAndUniqueData] = useState([]);
   const { keyword } = useParams();
 
   const { data, isLoading, error } = useQuery({
@@ -22,14 +23,16 @@ export default function CardList() {
     keepPreviousData: true
   });
 
-  // 중복 제거 및 정렬된 데이터
-  const sortedAndUniqueData = useMemo(() => {
-    if (!data) return [];
+  useEffect(() => {
+    if (!data) return;
 
-    const uniqueData = Array.from(new Set(data.map((item) => item.channelTitle))).map((channelTitle) =>
+    const uniqueChannelTitles = Array.from(new Set(data.map((item) => item.channelTitle)));
+    const uniqueData = uniqueChannelTitles.map((channelTitle) =>
       data.find((item) => item.channelTitle === channelTitle)
     );
-    return uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
+    const sortedData = uniqueData.sort((a, b) => parseInt(b[sortBy], 10) - parseInt(a[sortBy], 10));
+
+    setSortedAndUniqueData(sortedData);
   }, [data, sortBy]);
 
   // 페이지네이션
@@ -198,6 +201,7 @@ const PageButtonBox = styled.button`
   width: 100%;
   margin-top: 1rem;
   gap: 1rem;
+  background-color: transparent;
 `;
 
 const PageButton = styled.button`
