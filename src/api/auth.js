@@ -56,6 +56,11 @@ export const updateUserInfo = async (uid, newUserInfo) => {
   await updateDoc(doc(db, 'users', uid), { nickname, intro, image });
 };
 
-export const updateImage = async (uploadedImage) => {
-  await uploadBytes(ref(storage, `images/${uploadedImage.name}`), uploadedImage);
+export const updateImage = async (uid, uploadedImage) => {
+  const uploadedFile = await uploadBytes(ref(storage, `images/${uploadedImage.name}`), uploadedImage);
+
+  const file_url = await getDownloadURL(uploadedFile.ref);
+  // console.log('uploadedFile', uploadedFile, 'file_url', file_url);
+
+  await updateDoc(doc(db, 'users', uid), { image: file_url });
 };

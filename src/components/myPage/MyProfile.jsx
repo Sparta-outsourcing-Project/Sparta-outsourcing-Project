@@ -46,7 +46,7 @@ const MyProfile = () => {
       return res;
     }
   });
-  console.log(isLoading, isError, data);
+  // console.log(isLoading, isError, data);
 
   if (isLoading) {
     return <Loading />;
@@ -100,7 +100,7 @@ const MyProfile = () => {
       // mutation (수정된 정보 query로 전달하기)
       mutation.mutate(newUserInfo);
 
-      updateImage(newImage);
+      updateImage(uid, newImage);
 
       setIsEdit(false);
     }
