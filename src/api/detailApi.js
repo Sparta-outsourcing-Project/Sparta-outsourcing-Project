@@ -22,9 +22,11 @@ export const getRecentUploadVideoPlayList = async (uploadPlaylistId) => {
   const publishedAfter = threeMonthsAgoDate.toISOString();
   const publishedBefore = currentDate.toISOString();
 
+  const url = request.getRecentUploadsPlaylist(uploadPlaylistId);
   const { data } = await detailApiInstance.get(
-    `${request.getRecentUploadsPlaylist}playlistId=${uploadPlaylistId}&order=date&publishedAfter=${publishedAfter}&publishedBefore=${publishedBefore}`
+    `${url}&order=date&publishedAfter=${publishedAfter}&publishedBefore=${publishedBefore}`
   );
+
   console.log(data);
   return data;
 };

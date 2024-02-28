@@ -16,7 +16,7 @@ const request = {
   //channel Id Video
   getChannelVideos: (channelId) => `/channels?part=contentDetails&id=${channelId}&key=${apiKey}`,
   getPlayListVideo: (uploadPlaylistId) =>
-    `/playlistItems?part=snippet&playlistId=${uploadPlaylistId}&maxResults=6&order=date&key=${apiKey}`,
+    `/playlistItems?part=snippet&playlistId=${uploadPlaylistId}&maxResults=50&order=date&key=${apiKey}`,
 
   getVideoSnippet: `/videos?part=snippet&fields=${videoSnippetFields}&key=${apiKey}`,
   getChannelStatistics: `/channels?part=statistics&fields=${channelStatisticsFields}&key=${apiKey}`,
@@ -25,7 +25,8 @@ const request = {
   getLikedAndCommentApi: `/videos?part=snippet%2Cstatistics&key=${apiKey}`,
 
   // 최근 3개월 내 올린 채널 내 영상 업로드
-  getRecentUploadsPlaylistVideo: `/playlistItems?part=snippet&key=${apiKey}`
+  getRecentUploadsPlaylistVideo: (uploadPlaylistId) =>
+    `/playlistItems?part=snippet&playlistId=${uploadPlaylistId}&key=${apiKey}`
 };
 
 export default request;

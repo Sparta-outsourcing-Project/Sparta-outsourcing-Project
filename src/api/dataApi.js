@@ -113,7 +113,6 @@ export const getBanner = async (channelId) => {
 
 export const readByChannelId = async (channelId) => {
   const { data } = await axiosInstance.get(`${request.getByChannelId}&id=${channelId}`);
-  console.log(data);
   return data;
 };
 
