@@ -8,7 +8,7 @@ import {
   UserNickname,
   UserNicknameInput
 } from '../../pages/MyPage';
-import { getUserInfo, updateImage, updateUser } from '../../api/auth';
+import { getUserInfo, updateUser } from '../../api/auth';
 import styled from 'styled-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../layout/Loading';
@@ -125,7 +125,7 @@ const MyProfile = () => {
         {isEdit ? (
           <>
             <label htmlFor="fileInput">
-              <EditingImg src={previewImage === null ? defaultImg : previewImage} alt="defaultImg" />
+              <img src={previewImage === null ? defaultImg : previewImage} alt="defaultImg" />
             </label>
             <input
               id="fileInput"
@@ -188,5 +188,7 @@ export const Textarea = styled.textarea`
 
 export const EditingImg = styled.img`
   width: 200px;
+  height: 200px;
+  border-radius: 50%;
   margin-top: 30px;
 `;
