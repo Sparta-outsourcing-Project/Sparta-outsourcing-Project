@@ -63,14 +63,8 @@ export const ProfileSection = styled.section`
   box-shadow: 0px 0px 10px 0px #febe98;
   border-radius: 1rem;
 
-  & > img {
-    margin-top: 2rem;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  & > label > img {
+  & > label > img,
+  img {
     margin-top: 2rem;
     width: 200px;
     height: 200px;
