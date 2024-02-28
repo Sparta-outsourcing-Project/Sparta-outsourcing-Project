@@ -126,6 +126,7 @@ const MyProfile = () => {
           <>
             <label htmlFor="fileInput">
               <img src={previewImage === null ? defaultImg : previewImage} alt="defaultImg" />
+              <p>(이미지 크기 : 최대 4MB)</p>
             </label>
             <input
               id="fileInput"

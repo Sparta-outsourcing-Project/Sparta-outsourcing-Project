@@ -98,6 +98,12 @@ export const ProfileSection = styled.section`
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 1rem;
+  }
+
+  & > label > p {
+    color: white;
+    text-align: center;
   }
 
   & > button {
