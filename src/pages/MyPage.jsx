@@ -1,23 +1,14 @@
-import React from 'react';
 import styled from 'styled-components';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import defaultImg from '../assets/profile_defaultImage.png';
+import MyProfile from '../components/myPage/MyProfile';
 
 export default function MyPage() {
   return (
     <Wrap>
       <Header />
       <MypageSection>
-        <ProfileSection>
-          <img src={defaultImg} alt="defaultImg" width={200} />
-          <ProfileContent>
-            <UserNickname>닉네임</UserNickname>
-            <UserEmail>이메일</UserEmail>
-            <UserIntro>내 소개</UserIntro>
-          </ProfileContent>
-          <button>수정하기</button>
-        </ProfileSection>
+        <MyProfile />
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
           <FavList>
@@ -89,9 +80,18 @@ export const ProfileContent = styled.div`
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 4rem;
+
+  & > input {
+    width: 100%;
+    height: 40px;
+  }
 `;
 
 export const UserNickname = styled.p`
+  font-size: 1.3rem;
+`;
+
+export const UserNicknameInput = styled.input`
   font-size: 1.3rem;
 `;
 

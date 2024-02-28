@@ -48,7 +48,8 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
           userId,
           nickname: userNickname,
           image: null,
-          favChannels: []
+          favChannels: [],
+          intro: '소개를 입력해주세요.'
         };
         addDefaultUserInfo(uid, newUserInfo);
       })
