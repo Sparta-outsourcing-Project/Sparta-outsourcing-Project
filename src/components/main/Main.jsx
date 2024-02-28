@@ -103,7 +103,7 @@ export default function Main() {
         </MainBestTitle>
         <MainBestContWrap>
           {channelInfos.map((channelInfo, index) => (
-            <BestYoutuber>
+            <BestYoutuber key={index}>
               <p>{order[index]}</p>
               <Thumbnail
                 handleChannelClick={handleChannelClick}
