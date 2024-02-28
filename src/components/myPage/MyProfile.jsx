@@ -29,11 +29,9 @@ const MyProfile = () => {
     mutationFn: async (data) => {
       const { uid, newUserInfo, newImage } = data;
       await updateUser(uid, newUserInfo, newImage);
-      console.log('3', newImage);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
-      console.log('4', newImage);
     }
   });
 
@@ -80,7 +78,6 @@ const MyProfile = () => {
     const imageUrl = URL.createObjectURL(file);
     setPreviewImage(imageUrl);
     setNewImage(file);
-    console.log('1', newImage);
   };
 
   const onUpdateUserInfo = async () => {
@@ -92,7 +89,6 @@ const MyProfile = () => {
       };
 
       mutation.mutate({ uid, newUserInfo, newImage });
-      console.log('2', newImage);
 
       setIsEdit(false);
     }

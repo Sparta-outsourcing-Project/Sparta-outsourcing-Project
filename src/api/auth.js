@@ -11,9 +11,21 @@ export const addDefaultUserInfo = async (uid, newUserInfo) => {
   }
 };
 
+// export const addGoogleUserInfo = async (uid, newUserInfo) => {
+//   try {
+//     await setDoc(doc(db, 'users', uid), newUserInfo);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 export const addGoogleUserInfo = async (uid, newUserInfo) => {
   try {
-    await setDoc(doc(db, 'users', uid), newUserInfo);
+    const userDocRef = doc(db, 'users', uid);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (!userDocSnapshot.exists()) {
+      await setDoc(doc(db, 'users', uid), newUserInfo);
+    }
   } catch (error) {
     console.error(error);
   }
