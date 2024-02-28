@@ -11,21 +11,14 @@ const axiosInstance = axios.create({
 
 // NOTE 해시태그# 검색 기능 - get 키워드검색 영상들에대한 채널ID -   input: keyword   output: 채널 정보 객체들이 담긴 배열
 export const readSearchKeyWord = async (keyword) => {
-  // ? 키워드에 따라서 q=에 넣을 값 다르게 바꾸기 ('생활'은 다르게 바꿔넣어야할거같다?) - 보류
-  // TODO categoryId 설정해주기 - 보류
-  // if (keyword == "뷰티") {
-  // const videoCategoryId = 26
-  //  };
   try {
     const today = new Date();
     const oneMonthAgo = new Date(today.setMonth(today.getMonth() - 1)).toISOString(); // 한달 전 날짜 ISO String
     const params = { q: keyword, publishedAfter: oneMonthAgo, maxResults: 15 };
     const videoResponse = await axiosInstance.get(`${request.getSearchKeyWord}`, { params });
-    // console.log(videoResponse.data);
     const videoItems = videoResponse.data.items;
     const result = [];
 
-    // NOTE 정보들 - 전역상태관리해야할것같다 RQ 사용해야할듯 여기서 return 후?
     for (const item of videoItems) {
       const channelId = item.snippet.channelId;
       const channelInfo = await getChannelInfoById(channelId);
@@ -44,11 +37,11 @@ export const getChannelInfoById = async (channelId) => {
 
     const snippet = channelResponse.data.items[0].snippet;
     const channelTitle = snippet.title;
-    const description = snippet.description; // 채널설명
-    const thumbnailUrl = snippet.thumbnails.medium.url; // 채널 썸네일 url
+    const description = snippet.description;
+    const thumbnailUrl = snippet.thumbnails.medium.url;
 
     const statistics = channelResponse.data.items[0].statistics;
-    const initSubscriberCount = statistics.subscriberCount; // 채널 구독자수
+    const initSubscriberCount = statistics.subscriberCount;
     const videoCount = statistics.videoCount; // 채널 총 영상수
     const viewCount = statistics.viewCount; // 채널 총 조회수(모든 영상 조회수의 합)
     const initAverageViewCount = viewCount / videoCount; // (일반적인) 채널 평균 조회수 (총 조회수 / 총 영상 수)
@@ -102,7 +95,6 @@ export const getBanner = async (channelId) => {
   try {
     const url = request.getChannelBannerURL(channelId);
     const { data } = await axiosInstance.get(url);
-    // console.log(data);
     // 배너 이미지가 없는 경우 brandingSettings에 image키 자체가 X - 없는 경우 빈문자열로 반환
     return data.items[0].brandingSettings.image ? data.items[0].brandingSettings.image.bannerExternalUrl : '';
   } catch (error) {
