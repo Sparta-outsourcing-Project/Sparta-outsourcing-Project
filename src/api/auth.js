@@ -49,11 +49,10 @@ export const getUserInfo = async (uid) => {
 export const updateUserInfo = async (uid, newUserInfo) => {
   //   const newUserInfo = {
   //     nickname: newNickname,
-  //     intro: newIntro,
-  //     image: newImage
+  //     intro: newIntro
   //   };
-  const { nickname, intro, image } = newUserInfo;
-  await updateDoc(doc(db, 'users', uid), { nickname, intro, image });
+  const { nickname, intro } = newUserInfo;
+  await updateDoc(doc(db, 'users', uid), { nickname, intro });
 };
 
 export const updateImage = async (uid, uploadedImage) => {

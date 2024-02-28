@@ -93,8 +93,7 @@ const MyProfile = () => {
     if (isConfirmed) {
       const newUserInfo = {
         nickname: newNickname,
-        intro: newIntro,
-        image: newImage
+        intro: newIntro
       };
 
       // mutation (수정된 정보 query로 전달하기)
