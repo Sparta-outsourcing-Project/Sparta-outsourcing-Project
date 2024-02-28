@@ -218,6 +218,7 @@ export const MainBestContWrap = styled.ul`
   align-items: center;
   text-align: center;
   gap: 20px;
+  margin-bottom: 3rem;
 `;
 
 export const BestYoutuber = styled.div``;

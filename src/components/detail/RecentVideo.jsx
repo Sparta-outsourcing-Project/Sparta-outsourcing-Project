@@ -118,29 +118,32 @@ const RecentVideoContainer = styled.div`
 `;
 
 const VideoItem = styled.div`
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 1rem;
 `;
 
 const ThumbnailImageWrap = styled.div`
-  height: 180px;
   width: calc(100% - 3rem);
-  height: 180px;
+  height: 200px;
+  border-radius: 1rem;
+  overflow: hidden;
   & > img {
-    border-radius: 1rem;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
   cursor: pointer;
 `;
 const VideoTextWrap = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 0 1.5rem;
 `;
 const VideoTitle = styled.p`
   font-size: larger;
