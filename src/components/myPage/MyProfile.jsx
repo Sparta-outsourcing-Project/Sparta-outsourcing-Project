@@ -75,9 +75,6 @@ const MyProfile = () => {
   // '취소' 클릭 - 기존 값으로 복구
   const onCancel = () => {
     setIsEdit((prev) => !prev);
-    setNewImage(image);
-    setNewNickname(nickname);
-    setNewIntro(intro);
   };
 
   // '수정완료' 클릭
