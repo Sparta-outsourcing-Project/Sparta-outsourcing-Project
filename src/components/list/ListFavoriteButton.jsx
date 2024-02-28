@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import nonFavImg from '../../assets/emptyStar.png';
 import favImg from '../../assets/coloredStar.png';
-import { arrayRemove, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore/lite';
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore/lite';
 import db from '../../api/config';
 import styled from 'styled-components';
-
-// 이미지 부자연스럽게 바뀌는거 해결?
 
 export const ListFavoriteButton = ({ userUid, channelId }) => {
   const [favorite, setFavorite] = useState(false);
 
-  // 사용자가 즐찾 누름 -> DB 갱신  post/delete
+  // 기존 즐겨찾기 데이터 가져와서 별표 뜨게하기
+  useEffect(() => {
+    const fetchUserFav = async (userUid) => {
+      try {
+        const userRef = doc(db, 'users', userUid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          if (userSnap.data().favChannels.includes(channelId)) {
+            setFavorite(true);
+          }
+        }
+      } catch (error) {
+        console.log(`cannot fetch user's favorites from firestore : `, error);
+      }
+    };
+    fetchUserFav(userUid);
+  }, [doc, userUid]);
+
+  // 사용자가 즐찾 누름 -> DB 갱신하기 (추가/삭제)
   const toggleFavoriteClick = async () => {
     if (!favorite) {
       // 추가
-      // 문서 안 favChannels 필드 - value 배열에 해당 채널ID 추가
       try {
-        await updateDoc(doc(db, 'userInfo', userUid), {
+        await updateDoc(doc(db, 'users', userUid), {
           favChannels: arrayUnion(channelId)
         });
         setFavorite(true);
@@ -27,7 +42,7 @@ export const ListFavoriteButton = ({ userUid, channelId }) => {
     } else {
       // 삭제(해제)
       try {
-        await updateDoc(doc(db, 'userInfo', userUid), {
+        await updateDoc(doc(db, 'users', userUid), {
           favChannels: arrayRemove(channelId)
         });
         setFavorite(false);
@@ -41,7 +56,7 @@ export const ListFavoriteButton = ({ userUid, channelId }) => {
   return (
     <div>
       {/* 즐겨찾기 (별) 눌렀을 때 (toggle - 즐겨찾기 추가/해제) */}
-      <NonFavStar src={favorite ? favImg : nonFavImg} width={favorite ? 30 : 50} onClick={toggleFavoriteClick} />
+      <NonFavStar src={favorite ? favImg : nonFavImg} width={30} onClick={toggleFavoriteClick} />
     </div>
   );
 };
