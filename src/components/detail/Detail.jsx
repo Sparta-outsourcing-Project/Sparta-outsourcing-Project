@@ -1,27 +1,24 @@
 import styled from 'styled-components';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-import { getBanner, getChannelInfoById, getMostChannelInfo } from '../../api/dataApi';
+import { getBanner, getMostChannelInfo } from '../../api/dataApi';
 import { useParams } from 'react-router-dom';
 import RecentVideo from './RecentVideo';
 import Loading from '../layout/Loading';
 import { useQuery } from '@tanstack/react-query';
+import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
+import TwoLevelPieChart from './TwoLevelPieChart';
 
 export default function Detail() {
   const params = useParams();
   const channelId = params.id;
 
-  // const [detailInfo, setDetailInfo] = useState(null);
-
-  // channelId로 채널 정보 데이터 불러오기
+  // useChannelDetailInfo 커스텀훅으로부터 데이터 불러오기
   const {
     data: channelInfo,
     isLoading: isChannelInfoLoading,
     error: channelInfoError
-  } = useQuery({
-    queryKey: ['channelInfo', channelId],
-    queryFn: () => getChannelInfoById(channelId)
-  });
+  } = useChannelDetailInfo(channelId);
 
   // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
   // const {
@@ -32,8 +29,6 @@ export default function Detail() {
   //   queryKey: ['detailInfo', ],
   //   queryFn: () => getDetailDataApi('OzHPMTZXs8U') // videoId
   // });
-
-  // console.log(detailInfo);
 
   // banner url 불러오기 -> React Query로
   const {
@@ -64,6 +59,25 @@ export default function Detail() {
     window.open(youtubeURL, '_blank');
   };
 
+  // 채널 총 영상 수 & 총 조회수
+
+  const formattedVideoCount = channelInfo ? parseInt(channelInfo.videoCount).toLocaleString() : '';
+
+  const initialViewCount = channelInfo ? channelInfo.viewCount : 0;
+  const simpleViewCount = (initialViewCount) => {
+    let formattedViewCount;
+    if (initialViewCount > 100000000) {
+      formattedViewCount = Math.round(initialViewCount / 10000000).toLocaleString() / 10 + '억';
+    } else if (initialViewCount > 10000) {
+      formattedViewCount = Math.round(initialViewCount / 10000).toLocaleString() + '만';
+    } else if (initialViewCount > 1000) {
+      formattedViewCount = Math.round(initialViewCount / 1000).toLocaleString() + '천';
+    } else {
+      formattedViewCount = initialViewCount.toString();
+    }
+    return formattedViewCount; // 함수가 값을 반환하도록 수정
+  };
+
   if (isChannelInfoLoading || isBannerUrlLoading || isChannelLinkLoading) return <Loading />;
   if (channelInfoError || bannerUrlError || channelLinkError)
     return <div>Error: {channelInfoError?.message || bannerUrlError?.message || channelLinkError?.message}</div>;
@@ -74,38 +88,39 @@ export default function Detail() {
       <BannerContainer>{bannerUrl ? <BannerImage src={formattedBannerUrl} alt="Banner Image" /> : ''}</BannerContainer>
       <BottomContainer>
         <DetailInfoContainer>
-          <ProfileContainer>
-            <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
+          <ChannelInfoContainer>
+            <ProfileContainer>
+              <ProfileImage src={channelInfo?.thumbnailUrl} alt="Channel Thumbnail" />
+              {channelInfo && (
+                <>
+                  <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
+                  <Text>구독자 {channelInfo.subscriberCount}</Text>
+                  <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
+                </>
+              )}
+            </ProfileContainer>
             {channelInfo && (
               <>
-                <YoutuberTitle>{channelInfo.channelTitle}</YoutuberTitle>
-                <Text>구독자 {channelInfo.subscriberCount}</Text>
-                <Text>영상 평균 조회수 {channelInfo.averageViewCount}</Text>
+                <ChannelDescription> {channelInfo.description} </ChannelDescription>
               </>
             )}
-          </ProfileContainer>
-          {channelInfo && (
-            <>
-              <ChannelDescription> {channelInfo.description} </ChannelDescription>
-            </>
-          )}
-          <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
+            <LinkToChannel onClick={onChannelBtnClickHandler}>채널 방문</LinkToChannel>
+          </ChannelInfoContainer>
           <GraphContainer>
-            <Graph>막대형 그래프로 변경 예정</Graph>
+            <Graph>
+              <span style={{ fontSize: 'larger' }}> 채널 분석</span>
+              <TwoLevelPieChart channelId={channelId} />
+            </Graph>
             <Table>
-              테이블 자리
+              <span style={{ fontSize: 'larger' }}> 채널 정보</span>
               {channelInfo && (
                 <>
                   <Text>구독자 수 {channelInfo.subscriberCount} 명</Text>
-                  <Text>영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+                  <Text> 영상 평균 조회수 {channelInfo.averageViewCount} 회</Text>
+                  <Text> 총 영상수 {formattedVideoCount} 개</Text>
+                  <Text> 총 조회수 {simpleViewCount(initialViewCount)} 회</Text>
                 </>
               )}
-              {/* {detailInfo && (
-              <>
-                <Text>특정 영상 좋아요 수 {detailInfo.likeCount} 개</Text>
-                <Text>특정 영상 댓글 수 {detailInfo.commentCount} 개</Text>
-              </>
-            )} */}
             </Table>
           </GraphContainer>
           <VideoContainer>
@@ -142,6 +157,15 @@ const BottomContainer = styled.div`
 `;
 const DetailInfoContainer = styled.div`
   width: 1920px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ChannelInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const ProfileContainer = styled.div`
   display: flex;
@@ -184,17 +208,23 @@ const LinkToChannel = styled.button`
 `;
 
 const GraphContainer = styled.div`
+  /* border: 1px solid black; */
+  background-color: #ebeaea;
+  border-radius: 50px;
+
+  width: 1280px;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   padding: 20px;
   gap: 20px;
-  margin: 0 200px;
+  margin: 20px 200px;
 `;
 
 const Graph = styled.div`
   width: 50%;
   height: 300px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 10px;
   text-align: center;
   padding: 20px;
@@ -203,7 +233,7 @@ const Graph = styled.div`
 const Table = styled.div`
   width: 50%;
   height: 300px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 10px;
   text-align: center;
   padding: 20px;

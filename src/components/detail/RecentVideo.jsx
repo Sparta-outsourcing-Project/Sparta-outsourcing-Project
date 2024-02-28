@@ -121,7 +121,9 @@ const VideoItem = styled.div`
 `;
 
 const ThumbnailImage = styled.img`
-  width: 150%;
+  width: 100%;
+  height: 180px;
+
   max-width: 100%;
 
   border-radius: 30px;
@@ -134,7 +136,13 @@ const VideoInfoContainer = styled.div`
   line-height: 1.5;
 `;
 
-const SpanContainer = styled.div``;
+const SpanContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 200px;
+`;
 
 const TextStyle = styled.span`
   line-height: 1.5;

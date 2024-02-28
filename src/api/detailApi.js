@@ -9,7 +9,7 @@ export const detailApiInstance = axios.create({
   responseType: 'json'
 });
 
-export const getDetailDataApi = async (videoId) => {
+export const getLikedAndCommentDataApi = async (videoId) => {
   const response = await detailApiInstance.get(`${request.getLikedAndCommentApi}&id=${videoId}`);
   const video = response.data.items[0];
 
