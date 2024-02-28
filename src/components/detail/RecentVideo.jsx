@@ -78,20 +78,26 @@ function RecentVideo({ channelId }) {
         return (
           <>
             <VideoItem key={video.id}>
-              <ThumbnailImage
-                onClick={() => {
-                  linkToVideoBtnClickHandler(video.id);
-                }}
-                src={video.snippet.thumbnails.high.url}
-                alt={video.snippet.title}
-              />
-              <VideoInfoContainer>{video.snippet.title}</VideoInfoContainer>
-              <VideoInfoContainer>{localizedDate}</VideoInfoContainer>
-              <SpanContainer>
-                <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
-                <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
-                <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
-              </SpanContainer>
+              <ThumbnailImageWrap>
+                <img
+                  onClick={() => {
+                    linkToVideoBtnClickHandler(video.id);
+                  }}
+                  src={video.snippet.thumbnails.high.url}
+                  alt={video.snippet.title}
+                />
+              </ThumbnailImageWrap>
+              <VideoTextWrap>
+                <VideoTitle>{video.snippet.title}</VideoTitle>
+                <VideoInfoContainer>
+                  <VideoDate>{localizedDate}</VideoDate>
+                  <SpanContainer>
+                    <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
+                    <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
+                    <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
+                  </SpanContainer>
+                </VideoInfoContainer>
+              </VideoTextWrap>
             </VideoItem>
           </>
         );
@@ -116,24 +122,41 @@ const VideoItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+
   padding: 1rem;
 `;
 
-const ThumbnailImage = styled.img`
-  width: 100%;
+const ThumbnailImageWrap = styled.div`
   height: 180px;
-
-  max-width: 100%;
-
-  border-radius: 30px;
+  width: calc(100% - 3rem);
+  height: 180px;
+  & > img {
+    border-radius: 1rem;
+    width: 100%;
+    height: 100%;
+  }
   cursor: pointer;
 `;
-
-const VideoInfoContainer = styled.div`
-  padding: 10px;
-  gap: 20px;
+const VideoTextWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+const VideoTitle = styled.p`
+  font-size: larger;
+  font-weight: 600;
   line-height: 1.5;
+  padding: 2rem 0.5rem;
+`;
+const VideoInfoContainer = styled.div`
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 0.5rem;
+`;
+const VideoDate = styled.span`
+  padding: 5px 0;
 `;
 
 const SpanContainer = styled.div`
@@ -141,7 +164,8 @@ const SpanContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  width: 200px;
+  width: 250px;
+  padding: 5px 0;
 `;
 
 const TextStyle = styled.span`
