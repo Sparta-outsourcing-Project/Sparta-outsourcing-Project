@@ -91,9 +91,21 @@ export const ProfileSection = styled.section`
   box-shadow: 0px 0px 10px 0px #febe98;
   border-radius: 1rem;
 
-  & > img {
+  & > label > img,
+  img {
     margin-top: 2rem;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
   }
+
+  & > label > p {
+    color: white;
+    text-align: center;
+  }
+
   & > button {
     background-color: white;
     width: 10rem;
