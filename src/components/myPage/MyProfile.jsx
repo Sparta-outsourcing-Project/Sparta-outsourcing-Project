@@ -8,7 +8,7 @@ import {
   UserNickname,
   UserNicknameInput
 } from '../../pages/MyPage';
-import { getUserInfo, updateUserInfo } from '../../api/auth';
+import { getUserInfo, updateImage, updateUserInfo } from '../../api/auth';
 import styled from 'styled-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../layout/Loading';
@@ -99,6 +99,8 @@ const MyProfile = () => {
 
       // mutation (수정된 정보 query로 전달하기)
       mutation.mutate(newUserInfo);
+
+      updateImage(newImage);
 
       setIsEdit(false);
     }

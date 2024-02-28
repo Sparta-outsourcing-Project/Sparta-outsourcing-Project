@@ -25,13 +25,25 @@ export const addGoogleUserInfo = async (uid, newUserInfo) => {
 export const getUserInfo = async (uid) => {
   try {
     const userInfo = await getDoc(doc(db, 'users', uid));
-    // console.log(userInfo.data());
     return userInfo.data();
   } catch (error) {
     console.error(error);
     return null;
   }
 };
+
+// export const getUserInfo = async (uid) => {
+//   try {
+//     const userInfoObj = await getDoc(doc(db, 'users', uid));
+//     const userInfo = userInfoObj.data;
+
+//     const userImage = await getDownloadURL()
+//     // return userInfo.data();
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// };
 
 // 회원정보 수정
 export const updateUserInfo = async (uid, newUserInfo) => {
@@ -44,4 +56,6 @@ export const updateUserInfo = async (uid, newUserInfo) => {
   await updateDoc(doc(db, 'users', uid), { nickname, intro, image });
 };
 
-// export const updateImage = async (uploadedImage) => {};
+export const updateImage = async (uploadedImage) => {
+  await uploadBytes(ref(storage, `images/${uploadedImage.name}`), uploadedImage);
+};
