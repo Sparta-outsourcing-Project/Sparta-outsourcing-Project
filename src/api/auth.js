@@ -1,5 +1,7 @@
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore/lite';
 import db from './config';
+import { storage } from './config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // 회원가입시 userInfo fireStore에 저장
 export const addDefaultUserInfo = async (uid, newUserInfo) => {
@@ -41,3 +43,5 @@ export const updateUserInfo = async (uid, newUserInfo) => {
   const { nickname, intro, image } = newUserInfo;
   await updateDoc(doc(db, 'users', uid), { nickname, intro, image });
 };
+
+// export const updateImage = async (uploadedImage) => {};

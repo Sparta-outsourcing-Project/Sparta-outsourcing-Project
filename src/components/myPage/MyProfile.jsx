@@ -21,8 +21,8 @@ const MyProfile = () => {
   // 닉네임, 소개, 이미지 임시저장
   const [newNickname, setNewNickname] = useState('');
   const [newIntro, setNewIntro] = useState('');
-  // const [newImage, setNewImage] = useState('');
-  const [newImage, setNewImage] = useState(null);
+  const [newImage, setNewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
 
   const queryClient = useQueryClient();
 
@@ -41,8 +41,8 @@ const MyProfile = () => {
       const res = await getUserInfo(uid);
       setNewNickname(res.nickname);
       setNewIntro(res.intro);
-      // setNewImage(res.image);
-      !res.image === null && setNewImage(res.image);
+      setNewImage(res.image);
+      setPreviewImage(res.image);
       return res;
     }
   });
@@ -75,6 +75,16 @@ const MyProfile = () => {
   // '취소' 클릭 - 기존 값으로 복구
   const onCancel = () => {
     setIsEdit((prev) => !prev);
+    setNewImage(image);
+  };
+
+  // 이미지 미리보기 변경
+  const onImageHandler = (e) => {
+    const file = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+    // 이미지파일도 set -> 수정완료하면 storage에 업로드 위해
+    setNewImage(file);
   };
 
   // '수정완료' 클릭
@@ -94,19 +104,13 @@ const MyProfile = () => {
     }
   };
 
-  const onImageHandler = (e) => {
-    const file = e.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
-    setNewImage(imageUrl);
-  };
-
   return (
     <>
       <ProfileSection>
         {isEdit ? (
           <>
             <label htmlFor="fileInput">
-              <EditingImg src={newImage === null ? defaultImg : newImage} alt="defaultImg" />
+              <EditingImg src={previewImage === null ? defaultImg : previewImage} alt="defaultImg" />
             </label>
             <input
               id="fileInput"
