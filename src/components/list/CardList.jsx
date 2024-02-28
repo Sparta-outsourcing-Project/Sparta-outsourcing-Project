@@ -148,7 +148,7 @@ export const ListTable = styled.table`
   & th,
   & td {
     text-align: left;
-    border-bottom: 1px solid #eecdbe;
+    border-bottom: 1px solid #c9c8c7;
     padding: 1rem;
     vertical-align: middle;
   }
