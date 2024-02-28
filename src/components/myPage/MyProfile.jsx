@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import defaultImg from '../../assets/profile_defaultImage.png';
 import {
   ProfileContent,
@@ -8,43 +8,62 @@ import {
   UserNickname,
   UserNicknameInput
 } from '../../pages/MyPage';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, updateUserInfo } from '../../api/auth';
-import { defaultUser, updateUserState } from '../../redux/modules/userSlice';
 import styled from 'styled-components';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Loading from '../layout/Loading';
+import Error from '../../pages/Error';
 
 const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
   const [isEdit, setIsEdit] = useState(false);
-  const dispatch = useDispatch();
-  // userInfo 샘플
-  // {
-  //   intro : '소개를 입력해주세요'
-  //   favChannels: [];
-  //   image: null;
-  //   nickname: 'test';
-  //   uid: 'vC2wON5Cy3eeSgJZBiP7qjeecsr2';
-  //   userId: 'test@nbc.com';
-  // }
 
-  // 로그인된 user정보 fireStore에서 가져오기 + reducer 전달
-  useEffect(() => {
-    const getLoggedInUserInfo = async () => {
-      const userInfo = await getUserInfo(uid);
-      dispatch(defaultUser(userInfo));
-    };
-    getLoggedInUserInfo();
-  }, [dispatch, uid]);
+  // 닉네임, 소개, 이미지 임시저장
+  const [newNickname, setNewNickname] = useState('');
+  const [newIntro, setNewIntro] = useState('');
+  const [newImage, setNewImage] = useState('');
 
-  // reducer에서 user정보 가져오기
-  const userInfoState = useSelector((state) => state.userReducer);
-  const { userId, nickname, image, favChannels, intro } = userInfoState;
+  const queryClient = useQueryClient();
 
-  // 닉네임, 소개, 이미지 임시저장 🌈🌈 초기값으로 둔게 다 undefined (위에서 멀쩡히 잘 들어오는 값임)
-  // -> 이거 해결되면 수정클릭시 input에 이전값 뜨는 이슈, 수정시 이미지파일 안뜨는 이슈 해결 가능!!
-  const [newNickname, setNewNickname] = useState(nickname);
-  const [newIntro, setNewIntro] = useState(intro);
-  const [newImage, setNewImage] = useState(image);
+  // query로 newUserInfo update, invalidate(optimistic UI) 하기
+
+  // mutation 방식 1.
+  const mutation = useMutation({
+    mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['userInfo']);
+    }
+  });
+
+  // mutation 방식 2.
+  // const { mutate: updateMutation } = useMutation({
+  //   mutationFn: (newUserInfo) => updateUserInfo(uid, newUserInfo),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(['userInfo']);
+  //   }
+  // });
+
+  // query로 fireStore의 userInfo 가져오기
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await getUserInfo(uid);
+      setNewNickname(res.nickname);
+      setNewIntro(res.intro);
+      setNewImage(res.image);
+      return res;
+    }
+  });
+  console.log(isLoading, isError, data);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <Error />;
+  }
+
+  const { userId, nickname, image, intro } = data;
 
   // 닉네임 입력
   const onNewNickname = (e) => {
@@ -73,26 +92,23 @@ const MyProfile = () => {
   const onUpdateUserInfo = async () => {
     const isConfirmed = window.confirm('수정하시겠습니까?');
     if (isConfirmed) {
-      // 변경된 값 리듀서에 전달
-      const updateUserInfoState = { nickname: newNickname, intro: newIntro, image: newImage };
-      dispatch(updateUserState(updateUserInfoState));
-
-      // useState 변경
-      setNewImage(image);
-      setNewNickname(nickname);
-      setNewIntro(intro);
-
-      // fireStore userInfo 업데이트
       const newUserInfo = {
         nickname: newNickname,
         intro: newIntro,
-        // image: newImage
-        image
+        image: newImage
       };
-      await updateUserInfo(uid, newUserInfo);
+
+      // mutation (수정된 정보 query로 전달하기)
+      // 방식 1.
+      mutation.mutate(newUserInfo);
+
+      // 방식 2.
+      // updateMutation(newUserInfo);
+
       setIsEdit(false);
     }
   };
+
   return (
     <>
       <ProfileSection>

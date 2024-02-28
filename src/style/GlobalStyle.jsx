@@ -56,8 +56,6 @@ const GlobalStyle = createGlobalStyle`
     *, *::before, *::after{
         box-sizing: border-box;
         line-height: 24px;
-        font-size: 16px;
-        color: #212121;
     }
 
     textarea{
@@ -72,6 +70,10 @@ const GlobalStyle = createGlobalStyle`
         color:inherit;
         text-decoration: none;
     }
+
+    .recharts-layer {
+  outline: none !important;
+}
 `;
 
 export default GlobalStyle;

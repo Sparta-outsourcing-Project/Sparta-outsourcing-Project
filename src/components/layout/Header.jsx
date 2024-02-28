@@ -7,6 +7,7 @@ import SignUp from '../AuthModal/SignUp';
 import { auth } from '../../api/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/modules/loginSlice';
+import { LuUserPlus, LuUserCircle, LuHome, LuLogOut, LuLogIn } from 'react-icons/lu';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -48,27 +49,41 @@ export default function Header() {
 
   return (
     <HeaderWrap>
-      <Logo>
-        <Link to="/">
-          <img src={logo} alt="" />
-        </Link>
-      </Logo>
-      <Auth>
-        {loginState ? (
-          <>
-            <p onClick={onMypageClickLink}>마이페이지</p>
-            <p onClick={onLogoutHandler}>로그아웃</p>
-          </>
-        ) : (
-          <>
-            <p onClick={onLoginClickHandler}>로그인</p>
-            <p onClick={onSignUpClickHandler}>회원가입</p>
-          </>
-        )}
-      </Auth>
-      {/* 로그인, 회원가입 모달창 */}
-      <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} setIsSignUpOpen={setIsSignUpOpen} />
-      <SignUp isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} setIsLoginOpen={setIsLoginOpen} />
+      <HeaderWrapInner>
+        <Logo>
+          <Link to="/">
+            <img src={logo} alt="Dtrand-logo" />
+          </Link>
+        </Logo>
+        <Auth>
+          <Link to="/">
+            <LuHome />
+          </Link>
+
+          {loginState ? (
+            <>
+              <p onClick={onMypageClickLink}>
+                <LuUserCircle />
+              </p>
+              <p onClick={onLogoutHandler}>
+                <LuLogOut />
+              </p>
+            </>
+          ) : (
+            <>
+              <p onClick={onSignUpClickHandler}>
+                <LuUserPlus />
+              </p>
+              <p onClick={onLoginClickHandler}>
+                <LuLogIn />
+              </p>
+            </>
+          )}
+        </Auth>
+        {/* 로그인, 회원가입 모달창 */}
+        <Login isLoginOpen={isLoginOpen} setIsLoginOpen={setIsLoginOpen} setIsSignUpOpen={setIsSignUpOpen} />
+        <SignUp isSignUpOpen={isSignUpOpen} setIsSignUpOpen={setIsSignUpOpen} setIsLoginOpen={setIsLoginOpen} />
+      </HeaderWrapInner>
     </HeaderWrap>
   );
 }
@@ -83,6 +98,14 @@ export const HeaderWrap = styled.header`
   background-color: #fff;
   box-shadow: 0 0 10px #00000011;
 `;
+
+export const HeaderWrapInner = styled.header`
+  width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+`;
 export const Logo = styled.h1`
   width: 200px;
   & > a > img {
@@ -92,13 +115,12 @@ export const Logo = styled.h1`
 
 export const Auth = styled.div`
   display: flex;
-  gap: 20px;
-  position: absolute;
-  right: 0;
-  margin-right: 30px;
-  & > p {
+  gap: 0.8rem;
+
+  & p,
+  a {
     color: #febe98;
-    font-size: 20px;
+    font-size: 1.5rem;
     cursor: pointer;
     &:hover {
       transform: scale(1.1);

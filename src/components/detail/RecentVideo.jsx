@@ -1,65 +1,8 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getUpLoadPlayListId, getUpLoadPlayLists } from '../../api/dataApi';
-import { getDetailDataApi } from '../../api/dataApi';
 
-function RecentVideo({ channelId }) {
-  const [recentVideos, setRecentVideos] = useState([]);
-  const [playListId, setPlayListId] = useState('');
-  const [videoDetailInfo, setVideoDetailInfo] = useState([]);
-
-  // playListId 가져오기
-  useEffect(() => {
-    const fetchPlayListId = async () => {
-      try {
-        const getPlayListId = await getUpLoadPlayListId(channelId);
-
-        setPlayListId(getPlayListId);
-      } catch (error) {
-        console.error('Failed to fetch playlistId', error.message);
-      }
-    };
-    fetchPlayListId();
-  }, [channelId]);
-
-  // playListId로 최근 동영상 가져오기
-  useEffect(() => {
-    const fetchChannelRecentVideos = async () => {
-      try {
-        const videos = await getUpLoadPlayLists(playListId);
-        const recentVideoList = videos.items;
-        // console.log(recentVideoList);
-        setRecentVideos(recentVideoList);
-      } catch (error) {
-        console.error('Failed to fetch recent video info:', error.message);
-      }
-    };
-    fetchChannelRecentVideos();
-  }, [playListId]);
-
-  // videoId로 해당 Video의 조회수, 댓글수, 좋아요수 가져오기
-
-  useEffect(() => {
-    const fetchVideoStatisticInfo = async () => {
-      try {
-        const videoIds = recentVideos.map((video) => video.snippet.resourceId.videoId);
-        // console.log(videoIds);
-        const videoDetailsPromise = videoIds.map((videoId) => getDetailDataApi(videoId));
-        const videoDetails = await Promise.all(videoDetailsPromise);
-        // console.log(videoDetails);
-        setVideoDetailInfo(videoDetails);
-        // console.log(videoDetailInfo);
-      } catch (error) {
-        console.error('Failed to fetch Video Detail Info', error.message);
-      }
-    };
-    fetchVideoStatisticInfo();
-  }, [recentVideos]);
-
-  const finalVideoDetailInfo = videoDetailInfo.reduce(function (acc, curr) {
-    return acc.concat(curr);
-  }, []);
-  //   console.log(finalVideoDetailInfo);
+function RecentVideo({ finalVideoDetailInfo }) {
+  // 최근 6개 영상만 사용하기
+  const recent6Videos = finalVideoDetailInfo?.slice(0, 6);
 
   // 영상 썸네일 이미지 클릭시, 해당 영상 링크로 이동
   const linkToVideoBtnClickHandler = (videoId) => {
@@ -69,7 +12,7 @@ function RecentVideo({ channelId }) {
 
   return (
     <RecentVideoContainer>
-      {finalVideoDetailInfo.map((video) => {
+      {recent6Videos?.map((video) => {
         const localizedDate = new Date(video.snippet.publishedAt).toLocaleDateString('ko-KR', {
           year: 'numeric',
           month: '2-digit',
@@ -87,14 +30,15 @@ function RecentVideo({ channelId }) {
                   alt={video.snippet.title}
                 />
               </ThumbnailImageWrap>
+
               <VideoTextWrap>
                 <VideoTitle>{video.snippet.title}</VideoTitle>
                 <VideoInfoContainer>
                   <VideoDate>{localizedDate}</VideoDate>
                   <SpanContainer>
-                    <TextStyle>👁️ {video.statistics.viewCount}</TextStyle>
-                    <TextStyle>👍 {video.statistics.likeCount}</TextStyle>
-                    <TextStyle>💬 {video.statistics.commentCount}</TextStyle>
+                    <TextStyle>👁️ {parseInt(video.statistics.viewCount).toLocaleString()}</TextStyle>
+                    <TextStyle>👍 {parseInt(video.statistics.likeCount).toLocaleString()}</TextStyle>
+                    <TextStyle>💬 {parseInt(video.statistics.commentCount).toLocaleString()}</TextStyle>
                   </SpanContainer>
                 </VideoInfoContainer>
               </VideoTextWrap>
@@ -118,29 +62,37 @@ const RecentVideoContainer = styled.div`
 `;
 
 const VideoItem = styled.div`
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 1rem;
 `;
 
 const ThumbnailImageWrap = styled.div`
-  height: 180px;
   width: calc(100% - 3rem);
-  height: 180px;
+  height: 200px;
+  border-radius: 1rem;
+  overflow: hidden;
   & > img {
-    border-radius: 1rem;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
-  cursor: pointer;
+  & :hover {
+    cursor: pointer;
+    /* transform: scale(1.1);
+    transition: 0.3s; */
+  }
 `;
+
 const VideoTextWrap = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 0 1.5rem;
 `;
 const VideoTitle = styled.p`
   font-size: larger;
