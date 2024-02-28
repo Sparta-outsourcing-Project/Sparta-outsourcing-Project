@@ -2,17 +2,13 @@ import styled from 'styled-components';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MyProfile from '../components/myPage/MyProfile';
-import MyProfileCopy from '../components/myPage/MyProfileCopy';
-import MyProfileCopy2 from '../components/myPage/MyProfileCopy2';
 
 export default function MyPage() {
   return (
     <Wrap>
       <Header />
       <MypageSection>
-        {/* <MyProfile /> */}
-        <MyProfileCopy />
-        {/* <MyProfileCopy2 /> */}
+        <MyProfile />
         <FavoriteSection>
           <FavTitle>내 즐겨찾기</FavTitle>
           <FavList>
