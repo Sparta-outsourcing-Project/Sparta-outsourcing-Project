@@ -70,6 +70,14 @@ export const ProfileSection = styled.section`
     border-radius: 50%;
     object-fit: cover;
   }
+  & > label > img {
+    margin-top: 2rem;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
   & > button {
     background-color: white;
     width: 10rem;

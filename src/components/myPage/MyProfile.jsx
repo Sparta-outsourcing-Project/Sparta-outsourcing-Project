@@ -132,7 +132,7 @@ const MyProfile = () => {
               type="file"
               accept=".png, .jpg, .jpeg"
               onChange={onImageHandler}
-              style={{ display: 'none' }}
+              style={{ display: 'none', width: '200px' }}
             />
           </>
         ) : (
