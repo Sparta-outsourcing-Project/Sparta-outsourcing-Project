@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         line-height: 1;
         font-family: 'Pretendard-Regular';
-        letter-spacing: 1px;
+        letter-spacing: 0.6px;
         font-weight: 400;
         height: 100%;
     }
