@@ -20,16 +20,6 @@ export default function Detail() {
     error: channelInfoError
   } = useChannelDetailInfo(channelId);
 
-  // 댓글수, 좋아요 수 불러오기 -> React Query로 => 아직 X
-  // const {
-  //   data: detailInfo,
-  //   isLoading: isDetailInfoLoading,
-  //   error: detailInfoError
-  // } = useQuery({
-  //   queryKey: ['detailInfo', ],
-  //   queryFn: () => getDetailDataApi('OzHPMTZXs8U') // videoId
-  // });
-
   // banner url 불러오기 -> React Query로
   const {
     data: bannerUrl,
