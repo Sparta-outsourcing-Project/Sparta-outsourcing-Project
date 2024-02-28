@@ -147,9 +147,10 @@ export const MainSearch = styled.section`
 
 export const SearchInputBox = styled.div`
   width: 1280px;
-  height: 60px;
+  /* height: 60px; */
   display: flex;
   gap: 0.7rem;
+  position: relative;
 
   & > input {
     border: 1px solid #212121;
@@ -157,7 +158,7 @@ export const SearchInputBox = styled.div`
     border-radius: 2rem;
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     text-align: center;
   }
   & > input::placeholder {
@@ -165,8 +166,12 @@ export const SearchInputBox = styled.div`
     font-size: 1rem;
   }
   & > img {
-    margin-top: 0.3rem;
-    height: 2rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+    /* margin-top: 0.3rem; */
+    height: 1.5rem;
     cursor: pointer;
   }
 `;
@@ -175,6 +180,7 @@ export const SearchKeyWord = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 `;
 
 export const KeywordText = styled.div`
