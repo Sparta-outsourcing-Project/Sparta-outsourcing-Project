@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, updateUserInfo } from '../../api/auth';
 import { defaultUser, updateUserState } from '../../redux/modules/userSlice';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
 
 const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
@@ -35,6 +36,16 @@ const MyProfile = () => {
     };
     getLoggedInUserInfo();
   }, [dispatch, uid]);
+
+  // query로 fireStore의 userInfo 가져오기
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await getUserInfo(uid);
+      return res;
+    }
+  });
+  console.log(isLoading, isError, data);
 
   // reducer에서 user정보 가져오기
   const userInfoState = useSelector((state) => state.userReducer);
