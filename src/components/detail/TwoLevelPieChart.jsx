@@ -1,4 +1,4 @@
-import { Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { useChannelDetailInfo } from '../../hooks/useChannelDetailInfo';
 import Loading from '../layout/Loading';
 function TwoLevelPieChart({ channelId }) {
@@ -38,10 +38,12 @@ function TwoLevelPieChart({ channelId }) {
 
   return (
     <>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer className="recharts-layer" width="100%" height="100%">
         <PieChart width={400} height={400}>
           {/* 안쪽 부분 */}
-          <Pie data={data01} dataKey="realValue" cx="50%" cy="50%" outerRadius={65} fill="#febe98"></Pie>
+          <Pie data={data01} dataKey="realValue" cx="50%" cy="50%" outerRadius={65} fill="#febe98">
+            <Cell style={{ outline: 'none' }} />
+          </Pie>
           {/* 테두리 바깥쪽 부분 */}
           <Pie
             data={data02}
@@ -52,7 +54,9 @@ function TwoLevelPieChart({ channelId }) {
             outerRadius={100}
             fill="#999999"
             label={(entry) => `${entry.name} : ${entry.value.toLocaleString()}`}
-          ></Pie>
+          >
+            <Cell style={{ outline: 'none ' }} />
+          </Pie>
           {/* 총 조회수 표시 */}
           <text x="50%" y="47%" textAnchor="middle" fill="#000" fontWeight={600}>
             {data01[0].name}: {data01[0].value}

@@ -72,6 +72,10 @@ const GlobalStyle = createGlobalStyle`
         color:inherit;
         text-decoration: none;
     }
+
+    .recharts-layer {
+  outline: none !important;
+}
 `;
 
 export default GlobalStyle;
