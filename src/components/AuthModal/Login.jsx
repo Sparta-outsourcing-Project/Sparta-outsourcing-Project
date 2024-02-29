@@ -13,7 +13,6 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const [userPw, setUserPw] = useState('');
   const dispatch = useDispatch();
 
-  // 아이디, 비밀번호 입력값
   const onUserId = (e) => {
     setUserId(e.target.value);
   };
@@ -22,14 +21,12 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
     setUserPw(e.target.value);
   };
 
-  // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
     setIsLoginOpen((prev) => !prev);
     setUserId('');
     setUserPw('');
   };
 
-  // '회원가입' 클릭
   const onSignUpHandler = () => {
     setIsLoginOpen((prev) => !prev);
     setIsSignUpOpen((prev) => !prev);
@@ -37,18 +34,15 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
     setUserPw('');
   };
 
-  // 로그인 클릭
   const onLoginHandler = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, userId, userPw);
       alert('로그인 되었습니다.');
       setIsLoginOpen((prev) => !prev);
 
-      // sessionStorage에 저장
       sessionStorage.setItem('userId', userId);
       sessionStorage.setItem('uid', userCredential.user.uid);
 
-      // 로그인상태 RTK true로 변경
       dispatch(login(true));
 
       setUserId('');
@@ -59,23 +53,18 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
     }
   };
 
-  // 구글 로그인 클릭
   const onGoogleLogin = () => {
     setIsLoginOpen((prev) => !prev);
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((userData) => {
-        // console.log(userData);
         alert('로그인 되었습니다.');
 
-        // sessionStorage에 저장
         sessionStorage.setItem('userId', userData.user.email);
         sessionStorage.setItem('uid', userData.user.uid);
 
-        // 로그인상태 RTK true로 변경
         dispatch(login(true));
 
-        // fireStore에 newUserInfo 저장하기
         const { uid } = userData.user;
         const newUserInfo = {
           uid,

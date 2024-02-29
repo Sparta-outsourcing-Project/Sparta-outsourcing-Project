@@ -11,7 +11,6 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
   const [userNickname, setUserNickname] = useState('');
   const [userPw, setUserPw] = useState('');
 
-  // 아이디, 닉네임, 비밀번호 입력값
   const onUserId = (e) => {
     setUserId(e.target.value);
   };
@@ -24,7 +23,6 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
     setUserPw(e.target.value);
   };
 
-  // 닫기 버튼 클릭
   const onCloseButtonHandler = () => {
     setIsSignUpOpen((prev) => !prev);
     setUserId('');
@@ -32,16 +30,13 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
     setUserPw('');
   };
 
-  // 회원가입 클릭
   const onSignUpHandler = () => {
     createUserWithEmailAndPassword(auth, userId, userPw)
       .then((userCredential) => {
-        // 회원가입 성공시
         console.log(userCredential);
         alert('회원가입이 완료되었습니다 🎉');
         setIsSignUpOpen((prev) => !prev);
 
-        // firestore에 newUserInfo 저장하기
         const { uid } = userCredential.user;
         const newUserInfo = {
           uid,
@@ -54,13 +49,11 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
         addDefaultUserInfo(uid, newUserInfo);
       })
       .catch((error) => {
-        // 회원가입 실패시
         console.error(error);
         alert('입력하신 값을 확인해주세요.');
       });
   };
 
-  // '로그인하기' 클릭
   const onLoginHandler = () => {
     setIsSignUpOpen((prev) => !prev);
     setIsLoginOpen((prev) => !prev);

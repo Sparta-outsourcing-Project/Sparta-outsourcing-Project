@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import VideoModal from './VideoModal'; // VideoModal 컴포넌트 import 추가
+
 const BodySliderCopy = () => {
-  // videoId로 받아온 영상 정보 (6개의 객체 배열)
   const [videoDatas, setVideoDatas] = useState([]);
   useEffect(() => {
     // 영상 id 6개
@@ -45,16 +45,14 @@ const BodySliderCopy = () => {
     slidesToScroll: 1,
     autoplay: false,
     speed: 300,
-    // autoplaySpeed: 700,
     cssEase: 'linear',
     pauseOnHover: true
-    // waitForAnimate: false
   };
   return (
     <>
       <MainYoutuberSlider>
-        <StyledSwiper>
-          <SliderWrap>
+        <SliderWrap>
+          <SliderMainWrap>
             <Slider {...settings}>
               {videoDatas.map((videoData, idx) => {
                 return (
@@ -78,8 +76,8 @@ const BodySliderCopy = () => {
                 );
               })}
             </Slider>
-          </SliderWrap>
-        </StyledSwiper>
+          </SliderMainWrap>
+        </SliderWrap>
       </MainYoutuberSlider>
       {/* 모달이 열려있을 때만 VideoModal을 렌더링 */}
       {isModalOpen && (
@@ -104,7 +102,7 @@ export const MainYoutuberSlider = styled.section`
     margin: 1rem;
   }
 `;
-const StyledSwiper = styled.div`
+const SliderWrap = styled.div`
   width: 100%;
   .slick-prev {
     left: -10px;
@@ -113,7 +111,7 @@ const StyledSwiper = styled.div`
     right: -10px;
   }
 `;
-export const SliderWrap = styled.div`
+export const SliderMainWrap = styled.div`
   width: 100%;
 
   button {
@@ -133,7 +131,7 @@ export const SliderWrap = styled.div`
     font-size: 40px;
   }
 `;
-// 각 슬라이드에 적용될 스타일드 컴포넌트 정의
+
 export const SliderItem = styled.div`
   width: 100%;
   display: flex !important;
