@@ -2,7 +2,7 @@ import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firest
 import db from './config';
 
 // 즐겨찾기 목록 DB에서 가져오기
-export const fetchIsFavorite = async (userUid) => {
+export const fetchFavorites = async (userUid) => {
   if (!userUid) return '';
   try {
     const userRef = doc(db, 'users', userUid);

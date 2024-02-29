@@ -3,7 +3,7 @@ import nonFavImg from '../../assets/emptyStar.png';
 import favImg from '../../assets/coloredStar.png';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
-import { addFavoriteChannel, fetchIsFavorite, removeFavoriteChannel } from '../../api/favorites';
+import { addFavoriteChannel, fetchFavorites, removeFavoriteChannel } from '../../api/favorites';
 import Loading from '../layout/Loading';
 import Error from '../../pages/Error';
 
@@ -17,7 +17,7 @@ export const ListFavoriteButton = ({ userUid, channelId }) => {
     error
   } = useQuery({
     queryKey: ['favoriteChannels', userUid, favorite],
-    queryFn: () => fetchIsFavorite(userUid)
+    queryFn: () => fetchFavorites(userUid)
   });
 
   useEffect(() => {
