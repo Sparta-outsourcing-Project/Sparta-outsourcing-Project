@@ -43,10 +43,9 @@
  
 그 외 : Redux Toolkit, Swiper, Slick, React-icon, Recharts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br><br>
 
-## 와이어프레임
+# 와이어프레임
 
 <table>
 <thead>
@@ -77,7 +76,11 @@
   </tbody>
 </table>
 
+<br>
+
 ## 화면 구성 및 기능
+
+### 1. 메인페이지
 
 <table>
 <thead>
@@ -148,10 +151,10 @@
     </tr>
   </tbody>
 </table>
-   <h4> 1-2. 로그인 / 회원가입 / 모달 </h4>
+   <h3> 1-2. 로그인 / 회원가입 / 모달 </h3>
   <ul>
     <li>
-      <h5>로그인</h5>
+      <h4>로그인</h4>
       <ul>
         <li>firebase authentication을 사용한 로그인 기능 구현
           <ul>
@@ -166,7 +169,7 @@
       </ul>
     </li>
      <li>
-      <h5>회원가입</h5>
+      <h4>회원가입</h4>
       <ul>
         <li>회원가입 모달창에 이메일, 닉네임, 비밀번호를 입력하여 회원가입합니다.</li>
         <li>이미 가입된 이메일인 경우 중복 가입이 불가능합니다.</li>
@@ -179,14 +182,30 @@
       </ul>
     </li>
   </ul>
+<h3> 1-3. search / keyword </h3>
 
-### 3. 디테일 페이지
+<ul>
+ <li>메인페이지 검색 기능(유효성검사 등) 구현됩니다.</li>
+ <li>키워드 클릭시 키워드에있는 단어가 검색됩니다.</li>
+</ul>
 
-<table>
+<h3> 1-4. Best Youtuber </h3>
+
+<ul>
+ <li>메인 페이지 이달의 인기 유튜버 (인기 5순위)가 기재됩니다.</li>
+ <li>인기 순위대로 나열해주는 api경로를 국내로 지정하여 한국 유튜버들 중 인기 순위 5명의 채널 id를 받고,  채널 id를 채널 id api에 전달해 썸테일을 받아오게 하여 구현하였습니다.</li>
+ <li>인기 5순위 유튜버 썸네일 이미지를 누르면 해당 유튜브 채널로 이동합니다.</li>
+</ul>
+
+
+### 2. 리스트 페이지
+
+ <table>
 <thead>
   <tr>
   <th>
-    디테일 페이지
+    리스트 페이지
+
   </th>
     </thead>
   <tbody>
@@ -198,6 +217,31 @@
   </tr>
   </tbody>
 </table>
+ <h3>2-1. List 불러오기 / API 호출 및 함수</h3>
+ <ul>
+ <li>`useQuery`훅을 사용하여 API 데이터를 비동기적으로 가져옵니다.</li>  
+  <li>`queryKey`를 이용하여 키워드와 정렬기준을 전달하여 리스트를 가져옵니다.</li>
+  <li> data, isLoding, error를 통하여 api데이터 상태를 확인하며 데이터가 로딩중이면 loding컴포넌트를 표기합니다.</li>
+  <li>페이지네이션 및 현제 페이지의 데이터를 설정하여 페이징되도록 표기합니다.</li>
+  <li>각 리스트마다 즐겨찾기 추가 여부를 표기합니다.</li>
+ </ul>
+ <h3>2-2. 페이지네이션</h3>
+ <ul>
+  <li>api로 받아오는 값 만큼 페이지가 증가 순위가 다음페이지까지 이어질 수 있도록 구현 하였습니다.</li>
+  <li>useQuery로 refactioring 하여 data나 정렬이 바뀌지 않으면 다른경로에서 다시 돌아오더라도 api 통신을 하지 않습니다.</li>
+  <li>keepPreviousData 값으 ture로 설정하여 값이 변경되어 값을 받아오기까지 이전 값을 ui에 보여주고 있습니다.</li>
+ </ul>
+ <h3>2-3. 즐겨찾기</h3>
+ <ul>
+  <li>로그인 상태에서, 리스트 페이지의 회색 별 아이콘을 클릭하면 민트색 별 아이콘으로 바뀌면서 해당 유저의 즐겨찾기 목록에 해당 채널이 추가됩니다. 
+       상세 페이지에서는 즐겨찾기 추가 버튼을 누르면 해당 채널이 즐겨찾기 목록에 추가됩니다.</li>
+  <li>로그인 상태에서, 민트색 별 아이콘을 다시 누르면, 즐겨찾기 목록에서 해당 채널이 삭제됩니다. 
+     상세페이지에서는 즐겨찾기 해제 버튼을 누르면 해당 채널이 즐겨찾기 목록에서 삭제됩니다. </li>
+  <li>비회원 상태에서는 (혹은 로그아웃) 회색 별 아이콘/즐겨찾기 추가 버튼만 뜨게 하고, 이를 누를 경우 ‘즐겨찾기 기능을 이용하시려면 로그인해주세요’ 
+    라는 alert창이 뜨도록 했습니다. </li>
+  <li>로그인/로그아웃 여부에 따라 렌더링되도록 해, 기존 리스트/상세 페이지에서 로그인/로그아웃을 해도 즐겨찾기 아이콘이 로그인 상태에 따라 즉시 바뀌도록 했습니다</li>
+ </ul>
+
 
 ### 3-1. 채널 정보 보기
 
