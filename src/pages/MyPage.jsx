@@ -11,13 +11,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useChannelDetailInfo } from '../hooks/useChannelDetailInfo';
 import { getChannelInfoById } from '../api/dataApi';
 import Loading from '../components/layout/Loading';
+import { Link } from 'react-router-dom';
 
 export default function MyPage() {
   const navigate = useNavigate();
   const [userUid, setUserUid] = useState('');
   const [favChannelInfos, setFavChannelInfos] = useState([]);
-
-  const channel = { channelId: '9DKSOsLR7Vk' }; // 임시
 
   useEffect(() => {
     if (sessionStorage.getItem('uid')) {
@@ -29,30 +28,26 @@ export default function MyPage() {
   }, []);
 
   const {
-    data: favoriteChannels, // 즐겨찾기 채널 id들의 배열
+    data: favoriteChannelIds, // 즐겨찾기 채널 id들의 배열
     isLoading,
     error
   } = useQuery({
-    queryKey: ['favoriteChannels', userUid],
+    queryKey: ['favoriteChannelIds', userUid],
     queryFn: () => fetchFavorites(userUid)
   });
 
   useEffect(() => {
     const fetchFavChannelInfos = async () => {
       const favChannelInfoArr = [];
-      for (const favChannelId of favoriteChannels) {
-        const favChannelInfo = await getChannelInfoById(favChannelId);
-        console.log('🚀 ~ fetchFavChannelInfos ~ favChannelInfo:', favChannelInfo);
-        favChannelInfoArr.push(favChannelInfo);
-        setFavChannelInfos([...favChannelInfos, favChannelInfo]);
-        // [...favChannelInfos, favChannelInfo];  favChannelInfos.concat(favChannelInfo)
+      for (const favChannelId of favoriteChannelIds) {
+        const favChannelInfo = await getChannelInfoById(favChannelId); // 해당채널ID 넣어 채널정보 얻기
+        favChannelInfoArr.push(favChannelInfo); // 빈배열에 하나씩 담기
       }
-      setFavChannelInfos((prevFavChannelInfos) => prevFavChannelInfos.concat(favChannelInfoArr));
-      //   return favChannelInfo;
+
+      setFavChannelInfos(favChannelInfoArr);
     };
     fetchFavChannelInfos();
-  }, [favoriteChannels]);
-
+  }, [favoriteChannelIds]);
   if (isLoading) return <Loading />;
   if (error) return <Error />;
   return (
@@ -71,27 +66,31 @@ export default function MyPage() {
                 <th>구독자</th>
                 <th>영상 조회수</th>
                 <th />
+                <th />
               </tr>
             </thead>
             <tbody>
-              {/* {favChannelInfos.map(({ thumbnailUrl, channelTitle, subscriberCount, viewCount }, index) => {
-                <td>{channelTitle}</td>;
-              })} */}
-              <tr>
-                <td>1</td>
-                <td>
-                  <ThumbnailImg
-                    src="https://yt3.ggpht.com/aQEJkF7eAIDeEEqfUQ9rn3XmSfQDtmG_Qzfx6wteFS5dv5JbKyH1paAu-CGCB8COdhr_vHdz=s800-c-k-c0x00ffffff-no-rj"
-                    width={100}
-                  />
-                </td>
-                <td>유튜버명</td>
-                <td>구독자수</td>
-                <td>조회수</td>
-                <td>
-                  <ListFavoriteButton userUid={userUid} channelId={channel.channelId} />
-                </td>
-              </tr>
+              {favChannelInfos.map(
+                ({ channelTitle, thumbnailUrl, subscriberCount, averageViewCount, channelId }, index) => {
+                  return (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>
+                        {/* <Link to={`/list/1/${channel.channelId}`}> */}
+                        <ThumbnailImg src={thumbnailUrl} width={100} />
+                        {/* </Link> */}
+                      </td>
+                      <td>{channelTitle}</td>
+                      <td>{subscriberCount}</td>
+                      <td>{averageViewCount}</td>
+                      <td>
+                        {/* 내 즐겨찾기에서 삭제 시, 회색별로 바뀌고, 새로고침 시 목록에서 사라짐 */}
+                        <ListFavoriteButton userUid={userUid} channelId={channelId} />
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
             </tbody>
           </FavList>
         </FavoriteSection>
@@ -198,16 +197,25 @@ export const FavList = styled.table`
     background-color: antiquewhite;
   }
 
-  & th,
-  & td {
+  & th {
     text-align: left;
+    font-size: 0.9rem;
+    padding: 1rem;
+    vertical-align: middle;
+  }
+
+  & td {
     border-bottom: 1px solid #e4c1ad;
     padding: 1rem;
     vertical-align: middle;
   }
-  & th:nth-child(1) {
+  /* & th:nth-child(1) {
     width: 100px;
-  }
+  } */
+
+  /* & th:nth-child(3) {
+    margin-right: 10px;
+  } */
 
   & td:nth-child(2) {
     width: 160px;
@@ -216,7 +224,7 @@ export const FavList = styled.table`
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      background-color: #febe98;
+      /* background-color: #febe98; */
       margin-right: 1rem;
       overflow: hidden;
     }
