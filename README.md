@@ -113,14 +113,14 @@ Currently, two official plugins are available:
       <h5>로그인</h5>
       <ul>
         <li>firebase authentication을 사용한 로그인 기능 구현
-          <ol>
+          <ul>
             <li>
               이메일/비밀번호 로그인 : 로그인 아이콘을 누르면 모달창이 뜨고, 이메일과 비밀번호를 입력하고 로그인합니다.
             </li>
             <li>
               구글 소셜 로그인 : ‘Google 로그인’ 클릭 시 로그인 팝업창이 뜨고, 구글 계정으로 로그인합니다.
             </li>
-          </ol>
+          </ul>
         </li>
       </ul>
     </li>
