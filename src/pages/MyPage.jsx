@@ -4,12 +4,10 @@ import Footer from '../components/layout/Footer';
 import MyProfile from '../components/myPage/MyProfile';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import nonFavImg from '../assets/emptyStar.png';
 import { ListFavoriteButton } from '../components/list/ListFavoriteButton';
 import { fetchFavorites } from '../api/favorites';
 import { useQuery } from '@tanstack/react-query';
-import { useChannelDetailInfo } from '../hooks/useChannelDetailInfo';
-import { getChannelInfoById } from '../api/dataApi';
+import { getChannelInfoById, getMostChannelInfo } from '../api/dataApi';
 import Loading from '../components/layout/Loading';
 import { Link } from 'react-router-dom';
 
@@ -41,6 +39,8 @@ export default function MyPage() {
       const favChannelInfoArr = [];
       for (const favChannelId of favoriteChannelIds) {
         const favChannelInfo = await getChannelInfoById(favChannelId); // 해당채널ID 넣어 채널정보 얻기
+        const channelCustomUrl = await getMostChannelInfo(favChannelId); // 해당채널ID 넣어 채널커스텀url 얻기
+        favChannelInfo.channelCustomUrl = channelCustomUrl; // info 객체에 커스텀url 추가
         favChannelInfoArr.push(favChannelInfo); // 빈배열에 하나씩 담기
       }
 
@@ -48,6 +48,12 @@ export default function MyPage() {
     };
     fetchFavChannelInfos();
   }, [favoriteChannelIds]);
+
+  const handleChannelClick = (channelCustomUrl) => {
+    const channelUrl = `https://www.youtube.com/${channelCustomUrl}`;
+    window.open(channelUrl, '_blank');
+  };
+
   if (isLoading) return <Loading />;
   if (error) return <Error />;
   return (
@@ -56,7 +62,7 @@ export default function MyPage() {
       <MypageSection>
         <MyProfile />
         <FavoriteSection>
-          <FavTitle>내 즐겨찾기</FavTitle>
+          <FavTitle>⭐ 내 즐겨찾기</FavTitle>
           <FavList>
             <thead>
               <tr>
@@ -71,16 +77,22 @@ export default function MyPage() {
             </thead>
             <tbody>
               {favChannelInfos.map(
-                ({ channelTitle, thumbnailUrl, subscriberCount, averageViewCount, channelId }, index) => {
+                (
+                  { channelTitle, thumbnailUrl, subscriberCount, averageViewCount, channelId, channelCustomUrl },
+                  index
+                ) => {
                   return (
-                    <tr>
+                    <tr key={channelId}>
                       <td>{index + 1}</td>
-                      <td>
-                        {/* <Link to={`/list/1/${channel.channelId}`}> */}
-                        <ThumbnailImg src={thumbnailUrl} width={100} />
-                        {/* </Link> */}
-                      </td>
-                      <td>{channelTitle}</td>
+                      <ThumbnailTd>
+                        {/* <Link to={`/list/1/${channel.channelId}`}> 해당 채널 상세페이지 링크 연결 - '키워드'가 끼어 어려움 */}
+                        <ThumbnailImg
+                          src={thumbnailUrl}
+                          width={100}
+                          onClick={() => handleChannelClick(channelCustomUrl)}
+                        />
+                      </ThumbnailTd>
+                      <TitleTd onClick={() => handleChannelClick(channelCustomUrl)}>{channelTitle}</TitleTd>
                       <td>{subscriberCount}</td>
                       <td>{averageViewCount}</td>
                       <td>
@@ -108,9 +120,9 @@ export const Wrap = styled.div`
 `;
 
 export const MypageSection = styled.section`
-  min-height: 100vh;
+  min-height: 30rem;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 
 export const ProfileSection = styled.section`
@@ -118,18 +130,19 @@ export const ProfileSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 50vh;
   margin: 3rem;
   gap: 3rem;
   width: 23%;
+  height: 100%;
+  padding-bottom: 3rem;
   box-shadow: 0px 0px 10px 0px #f7d7c4;
   border-radius: 1rem;
 
   & > label > img,
   img {
     margin-top: 2rem;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 1rem;
@@ -147,6 +160,14 @@ export const ProfileSection = styled.section`
     border: none;
     border-radius: 0.5rem;
   }
+`;
+
+export const ThumbnailTd = styled.td`
+  cursor: pointer;
+`;
+
+export const TitleTd = styled.td`
+  cursor: pointer;
 `;
 
 export const ProfileContent = styled.div`
@@ -181,7 +202,7 @@ export const UserIntro = styled.p`
 `;
 
 export const FavoriteSection = styled.section`
-  width: 70%;
+  width: 75rem;
   margin: 3rem;
   padding: 1.5rem;
   box-shadow: 0px 0px 3px 0px #e5ab89;
@@ -199,7 +220,7 @@ export const FavList = styled.table`
 
   & th {
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 1rem;
     vertical-align: middle;
   }
