@@ -139,13 +139,11 @@ Currently, two official plugins are available:
     </li>
   </ul>
 
- ## 디테일 페이지
-
  <table>
 <thead>
   <tr>
   <th>
-    메인 페이지
+    디테일 페이지
   </th>
     </thead>
   <tbody>
