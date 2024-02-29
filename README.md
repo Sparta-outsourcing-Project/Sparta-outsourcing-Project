@@ -131,6 +131,12 @@ Currently, two official plugins are available:
         <li>이미 가입된 이메일인 경우 중복 가입이 불가능합니다.</li>
       </ul>
     </li>
+     <li>
+      <h5>모달</h5>
+      <ul>
+        <li>bodyslide의 item을 클릭시 모달창이 생성되며, 유튜브 영상을 볼 수 있습니다.</li>
+      </ul>
+    </li>
   </ul>
  
 
