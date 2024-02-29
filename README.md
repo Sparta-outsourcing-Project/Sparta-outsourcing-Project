@@ -79,7 +79,6 @@
 <br>
 
 ### 피그마
-
 https://www.figma.com/file/AjQpIMmbkzpV8mcs8ic2wG/%EC%95%84%EC%9B%83%EC%86%8C%EC%8B%B1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-10%EC%A1%B0?type=whiteboard&node-id=0-1&t=VDIddVdBurDcXlf8-0
 
 ### 시연 영상
@@ -89,8 +88,7 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 <br>
 
 # 화면 구성 및 기능
-
-## 1. 메인페이지
+ ## 1. 메인페이지
 
 <table>
 <thead>
@@ -209,7 +207,6 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 <br>
 
 ## 2. 리스트 페이지
-
  <table>
 <thead>
   <tr>
@@ -252,7 +249,6 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
  <br>
 
 ## 3. 디테일 페이지
-
   <table>
 <thead>
   <tr>
@@ -370,6 +366,7 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 </div>
 </details>
 
+
 <details>
 <summary>김현진</summary>
 <div>
@@ -404,6 +401,7 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 - 팀원들과 함께 에러부분도 해결해 보고 도움을 주고 받으면서 정말 많이 성장할 수 있었던 것 같습니다.
 
 - 팀원분들이 욕심을 가지고 다양한 기능 구현한 부분들을 보고 배울 수 있었고, 다양한 에러 또한 접할 수 있었습니다.
+
 - 덕분에 이전에 해보고 싶었던 페이지 네이션, 로딩창과 같은 다른 기능들에 욕심내 도전해 보고 또 필요한 부분들을 서로서로 매꾸어가며 배울점이 정말 많은 팀이었다고 생각합니다.
 
 - 아쉽게도 로딩창은 api에서 받아오는 값을 받아 실제 로딩되는 %를 구현하고 싶었으나, 제공 여부를 찾지 못하여 css로만 구현하게 되어 아쉬웠습니다.
