@@ -198,14 +198,13 @@ export const FavList = styled.table`
   }
 
   & th {
+    text-align: left;
     font-size: 0.9rem;
     padding: 1rem;
-    /* width: 20px; */
-    /* vertical-align: middle; */
+    vertical-align: middle;
   }
 
   & td {
-    text-align: left;
     border-bottom: 1px solid #e4c1ad;
     padding: 1rem;
     vertical-align: middle;
@@ -214,22 +213,18 @@ export const FavList = styled.table`
     width: 100px;
   } */
 
-  & th:nth-child(2) {
-    width: 130px;
-  }
-
-  & th:nth-child(3) {
+  /* & th:nth-child(3) {
     margin-right: 10px;
-  }
+  } */
 
   & td:nth-child(2) {
-    width: 130px;
+    width: 160px;
     & span {
       display: block;
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      background-color: #febe98;
+      /* background-color: #febe98; */
       margin-right: 1rem;
       overflow: hidden;
     }
