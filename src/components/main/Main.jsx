@@ -99,7 +99,7 @@ export default function Main() {
       <MainBest>
         <MainBestTitle>
           <h3>Best YouTuber</h3>
-          <p>이달의 인기 유튜버</p>
+          <p>실시간 인기 유튜버</p>
         </MainBestTitle>
         <MainBestContWrap>
           {channelInfos.map((channelInfo, index) => (
