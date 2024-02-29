@@ -85,7 +85,7 @@ export default function MyPage() {
                       <td>{averageViewCount}</td>
                       <td>
                         {/* 내 즐겨찾기에서 삭제 시, 회색별로 바뀌고, 새로고침 시 목록에서 사라짐 */}
-                        <ListFavoriteButton userUid={userUid} channelId={channelId} />
+                        <ListFavoriteButton userUid={userUid} channelId={channelId} page="mypage" />
                       </td>
                     </tr>
                   );
