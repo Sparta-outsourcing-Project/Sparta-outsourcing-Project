@@ -47,7 +47,7 @@ const MyProfile = () => {
     }
   });
 
-  if (isLoading) {
+  if (isLoading || mutation.isPending) {
     return <Loading />;
   }
   if (isError) {
