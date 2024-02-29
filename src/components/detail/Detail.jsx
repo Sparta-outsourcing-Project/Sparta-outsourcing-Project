@@ -302,54 +302,6 @@ export default function Detail() {
                       </tr>
                     </tbody>
                   </table>
-                  {/* <LineWrap>
-                    <ColorCircle></ColorCircle>
-                    <TableText>
-                      총 영상수 <h3>{formattedVideoCount} 개</h3>
-                    </TableText>
-                  </LineWrap>
-                  <LineWrap>
-                    <ColorCircle></ColorCircle>
-                    <TableText>
-                      총 조회수 <h3>{initialViewCount} 회</h3>
-                    </TableText>
-                  </LineWrap>
-                  <LineWrap>
-                    <ColorCircle style={{ backgroundColor: '#febe98' }}></ColorCircle>
-                    <TableText>
-                      구독자 수 <h3>{subscriberNum} 명</h3>
-                    </TableText>
-                  </LineWrap>
-                  <br />
-                  <LineWrap>
-                    <ColorCircle style={{ backgroundColor: '#f9d46e' }}></ColorCircle>
-                    <TableText>
-                      채널 영상 평균 조회수 <h3 style={{ marginLeft: '43px' }}>{averageVideoViewCount} 회</h3>
-                    </TableText>
-                  </LineWrap>
-                  <LineWrap>
-                    <ColorCircle style={{ backgroundColor: '#B1C381' }}></ColorCircle>
-                    <TableText>
-                      최근 영상 평균 조회수
-                      <h3 style={{ marginLeft: '43px' }}>{parseInt(averageViewCount).toLocaleString()} 회</h3>
-                    </TableText>
-                  </LineWrap>
-
-                  <br />
-                  <LineWrap>
-                    <ColorCircle style={{ backgroundColor: '#dadada' }}></ColorCircle>
-                    <TableText>
-                      최근 영상 평균 좋아요수
-                      <h3 style={{ marginLeft: '25px' }}>{parseInt(averageLikeCount).toLocaleString()} 개</h3>
-                    </TableText>
-                  </LineWrap>
-                  <LineWrap>
-                    <ColorCircle style={{ backgroundColor: '#bfbebe' }}></ColorCircle>
-                    <TableText>
-                      최근 영상 평균 댓글수
-                      <h3 style={{ marginLeft: '43px' }}>{parseInt(averageCommentCount).toLocaleString()} 개</h3>
-                    </TableText>
-                  </LineWrap> */}
                 </TableTextWrap>
               )}
             </Table>
