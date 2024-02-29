@@ -56,6 +56,7 @@ export const getChannelInfoById = async (channelId) => {
         : Math.round((initAverageViewCount / 1000) * 10) / 10 + '천';
 
     return {
+      channelId,
       channelTitle,
       description,
       thumbnailUrl,
