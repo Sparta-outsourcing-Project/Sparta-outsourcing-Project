@@ -138,7 +138,25 @@ Currently, two official plugins are available:
       </ul>
     </li>
   </ul>
- 
+
+ ## 디테일 페이지
+
+ <table>
+<thead>
+  <tr>
+  <th>
+    메인 페이지
+  </th>
+    </thead>
+  <tbody>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/Sparta-outsourcing-Project/Sparta-outsourcing-Project/blob/feat/main/src/assets/README_img/list.png"/>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
 
 
