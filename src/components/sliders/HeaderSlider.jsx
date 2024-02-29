@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-
+import mainBanner1 from '../../assets/main_banner02.jpg';
+import mainBanner2 from '../../assets/main_banner03.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
@@ -22,12 +23,12 @@ const HeaderSlider = () => {
       >
         <SwiperSlide>
           <MainSlider>
-            <img src="src\assets\main_banner02.jpg" alt="" />
+            <img src={mainBanner1} alt="" />
           </MainSlider>
         </SwiperSlide>
         <SwiperSlide>
           <MainSlider>
-            <img src="src\assets\main_banner03.jpg" alt="" />
+            <img src={mainBanner2} alt="" />
           </MainSlider>
         </SwiperSlide>
       </StSwiper>
