@@ -282,7 +282,7 @@ export default function Detail() {
                         <th>
                           <ColorCircle style={{ backgroundColor: '#B1C381' }}></ColorCircle>최근 영상 평균 조회수
                         </th>
-                        <td>{averageVideoViewCount} 회</td>
+                        <td>{averageViewCount} 회</td>
                       </tr>
                       <tr>
                         <th></th>
