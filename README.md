@@ -62,14 +62,18 @@ Currently, two official plugins are available:
     <li>header - logo / home / signup / login 각 icon 클릭시 회원가입 / 로그인 모달창 구성</li>
     <li>main - mainslide / search + keyword / bodyslide / best youtube 구성
       <ul>
-        <li>main slide : swiper slide 라이브러리를 활용한 슬라이드 구성<br/>
-        화면 렌더링 시 헤더의 슬라이더가 자동으로 넘어갑니다.<br/>
-        하단의 점 클릭 시 해당 슬라이더로 이동합니다.        
+        <li>main slide : swiper slide 라이브러리를 활용한 슬라이드 구성
+          <ul>
+            <li>화면 렌더링 시 헤더의 슬라이더가 자동으로 넘어갑니다.</li>
+            <li>하단의 점 클릭 시 해당 슬라이더로 이동합니다.</li>
+          </ul>
         </li>
-        <li>body slide : slick slide 라이브러리를 활용한 슬라이드 구성<br/>
-          해시태그 키워드 별 대표 영상을 슬라이더로 조회할 수 있습니다.<br/>
-          양 옆의 화살표를 누르면 선택한 방향으로 슬라이더가 이동합니다.<br/>
-          영상에 커서를 올리면 크기가 커지고, 클릭 시 모달창으로 영상을 재생합니다.<br/>
+        <li>body slide : slick slide 라이브러리를 활용한 슬라이드 구성
+          <ul>
+            <li>해시태그 키워드 별 대표 영상을 슬라이더로 조회할 수 있습니다.</li>
+            <li>양 옆의 화살표를 누르면 선택한 방향으로 슬라이더가 이동합니다.</li>
+            <li>영상에 커서를 올리면 크기가 커지고, 클릭 시 모달창으로 영상을 재생합니다.</li>
+          </ul>
         </li>
       </ul>
     </li>
