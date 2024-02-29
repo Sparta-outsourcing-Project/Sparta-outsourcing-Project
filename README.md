@@ -124,7 +124,7 @@ Currently, two official plugins are available:
       <h5>회원가입</h5>
       <ul>
         <li>회원가입 모달창에 이메일, 닉네임, 비밀번호를 입력하여 회원가입합니다.</li>
-        <li>>이미 가입된 이메일인 경우 중복 가입이 불가능합니다.</li>
+        <li>이미 가입된 이메일인 경우 중복 가입이 불가능합니다.</li>
       </ul>
     </li>
   </ul>
