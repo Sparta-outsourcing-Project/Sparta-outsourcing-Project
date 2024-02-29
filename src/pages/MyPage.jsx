@@ -6,10 +6,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import nonFavImg from '../assets/emptyStar.png';
 import { ListFavoriteButton } from '../components/list/ListFavoriteButton';
+import { fetchFavorites } from '../api/favorites';
+import { useQuery } from '@tanstack/react-query';
+import { useChannelDetailInfo } from '../hooks/useChannelDetailInfo';
+import { getChannelInfoById } from '../api/dataApi';
+import Loading from '../components/layout/Loading';
 
 export default function MyPage() {
   const navigate = useNavigate();
   const [userUid, setUserUid] = useState('');
+  const [favChannelInfos, setFavChannelInfos] = useState([]);
 
   const channel = { channelId: '9DKSOsLR7Vk' }; // 임시
 
@@ -22,6 +28,37 @@ export default function MyPage() {
     }
   }, []);
 
+  const {
+    data: favoriteChannels, // 즐겨찾기 채널 id들의 배열
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['favoriteChannels', userUid],
+    queryFn: () => fetchFavorites(userUid)
+  });
+
+  useEffect(() => {
+    const fetchFavChannelInfos = async () => {
+      const favChannelInfoArr = [];
+      for (const favChannelId of favoriteChannels) {
+        const favChannelInfo = await getChannelInfoById(favChannelId);
+        console.log('🚀 ~ fetchFavChannelInfos ~ favChannelInfo:', favChannelInfo);
+        favChannelInfoArr.push(favChannelInfo);
+        setFavChannelInfos([...favChannelInfos, favChannelInfo]);
+        // [...favChannelInfos, favChannelInfo];  favChannelInfos.concat(favChannelInfo)
+      }
+      setFavChannelInfos((prevFavChannelInfos) => prevFavChannelInfos.concat(favChannelInfoArr));
+      //   return favChannelInfo;
+    };
+    fetchFavChannelInfos();
+  }, [favoriteChannels]);
+
+  console.log(favChannelInfos); // 빈
+
+  console.log(favChannelInfos);
+
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
   return (
     <Wrap>
       <Header />
@@ -41,21 +78,24 @@ export default function MyPage() {
               </tr>
             </thead>
             <tbody>
-              {/* <FavItemBox> */}
+              {/* {favChannelInfos.map(({ thumbnailUrl, channelTitle, subscriberCount, viewCount }, index) => {
+                <td>{channelTitle}</td>;
+              })} */}
               <tr>
                 <td>1</td>
-                <img
-                  src="https://yt3.ggpht.com/aQEJkF7eAIDeEEqfUQ9rn3XmSfQDtmG_Qzfx6wteFS5dv5JbKyH1paAu-CGCB8COdhr_vHdz=s800-c-k-c0x00ffffff-no-rj"
-                  width={100}
-                />
-                <td>유튜브채널명</td>
+                <td>
+                  <ThumbnailImg
+                    src="https://yt3.ggpht.com/aQEJkF7eAIDeEEqfUQ9rn3XmSfQDtmG_Qzfx6wteFS5dv5JbKyH1paAu-CGCB8COdhr_vHdz=s800-c-k-c0x00ffffff-no-rj"
+                    width={100}
+                  />
+                </td>
+                <td>유튜버명</td>
                 <td>구독자수</td>
-                <td>평균 조회수</td>
+                <td>조회수</td>
                 <td>
                   <ListFavoriteButton userUid={userUid} channelId={channel.channelId} />
                 </td>
               </tr>
-              {/* </FavItemBox> */}
             </tbody>
           </FavList>
         </FavoriteSection>
@@ -76,11 +116,10 @@ export const MypageSection = styled.section`
   min-height: 100vh;
   display: flex;
   justify-content: space-between;
-  /* background-color: antiquewhite; */
 `;
 
 export const ProfileSection = styled.section`
-  background-color: #febe98;
+  background-color: #ffd8c1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +127,7 @@ export const ProfileSection = styled.section`
   margin: 3rem;
   gap: 3rem;
   width: 23%;
-  box-shadow: 0px 0px 10px 0px #febe98;
+  box-shadow: 0px 0px 10px 0px #f7d7c4;
   border-radius: 1rem;
 
   & > label > img,
@@ -120,6 +159,7 @@ export const ProfileContent = styled.div`
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 4rem;
+  text-align: center;
 
   & > input {
     width: 100%;
@@ -146,11 +186,10 @@ export const UserIntro = styled.p`
 `;
 
 export const FavoriteSection = styled.section`
-  /* background-color: lightblue; */
   width: 70%;
   margin: 3rem;
   padding: 1.5rem;
-  box-shadow: 0px 0px 3px 0px #febe98;
+  box-shadow: 0px 0px 3px 0px #e5ab89;
   border-radius: 1rem;
 `;
 
@@ -166,7 +205,7 @@ export const FavList = styled.table`
   & th,
   & td {
     text-align: left;
-    border-bottom: 1px solid #febe98;
+    border-bottom: 1px solid #e4c1ad;
     padding: 1rem;
     vertical-align: middle;
   }
@@ -188,67 +227,6 @@ export const FavList = styled.table`
   }
 `;
 
-// export const FavList = styled.table`
-//   /* background-color: #dfdfc3; */
-//   width: 100%;
-//   & thead,
-//   & tbody {
-//     background-color: aqua;
-//     width: 100%;
-//   }
-//   & tr {
-//     background-color: #d48b61;
-//     width: 100%;
-//     height: 2rem;
-//   }
-//   & th:nth-child(1) {
-//     width: 50px;
-//     background-color: aliceblue;
-//   }
-
-//   /* & tr, */
-//   & tr,
-//   & td {
-//     text-align: center;
-//     border-bottom: 1px solid #febe98;
-//     padding: 1rem;
-//     vertical-align: middle;
-//     width: 100%;
-//   }
-//   /* & th:nth-child(1) {
-//     width: 100px;
-//     /* width: 100%; */
-
-//   & td:nth-child(2) {
-//     /* width: 160px; */
-//     /* & span {
-//       display: block;
-//       width: 100px;
-//       height: 100px;
-//       border-radius: 50%;
-//       background-color: tomato;
-//       margin-right: 1rem;
-//       overflow: hidden;
-//     } */
-//     /* & span img {
-//       width: 100%;
-//     } */
-//   }
-//   & td {
-//     height: 130px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//   }
-//   & > tbody {
-//     /* width6 70rem; */
-//     width: 255%;
-//     min-height: 400px;
-//     display: flex;
-//     justify-content: center;
-//   }
-// `;
-
 export const FavTitle = styled.p`
   font-size: 1.5rem;
   margin-bottom: 2rem;
@@ -258,7 +236,6 @@ export const FavItemBox = styled.tr`
   width: 1000px;
   display: flex;
   flex-direction: row;
-  /* background-color: lightsalmon; */
   & > img {
     border-radius: 50%;
     width: 100px;
@@ -266,6 +243,6 @@ export const FavItemBox = styled.tr`
   }
 `;
 
-const NonFavStar = styled.img`
-  cursor: pointer;
+const ThumbnailImg = styled.img`
+  border-radius: 50%;
 `;
