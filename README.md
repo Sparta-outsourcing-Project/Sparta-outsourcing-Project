@@ -249,7 +249,7 @@
   </tr>
   <tr>
     <td>
-      <img src=""/>
+      <img src="https://github.com/Sparta-outsourcing-Project/Sparta-outsourcing-Project/blob/main/src/assets/README_img/detail.png"/>
     </td>
   </tr>
   </tbody>
