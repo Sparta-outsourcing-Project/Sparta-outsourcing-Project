@@ -193,7 +193,7 @@
   </tr>
   <tr>
     <td>
-      <img src=""/>
+      <img src="/src/assets/image.png"/>
     </td>
   </tr>
   </tbody>
