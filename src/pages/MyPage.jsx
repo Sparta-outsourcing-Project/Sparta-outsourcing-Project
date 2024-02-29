@@ -42,20 +42,13 @@ export default function MyPage() {
       const favChannelInfoArr = [];
       for (const favChannelId of favoriteChannels) {
         const favChannelInfo = await getChannelInfoById(favChannelId);
-        console.log('🚀 ~ fetchFavChannelInfos ~ favChannelInfo:', favChannelInfo);
         favChannelInfoArr.push(favChannelInfo);
         setFavChannelInfos([...favChannelInfos, favChannelInfo]);
-        // [...favChannelInfos, favChannelInfo];  favChannelInfos.concat(favChannelInfo)
       }
       setFavChannelInfos((prevFavChannelInfos) => prevFavChannelInfos.concat(favChannelInfoArr));
-      //   return favChannelInfo;
     };
     fetchFavChannelInfos();
   }, [favoriteChannels]);
-
-  console.log(favChannelInfos); // 빈
-
-  console.log(favChannelInfos);
 
   if (isLoading) return <Loading />;
   if (error) return <Error />;
