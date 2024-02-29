@@ -277,7 +277,6 @@
 
 (최근 영상 평균은 최근 50개 영상의 평균을 나타냅니다. )
 
-<br>
 
 (2) 채널 세부 정보
 
@@ -290,7 +289,23 @@
 - 영상 썸네일을 누르면 해당 영상으로 링크가 이동합니다.
 
 
-
+## 마이페이지
+  <table>
+<thead>
+  <tr>
+  <th>
+    디테일 페이지
+  </th>
+    </thead>
+  <tbody>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/Sparta-outsourcing-Project/Sparta-outsourcing-Project/blob/feat/main/src/assets/README_img/mypage.png"/>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
 # 파일구조
 ```
