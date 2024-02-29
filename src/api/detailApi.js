@@ -27,7 +27,7 @@ export const getRecentUploadVideoPlayList = async (uploadPlaylistId) => {
     `${url}&order=date&publishedAfter=${publishedAfter}&publishedBefore=${publishedBefore}`
   );
 
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
