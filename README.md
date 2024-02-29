@@ -77,6 +77,14 @@
 
 <br>
 
+### 피그마
+https://www.figma.com/file/AjQpIMmbkzpV8mcs8ic2wG/%EC%95%84%EC%9B%83%EC%86%8C%EC%8B%B1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-10%EC%A1%B0?type=whiteboard&node-id=0-1&t=VDIddVdBurDcXlf8-0
+
+### 시연 영상
+https://www.youtube.com/watch?v=qlsFz_7s4Ro
+
+<br>
+
 # 화면 구성 및 기능
  ## 1. 메인페이지
 <table>
