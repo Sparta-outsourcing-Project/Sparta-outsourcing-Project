@@ -1,14 +1,51 @@
-# React + Vite
+# <img src="src/assets/utrend_logo.png" width ="300" >
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+유튜버 광고 분석 서비스
 
-Currently, two official plugins are available:
+<br>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# 프로젝트 소개
 
+- 프로젝트 명 : UTrend
+- 프로젝트 기간 : 2024.02.23(금) ~ 02.28(수) (4일간)
+- 프로젝트 소개 : 유튜버에게 광고를 주고 싶은 광고주가 유튜버 채널을 분석 할 수 있는 서비스 플랫폼입니다.
 
-## 와이어프레임
+- 배포 링크 : https://nbc-outsourcing-project-utrend.vercel.app/
+
+<br><br>
+
+|                                                              곽인해                                                               |                                                              김현진                                                              |                                                              서혜련                                                               |                                                              윤미주                                                               |                                                              전종열                                                              |
+| :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: |
+| <p align="center"><img src="https://avatars.githubusercontent.com/u/148458439?v=4" style="width:100px; border-radius: 50%" /></p> | <p align="center"><img src="https://avatars.githubusercontent.com/u/154870548?v=4" style="width:100px; border-radius: 50%"/></p> | <p align="center"><img src="https://avatars.githubusercontent.com/u/121484282?v=4" style="width:100px; border-radius: 50%" /></p> | <p align="center"><img src="https://avatars.githubusercontent.com/u/134301942?v=4" style="width:100px; border-radius: 50%" /></p> | <p align="center"><img src="https://avatars.githubusercontent.com/u/87355061?v=4" style="width:100px; border-radius: 50%" /></p> |
+|                                              [@innes-k](https://github.com/innes-k)                                               |                                             [@hyun0zin](https://github.com/hyun0zin)                                             |                                         [@Hyeryeon-Seo](https://github.com/Hyeryeon-Seo)                                          |                                           [@anywhereim](https://github.com/anywhereim)                                            |                                                [@illuy](https://github.com/illuy)                                                |
+|                                                               팀장                                                                |                                                               팀원                                                               |                                                               팀원                                                                |                                                               팀원                                                                |                                                               팀원                                                               |
+|            - 메인페이지 헤더, 본문 영상 슬라이더 <br> - 로그인 및 회원가입 <br> - 회원정보 수정 <br> - 로그인 상태관리            |                                                   - 디테일 페이지 (채널 분석)                                                    |                           - API 호출 <br> - 메인페이지 검색 기능 <br> - 즐겨찾기 기능 <br> - 마이페이지                           |                        - API 호출 <br> - Loading 창 <br> - 메인페이지 인기순위 <br> - 리스트 페이지네이션                         |               - 전반적인 html 및 css 뼈대 <br> - 메인페이지 바디슬라이더 영상 modal 기능 <br> - 리스트페이지 목록                |
+|                                                             링크 배포                                                             |                                                       발표 및 README 작성                                                        |                                                             링크 배포                                                             |                                                             시연 영상                                                             |                                                           README 작성                                                            |
+
+<br><br>
+
+# 💻 TECH STACKS
+
+<h3>Environment</h3> 
+<div><img src="https://img.shields.io/badge/visual studio code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></div>
+
+<h3>Development</h3> 
+<div><img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"></div>
+<h3>Database</h3> 
+<div><img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"> </div>
+<h3>Design</h3> 
+<div><img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"> </div>
+
+<h3>Library</h3> 
+<div> <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white"> <img src="https://img.shields.io/badge/react query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">  </div>
+ 
+그 외 : Redux Toolkit, Swiper, Slick, React-icon, Recharts
+
+<br><br>
+
+# 와이어프레임
 <table>
 <thead>
   <tr>
@@ -37,6 +74,8 @@ Currently, two official plugins are available:
   </tr>
   </tbody>
 </table>
+
+<br>
 
 ## 화면 구성 및 기능
 <table>
@@ -158,7 +197,7 @@ Currently, two official plugins are available:
 
 
 
-## 파일구조
+# 파일구조
 ```
 📦src<br/>
  ┣ 📂api
