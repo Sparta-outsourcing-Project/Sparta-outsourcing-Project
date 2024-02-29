@@ -79,6 +79,7 @@
 <br>
 
 ### 피그마
+
 https://www.figma.com/file/AjQpIMmbkzpV8mcs8ic2wG/%EC%95%84%EC%9B%83%EC%86%8C%EC%8B%B1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-10%EC%A1%B0?type=whiteboard&node-id=0-1&t=VDIddVdBurDcXlf8-0
 
 ### 시연 영상
@@ -88,7 +89,8 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 <br>
 
 # 화면 구성 및 기능
- ## 1. 메인페이지
+
+## 1. 메인페이지
 
 <table>
 <thead>
@@ -207,6 +209,7 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 <br>
 
 ## 2. 리스트 페이지
+
  <table>
 <thead>
   <tr>
@@ -249,6 +252,7 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
  <br>
 
 ## 3. 디테일 페이지
+
   <table>
 <thead>
   <tr>
@@ -305,14 +309,14 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 <thead>
   <tr>
   <th>
-    디테일 페이지
+    마이 페이지
   </th>
     </thead>
   <tbody>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/Sparta-outsourcing-Project/Sparta-outsourcing-Project/blob/feat/main/src/assets/README_img/mypage.png"/>
+      <img src="https://github.com/Sparta-outsourcing-Project/Sparta-outsourcing-Project/blob/main/src/assets/README_img/mypage.png"/>
     </td>
   </tr>
   </tbody>
@@ -320,15 +324,23 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 
 <br>
 
-- 로그인을 하지 않은 상태에서 마이페이지(/mypage)에 접근할 경우 '로그인 해주세요'라는 alert창이 뜨고 홈으로 이동하게 됩니다.
+- 마이페이지에서 로그아웃을 하거나, 로그인을 하지 않은 상태에서 마이페이지(/mypage)에 접근할 경우 자동으로 홈으로 이동하게 됩니다.
 - 마이페이지 좌측에 로그인한 사용자의 닉네임, 프로필 이미지, 이메일, 소개글이 조회됩니다.
 - 프로필 이미지를 변경하지 않은 상태에서는 기본 이미지가 뜹니다.
+- 마이 페이지 우측에는 내 즐겨찾기 목록을 볼 수 있습니다.
 
 ### 4-1. 회원 정보 수정
 
 - 수정하기 버튼을 클릭 시, 닉네임과 프로필 이미지, 소개글을 수정할 수 있습니다.
 - 프로필 이미지는 파일 업로드를 통해 변경 가능합니다.
 - 수정 상태에서는 수정 완료, 취소 버튼을 클릭 해 수정 내용을 저장하거나 취소할 수 있습니다.
+
+### 4-2. 내 즐겨찾기
+
+- 내 즐겨찾기에서 해당 유저가 즐겨찾기 목록에 추가해둔 유튜브 채널들을 확인할 수 있습니다.
+- 리스트에는 유튜브채널 썸네일이미지, 채널명, 구독자, 평균 영상 조회수와 함께 즐겨찾기 민트색 별 아이콘이 나타납니다.
+- 민트색 별 아이콘을 누르면, '해당 채널을 내 즐겨찾기 목록에서 정말 삭제하실건가요?'라는 confirm 창이 뜨고, 확인을 누르면 새로고침과 함께 목록에서 삭제됩니다.
+- 각각의 썸네일 이미지와 유튜브 채널명에 마우스 커서를 두면 손 모양이 뜨며, 클릭하면 새 탭에서 해당 유튜브채널 페이지로 이동합니다.
 
 <br><br>
 
@@ -365,7 +377,6 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
 
 </div>
 </details>
-
 
 <details>
 <summary>김현진</summary>

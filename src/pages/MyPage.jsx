@@ -20,8 +20,7 @@ export default function MyPage() {
     if (sessionStorage.getItem('uid')) {
       setUserUid(sessionStorage.getItem('uid'));
     } else {
-      alert('로그인해주세요 !');
-      navigate('/');
+      navigate('/'); // alert창에서 변경
     }
   }, []);
 
