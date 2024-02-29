@@ -14,7 +14,7 @@ import Loading from '../layout/Loading';
 import RecentVideo from './RecentVideo';
 import TwoLevelPieChart from './TwoLevelPieChart';
 import { useEffect, useState } from 'react';
-import { addFavoriteChannel, fetchIsFavorite, removeFavoriteChannel } from '../../api/favorites';
+import { addFavoriteChannel, fetchFavorites, removeFavoriteChannel } from '../../api/favorites';
 import { useSelector } from 'react-redux';
 import nonFavImg from '../../assets/emptyStar.png';
 import favImg from '../../assets/coloredStar.png';
@@ -138,7 +138,7 @@ export default function Detail() {
     // } = userUid ? useQuery({
   } = useQuery({
     queryKey: ['favoriteChannels', userUid, favorite],
-    queryFn: () => fetchIsFavorite(userUid)
+    queryFn: () => fetchFavorites(userUid)
   });
   // : { data: [], isLoading: false, error: null };
 
