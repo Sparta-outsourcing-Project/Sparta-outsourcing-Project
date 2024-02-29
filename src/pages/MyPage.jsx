@@ -53,10 +53,6 @@ export default function MyPage() {
     fetchFavChannelInfos();
   }, [favoriteChannels]);
 
-  console.log(favChannelInfos); // 빈
-
-  console.log(favChannelInfos);
-
   if (isLoading) return <Loading />;
   if (error) return <Error />;
   return (
