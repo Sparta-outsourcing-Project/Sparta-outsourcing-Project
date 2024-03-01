@@ -1,7 +1,7 @@
 import * as St from './styles/Login.style';
 import { Background, InputBtnWrapper } from './styles/SignUp.style';
 import logo from '../../assets/utrend_logo.png';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../api/config';
 import { addDefaultUserInfo } from '../../api/auth';
@@ -10,6 +10,11 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
   const [userId, setUserId] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPw, setUserPw] = useState('');
+  const backgroundRef = useRef('');
+
+  const onBackgroundClick = (e) => {
+    e.target === backgroundRef.current && setIsSignUpOpen((prev) => !prev);
+  };
 
   const onUserId = (e) => {
     setUserId(e.target.value);
@@ -65,7 +70,7 @@ const SignUp = ({ isSignUpOpen, setIsSignUpOpen, setIsLoginOpen }) => {
   return (
     <>
       {isSignUpOpen && (
-        <Background $isSignUpOpen={isSignUpOpen}>
+        <Background $isSignUpOpen={isSignUpOpen} ref={backgroundRef} onClick={onBackgroundClick}>
           <St.Container>
             <St.LoginWrapper>
               <button onClick={onCloseButtonHandler}>X</button>

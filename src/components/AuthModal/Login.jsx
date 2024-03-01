@@ -1,7 +1,7 @@
 import * as St from './styles/Login.style';
 import logo from '../../assets/utrend_logo.png';
 import googleIcon from '../../assets/google.png';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../api/config';
 import { useDispatch } from 'react-redux';
@@ -12,6 +12,11 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   const [userId, setUserId] = useState('');
   const [userPw, setUserPw] = useState('');
   const dispatch = useDispatch();
+  const backgroundRef = useRef('');
+
+  const onBackgroundClick = (e) => {
+    e.target === backgroundRef.current && setIsLoginOpen((prev) => !prev);
+  };
 
   const onUserId = (e) => {
     setUserId(e.target.value);
@@ -85,7 +90,7 @@ const Login = ({ isLoginOpen, setIsLoginOpen, setIsSignUpOpen }) => {
   return (
     <>
       {isLoginOpen && (
-        <St.Background $isLoginOpen={isLoginOpen}>
+        <St.Background $isLoginOpen={isLoginOpen} ref={backgroundRef} onClick={onBackgroundClick}>
           <St.Container>
             <St.LoginWrapper>
               <button onClick={onCloseButtonHandler}>X</button>
