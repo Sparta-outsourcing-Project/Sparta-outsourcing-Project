@@ -1,18 +1,10 @@
 import { useState } from 'react';
 import defaultImg from '../../assets/profile_defaultImage.png';
-import {
-  ProfileContent,
-  ProfileSection,
-  UserEmail,
-  UserIntro,
-  UserNickname,
-  UserNicknameInput
-} from '../../pages/MyPage';
 import { getUserInfo, updateUser } from '../../api/auth';
-import styled from 'styled-components';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../layout/Loading';
 import Error from '../../pages/Error';
+import * as St from './styles/MyPageStyle';
 
 const MyProfile = () => {
   const uid = sessionStorage.getItem('uid');
@@ -96,7 +88,7 @@ const MyProfile = () => {
 
   return (
     <>
-      <ProfileSection>
+      <St.ProfileSection>
         {isEdit ? (
           <>
             <label htmlFor="fileInput">
@@ -116,55 +108,29 @@ const MyProfile = () => {
             <img src={image === null ? defaultImg : image} alt="defaultImg" />
           </>
         )}
-        <ProfileContent>
+        <St.ProfileContent>
           {isEdit ? (
-            <UserNicknameInput type="text" value={newNickname} onChange={onNewNickname} />
+            <St.UserNicknameInput type="text" value={newNickname} onChange={onNewNickname} />
           ) : (
-            <UserNickname>{nickname}</UserNickname>
+            <St.UserNickname>{nickname}</St.UserNickname>
           )}
 
-          <UserEmail>{userId}</UserEmail>
-          {isEdit ? <Textarea value={newIntro} onChange={onNewIntro} /> : <UserIntro>{intro}</UserIntro>}
-        </ProfileContent>
+          <St.UserEmail>{userId}</St.UserEmail>
+          {isEdit ? <St.Textarea value={newIntro} onChange={onNewIntro} /> : <St.UserIntro>{intro}</St.UserIntro>}
+        </St.ProfileContent>
         {isEdit ? (
-          <UpdateButton>
+          <St.UpdateButton>
             <button onClick={onUpdateUserInfo}>수정완료</button>
             <button onClick={onCancel}>취소</button>
-          </UpdateButton>
+          </St.UpdateButton>
         ) : (
           <>
             <button onClick={onUpdateHandler}>수정하기</button>
           </>
         )}
-      </ProfileSection>
+      </St.ProfileSection>
     </>
   );
 };
 
 export default MyProfile;
-
-export const UpdateButton = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-
-  & > button {
-    background-color: white;
-    width: 8rem;
-    height: 3rem;
-    border: none;
-    border-radius: 0.5rem;
-  }
-`;
-
-export const Textarea = styled.textarea`
-  font-size: 1.3rem;
-  min-height: 70px;
-`;
-
-export const EditingImg = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  margin-top: 30px;
-`;
