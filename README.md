@@ -493,6 +493,9 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
  ┃ ┃ ┣ 📜Main.jsx
  ┃ ┃ ┗ 📜Thumbnail.jsx
  ┃ ┣ 📂myPage
+ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┗ 📜MyPageStyle.js
+ ┃ ┃ ┣ 📜MyPageSection.jsx
  ┃ ┃ ┗ 📜MyProfile.jsx
  ┃ ┗ 📂sliders
  ┃ ┃ ┣ 📜BodySlider.jsx
@@ -518,4 +521,6 @@ https://www.youtube.com/watch?v=qlsFz_7s4Ro
  ┃ ┗ 📜GlobalStyle.jsx
  ┣ 📜App.jsx
  ┗ 📜main.jsx
+
+
 ```
