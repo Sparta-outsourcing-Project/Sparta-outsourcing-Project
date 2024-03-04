@@ -129,6 +129,7 @@ export default function Detail() {
   const averageCommentCount = Math.round(calculateAverage(commentCount));
   const averageLikeCount = Math.round(calculateAverage(likeCount));
   const averageViewCount = Math.round(calculateAverage(viewCount));
+  console.log(parseInt(averageViewCount).toLocaleString());
 
   // 기존 즐겨찾기 데이터 가져와서 별표 뜨게하기 => RQ
   const {
@@ -282,7 +283,7 @@ export default function Detail() {
                         <th>
                           <ColorCircle style={{ backgroundColor: '#B1C381' }}></ColorCircle>최근 영상 평균 조회수
                         </th>
-                        <td>{averageViewCount} 회</td>
+                        <td>{parseInt(averageViewCount).toLocaleString()} 회</td>
                       </tr>
                       <tr>
                         <th></th>
