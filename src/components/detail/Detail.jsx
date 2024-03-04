@@ -129,7 +129,6 @@ export default function Detail() {
   const averageCommentCount = Math.round(calculateAverage(commentCount));
   const averageLikeCount = Math.round(calculateAverage(likeCount));
   const averageViewCount = Math.round(calculateAverage(viewCount));
-  console.log(parseInt(averageViewCount).toLocaleString());
 
   // 기존 즐겨찾기 데이터 가져와서 별표 뜨게하기 => RQ
   const {
